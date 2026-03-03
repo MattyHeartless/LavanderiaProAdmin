@@ -1,0 +1,265 @@
+<!-- Page Heading -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
+<div>
+<h2 class="text-3xl font-black text-slate-900 dark:text-white tracking-tight">Pedidos</h2>
+<p class="text-slate-500 dark:text-slate-400 mt-1">Supervisa y asigna personal a las órdenes activas en tiempo real.</p>
+</div>
+<div class="flex items-center gap-3">
+<button class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 px-4 py-2 rounded-lg text-sm font-semibold flex items-center gap-2 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors">
+<span class="material-symbols-outlined text-[18px]">download</span>
+                            Exportar CSV
+                        </button>
+<button class="bg-primary text-white px-4 py-2 rounded-lg text-sm font-semibold flex items-center gap-2 shadow-lg shadow-primary/20 hover:brightness-110 transition-all">
+<span class="material-symbols-outlined text-[18px]">add</span>
+                            Nuevo Pedido
+                        </button>
+</div>
+</div>
+<!-- Filters -->
+<div class="flex items-center gap-2 p-1.5 bg-slate-200/50 dark:bg-slate-800/50 w-fit rounded-xl mb-6">
+<button class="px-5 py-2 text-sm font-bold bg-white dark:bg-slate-700 text-primary shadow-sm rounded-lg transition-all">Todos</button>
+<button class="px-5 py-2 text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-all">Pendientes</button>
+<button class="px-5 py-2 text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-all">En Curso</button>
+<button class="px-5 py-2 text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-all">Completados</button>
+</div>
+<!-- Table Container -->
+<div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl overflow-hidden shadow-sm">
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-slate-50 dark:bg-slate-800/50 border-b border-slate-200 dark:border-slate-800">
+<th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">ID Orden</th>
+<th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Cliente</th>
+<th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Servicio</th>
+<th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Fecha / Hora</th>
+<th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Estado</th>
+<th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider text-right">Acciones</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-100 dark:divide-slate-800">
+<!-- Row 1 -->
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors group">
+<td class="px-6 py-4 whitespace-nowrap">
+<span class="font-bold text-slate-900 dark:text-white">#ORD-5290</span>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex items-center gap-3">
+<div class="size-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-xs font-bold">CR</div>
+<span class="text-sm font-medium text-slate-700 dark:text-slate-300">Carlos Ruiz</span>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<span class="px-2.5 py-1 rounded-md bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 text-xs font-bold border border-blue-100 dark:border-blue-800">Lavado Express</span>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="text-sm">
+<p class="text-slate-900 dark:text-white font-medium">Hoy</p>
+<p class="text-xs text-slate-500">10:30 AM</p>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex items-center gap-1.5 px-2.5 py-1 w-fit rounded-full bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 text-[11px] font-bold uppercase tracking-wide">
+<span class="size-1.5 rounded-full bg-amber-500 animate-pulse"></span>
+                                            Pendiente de Asignación
+                                        </div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-right">
+<div class="flex items-center justify-end gap-2">
+<button class="bg-primary hover:bg-primary/90 text-white text-xs font-bold px-4 py-2 rounded-lg transition-all flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px]">person_add</span>
+                                                Asignar
+                                            </button>
+<button class="p-2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors group">
+<td class="px-6 py-4 whitespace-nowrap">
+<span class="font-bold text-slate-900 dark:text-white">#ORD-5289</span>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex items-center gap-3">
+<div class="size-8 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center text-xs font-bold">AL</div>
+<span class="text-sm font-medium text-slate-700 dark:text-slate-300">Ana López</span>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<span class="px-2.5 py-1 rounded-md bg-purple-50 dark:bg-purple-900/20 text-purple-600 dark:text-purple-400 text-xs font-bold border border-purple-100 dark:border-purple-800">Tintorería</span>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="text-sm">
+<p class="text-slate-900 dark:text-white font-medium">14 May 2024</p>
+<p class="text-xs text-slate-500">03:45 PM</p>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex items-center gap-1.5 px-2.5 py-1 w-fit rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 text-[11px] font-bold uppercase tracking-wide">
+                                            En Recolección
+                                        </div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-right text-sm">
+<div class="flex items-center justify-end gap-2">
+<button class="bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 text-xs font-bold px-4 py-2 rounded-lg transition-all">
+                                                Ver Detalles
+                                            </button>
+<button class="p-2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors group">
+<td class="px-6 py-4 whitespace-nowrap">
+<span class="font-bold text-slate-900 dark:text-white">#ORD-5288</span>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex items-center gap-3">
+<div class="size-8 rounded-full bg-slate-100 text-slate-600 flex items-center justify-center text-xs font-bold">RG</div>
+<span class="text-sm font-medium text-slate-700 dark:text-slate-300">Roberto Gómez</span>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<span class="px-2.5 py-1 rounded-md bg-orange-50 dark:bg-orange-900/20 text-orange-600 dark:text-orange-400 text-xs font-bold border border-orange-100 dark:border-orange-800">Lavado y Doblado</span>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="text-sm">
+<p class="text-slate-900 dark:text-white font-medium">14 May 2024</p>
+<p class="text-xs text-slate-500">11:15 AM</p>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex items-center gap-1.5 px-2.5 py-1 w-fit rounded-full bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 text-[11px] font-bold uppercase tracking-wide">
+                                            Pendiente de Asignación
+                                        </div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-right">
+<div class="flex items-center justify-end gap-2">
+<button class="bg-primary hover:bg-primary/90 text-white text-xs font-bold px-4 py-2 rounded-lg transition-all flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px]">person_add</span>
+                                                Asignar
+                                            </button>
+<button class="p-2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 4 -->
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors group">
+<td class="px-6 py-4 whitespace-nowrap">
+<span class="font-bold text-slate-900 dark:text-white">#ORD-5287</span>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex items-center gap-3">
+<div class="size-8 rounded-full bg-pink-100 text-pink-600 flex items-center justify-center text-xs font-bold">LM</div>
+<span class="text-sm font-medium text-slate-700 dark:text-slate-300">Lucía Méndez</span>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<span class="px-2.5 py-1 rounded-md bg-indigo-50 dark:bg-indigo-900/20 text-indigo-600 dark:text-indigo-400 text-xs font-bold border border-indigo-100 dark:border-indigo-800">Edredones</span>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="text-sm">
+<p class="text-slate-900 dark:text-white font-medium">13 May 2024</p>
+<p class="text-xs text-slate-500">09:00 AM</p>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex items-center gap-1.5 px-2.5 py-1 w-fit rounded-full bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 text-[11px] font-bold uppercase tracking-wide">
+                                            Entregado
+                                        </div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-right">
+<div class="flex items-center justify-end gap-2">
+<button class="bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 text-xs font-bold px-4 py-2 rounded-lg transition-all">
+                                                Ver Recibo
+                                            </button>
+<button class="p-2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Pagination Placeholder -->
+<div class="px-6 py-4 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between bg-slate-50/50 dark:bg-slate-800/30">
+<p class="text-xs font-medium text-slate-500">Mostrando 1 a 4 de 125 pedidos</p>
+<div class="flex gap-2">
+<button class="size-8 flex items-center justify-center rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-400 hover:bg-slate-50 transition-colors">
+<span class="material-symbols-outlined text-[18px]">chevron_left</span>
+</button>
+<button class="size-8 flex items-center justify-center rounded-lg border border-primary bg-primary text-white text-xs font-bold">1</button>
+<button class="size-8 flex items-center justify-center rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-400 text-xs font-bold hover:bg-slate-50 transition-colors">2</button>
+<button class="size-8 flex items-center justify-center rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-400 text-xs font-bold hover:bg-slate-50 transition-colors">3</button>
+<button class="size-8 flex items-center justify-center rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-400 hover:bg-slate-50 transition-colors">
+<span class="material-symbols-outlined text-[18px]">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Assignment Popover Preview (Static Mockup) -->
+<div class="mt-8 grid grid-cols-1 lg:grid-cols-3 gap-6">
+<div class="col-span-1 border border-slate-200 dark:border-slate-800 rounded-xl bg-white dark:bg-slate-900 p-6">
+<div class="flex items-center justify-between mb-4">
+<h3 class="font-bold text-slate-900 dark:text-white">Recolectores Disponibles</h3>
+<span class="px-2 py-0.5 rounded bg-emerald-100 text-emerald-700 text-[10px] font-bold uppercase">En línea</span>
+</div>
+<div class="space-y-4">
+<!-- Driver 1 -->
+<div class="flex items-center justify-between p-3 rounded-lg bg-slate-50 dark:bg-slate-800 border border-slate-100 dark:border-slate-700">
+<div class="flex items-center gap-3">
+<div class="size-10 rounded-full bg-primary/20 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">electric_moped</span>
+</div>
+<div>
+<p class="text-sm font-bold leading-none">Juan Pérez</p>
+<p class="text-xs text-slate-500 mt-1">2 pedidos activos</p>
+</div>
+</div>
+<button class="text-primary hover:text-primary/80">
+<span class="material-symbols-outlined text-[20px]">add_circle</span>
+</button>
+</div>
+<!-- Driver 2 -->
+<div class="flex items-center justify-between p-3 rounded-lg bg-slate-50 dark:bg-slate-800 border border-slate-100 dark:border-slate-700">
+<div class="flex items-center gap-3">
+<div class="size-10 rounded-full bg-primary/20 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">electric_moped</span>
+</div>
+<div>
+<p class="text-sm font-bold leading-none">Marcos Díaz</p>
+<p class="text-xs text-slate-500 mt-1">0 pedidos activos</p>
+</div>
+</div>
+<button class="text-primary hover:text-primary/80">
+<span class="material-symbols-outlined text-[20px]">add_circle</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Stats Card -->
+<div class="col-span-1 lg:col-span-2 grid grid-cols-2 gap-4">
+<div class="bg-primary p-6 rounded-xl text-white flex flex-col justify-between shadow-xl shadow-primary/20">
+<span class="material-symbols-outlined text-white/50 text-[32px]">pending_actions</span>
+<div>
+<p class="text-sm font-medium text-white/80">Por Asignar</p>
+<p class="text-3xl font-black mt-1">14</p>
+</div>
+</div>
+<div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 rounded-xl flex flex-col justify-between">
+<span class="material-symbols-outlined text-slate-400 text-[32px]">check_circle</span>
+<div>
+<p class="text-sm font-medium text-slate-500">Completados Hoy</p>
+<p class="text-3xl font-black mt-1 text-slate-900 dark:text-white">48</p>
+</div>
+</div>
+</div>
+</div>
+
+

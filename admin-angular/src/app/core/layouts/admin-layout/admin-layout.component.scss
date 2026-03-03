@@ -1,0 +1,268 @@
+:host {
+  display: block;
+  height: 100%;
+}
+
+.admin-shell {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  height: 100vh;
+  background: #f6f7f8;
+  overflow: hidden;
+}
+
+.sidebar {
+  border-right: 1px solid #e2e8f0;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem 1rem;
+  gap: 1.5rem;
+  min-height: 0;
+}
+
+.brand h1 {
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1;
+  font-weight: 700;
+}
+
+.brand p {
+  margin: 0.25rem 0 0;
+  color: #64748b;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 600;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.brand-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 0.5rem;
+  background: #136dec;
+  color: #fff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 20px rgb(19 109 236 / 20%);
+}
+
+.brand-icon .material-symbols-outlined {
+  font-size: 22px;
+}
+
+.brand-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.menu {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.menu a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  color: #334155;
+  text-decoration: none;
+  padding: 0.6rem 0.75rem;
+  border-radius: 0.5rem;
+  font-size: 0.92rem;
+}
+
+.menu a:hover {
+  background: #eff6ff;
+}
+
+.menu a.is-active {
+  background: #dbeafe;
+  color: #1d4ed8;
+  font-weight: 600;
+}
+
+.menu a.is-child {
+  margin-left: 1rem;
+  font-size: 0.88rem;
+}
+
+.sidebar-bottom {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.logout-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  width: 100%;
+  border: 0;
+  background: transparent;
+  color: #334155;
+  border-radius: 0.5rem;
+  padding: 0.6rem 0.75rem;
+  cursor: pointer;
+  font-size: 0.92rem;
+  text-align: left;
+}
+
+.logout-btn:hover {
+  background: #eff6ff;
+}
+
+.footer {
+  color: #94a3b8;
+  font-size: 0.75rem;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+}
+
+.topbar {
+  height: 64px;
+  border-bottom: 1px solid #e2e8f0;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1.5rem;
+}
+
+.topbar p {
+  margin: 0;
+  color: #334155;
+  font-weight: 600;
+}
+
+.topbar-title p {
+  color: #334155;
+  font-weight: 600;
+}
+
+.topbar-user {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.notify-btn {
+  position: relative;
+  border: 0;
+  background: transparent;
+  color: #475569;
+  width: 36px;
+  height: 36px;
+  border-radius: 9999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.notify-btn:hover {
+  background: #f1f5f9;
+}
+
+.notify-dot {
+  position: absolute;
+  top: 7px;
+  right: 8px;
+  width: 8px;
+  height: 8px;
+  border-radius: 9999px;
+  background: #ef4444;
+  border: 2px solid #fff;
+}
+
+.divider {
+  width: 1px;
+  height: 28px;
+  background: #e2e8f0;
+}
+
+.user-card {
+  border: 0;
+  background: transparent;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  cursor: pointer;
+  padding: 0;
+}
+
+.user-text {
+  text-align: right;
+}
+
+.user-name {
+  margin: 0;
+  font-size: 0.875rem;
+  line-height: 1;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.user-role {
+  margin: 0.25rem 0 0;
+  font-size: 11px;
+  font-weight: 500;
+  color: #64748b;
+}
+
+.avatar-wrap {
+  width: 40px;
+  height: 40px;
+  border-radius: 9999px;
+  border: 2px solid #fff;
+  overflow: hidden;
+  background: #e2e8f0;
+}
+
+.avatar-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.view {
+  padding: 1.5rem;
+  overflow-y: auto;
+  min-height: 0;
+}
+
+@media (max-width: 900px) {
+  .admin-shell {
+    grid-template-columns: 1fr;
+  }
+
+  .sidebar {
+    border-right: 0;
+    border-bottom: 1px solid #e2e8f0;
+  }
+
+  .topbar-user .user-text {
+    display: none;
+  }
+}
+
+.nav-icon {
+  font-size: 1.1rem;
+  line-height: 1;
+}
+

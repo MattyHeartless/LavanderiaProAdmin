@@ -1,0 +1,64 @@
+<div class="admin-shell" data-testid="admin-shell">
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-icon">
+        <span class="material-symbols-outlined">local_laundry_service</span>
+      </div>
+      <div class="brand-text">
+        <h1>LavanderiaPro</h1>
+        <p>Admin Panel</p>
+      </div>
+    </div>
+
+    <nav class="menu" data-testid="sidebar-menu">
+      @for (item of navItems(); track item.path) {
+        <a
+          [routerLink]="item.path"
+          routerLinkActive="is-active"
+          [routerLinkActiveOptions]="{ exact: item.exact ?? true }"
+          [attr.data-testid]="item.testId"
+          [class.is-child]="item.child"
+        >
+          <span class="material-symbols-outlined nav-icon">{{ item.icon }}</span>
+          {{ item.label }}
+        </a>
+      }
+    </nav>
+
+    <div class="sidebar-bottom">
+      <button class="logout-btn" type="button" data-testid="nav-logout" (click)="logout()">
+        <span class="material-symbols-outlined nav-icon">logout</span>
+        <span>Cerrar sesion</span>
+      </button>
+      <div class="footer">{{ year() }} LavanderiaPro</div>
+    </div>
+  </aside>
+
+  <main class="content">
+    <header class="topbar" data-testid="topbar">
+      <div class="topbar-title">
+        <p>Panel Administrativo</p>
+      </div>
+      <div class="topbar-user" data-testid="logged-user">
+        <button class="notify-btn" type="button" aria-label="Notificaciones">
+          <span class="material-symbols-outlined">notifications</span>
+          <span class="notify-dot"></span>
+        </button>
+        <div class="divider"></div>
+        <button class="user-card" type="button">
+          <div class="user-text">
+            <p class="user-name">{{ loggedUser().name }}</p>
+            <p class="user-role">{{ loggedUser().role }}</p>
+          </div>
+          <div class="avatar-wrap">
+            <img [src]="loggedUser().avatar" [alt]="loggedUser().name" />
+          </div>
+        </button>
+      </div>
+    </header>
+    <section class="view">
+      <router-outlet></router-outlet>
+    </section>
+  </main>
+</div>
+

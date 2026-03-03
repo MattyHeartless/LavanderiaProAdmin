@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+
+<html lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Admin Laundry - Gestión de Servicios</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#136dec",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#101822",
+                    },
+                    fontFamily: {
+                        "display": ["Inter"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100">
+<div class="flex h-screen overflow-hidden">
+<!-- Sidebar -->
+<aside class="w-64 border-r border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hidden md:flex flex-col">
+<div class="p-6 flex items-center gap-3">
+<div class="size-10 bg-primary rounded-lg flex items-center justify-center text-white">
+<span class="material-symbols-outlined">local_laundry_service</span>
+</div>
+<div>
+<h1 class="text-sm font-bold leading-tight">Lavandería Admin</h1>
+<p class="text-xs text-slate-500 dark:text-slate-400">Panel de Control</p>
+</div>
+</div>
+<nav class="flex-1 px-4 space-y-1">
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors" href="#">
+<span class="material-symbols-outlined text-[22px]">dashboard</span>
+<span class="text-sm font-medium">Tablero</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg bg-primary/10 text-primary" href="#">
+<span class="material-symbols-outlined text-[22px]">settings_suggest</span>
+<span class="text-sm font-medium">Gestión de Servicios</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors" href="#">
+<span class="material-symbols-outlined text-[22px]">assignment</span>
+<span class="text-sm font-medium">Pedidos</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors" href="#">
+<span class="material-symbols-outlined text-[22px]">group</span>
+<span class="text-sm font-medium">Clientes</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors" href="#">
+<span class="material-symbols-outlined text-[22px]">settings</span>
+<span class="text-sm font-medium">Configuración</span>
+</a>
+</nav>
+<div class="p-4 border-t border-slate-200 dark:border-slate-800">
+<div class="flex items-center gap-3 p-2">
+<div class="size-8 rounded-full bg-slate-200 dark:bg-slate-700 overflow-hidden">
+<img class="size-full object-cover" data-alt="Admin user profile picture" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBjXpYp2PLEq-XbNy3Sw-VVP-RjI1jg39ExtDh_iuKyE4k1iO5Zneiw1foetwsdDqHpDNoEtqcUE5B29Z1-EjOvN9C5W16DmhBQfsN3pvgSAfjiqEeHxZxRSbOKgj7eseX1P6EKN-5iy7CGtoenPZJSzefzKxxJyRp3VYws5-Vm7ZWSt2z52_Kztw5R_Q44EroERs2Sx9alaJ8vSsOTqYE6xRarJ9CEUCjQw0OmuncPUWL0yPjrqH-Q3ifNqFcZw9RnCHjXrqsYT_A"/>
+</div>
+<div class="flex-1 min-w-0">
+<p class="text-xs font-semibold truncate">Juan Pérez</p>
+<p class="text-[10px] text-slate-500 uppercase tracking-wider">Administrador</p>
+</div>
+<span class="material-symbols-outlined text-slate-400 text-sm">logout</span>
+</div>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="flex-1 flex flex-col min-w-0 overflow-hidden">
+<!-- Header -->
+<header class="h-16 border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 px-8 flex items-center justify-between shrink-0">
+<div class="flex items-center gap-4 text-slate-900 dark:text-slate-100">
+<span class="material-symbols-outlined md:hidden">menu</span>
+<h2 class="text-lg font-bold tracking-tight">Admin Laundry</h2>
+</div>
+<div class="flex items-center gap-4">
+<div class="relative hidden sm:block">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-[20px]">search</span>
+<input class="pl-10 pr-4 py-2 bg-slate-100 dark:bg-slate-800 border-none rounded-lg text-sm focus:ring-2 focus:ring-primary w-64" placeholder="Buscar..." type="text"/>
+</div>
+<button class="size-10 flex items-center justify-center rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-200 transition-colors">
+<span class="material-symbols-outlined text-[20px]">notifications</span>
+</button>
+<div class="size-10 rounded-full bg-primary/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary">person</span>
+</div>
+</div>
+</header>
+<!-- Content Area -->
+<div class="flex-1 overflow-y-auto p-4 md:p-8">
+<div class="max-w-6xl mx-auto space-y-8">
+<!-- Page Header -->
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+<div>
+<h1 class="text-3xl font-black text-slate-900 dark:text-white tracking-tight">Gestión de Servicios</h1>
+<p class="text-slate-500 dark:text-slate-400 mt-1">Administra y actualiza el catálogo de servicios de lavandería.</p>
+</div>
+<button class="inline-flex items-center justify-center gap-2 px-6 py-2.5 bg-primary text-white font-bold rounded-lg hover:bg-primary/90 transition-all shadow-lg shadow-primary/20">
+<span class="material-symbols-outlined text-[20px]">add</span>
+<span>Nuevo Servicio</span>
+</button>
+</div>
+<!-- Services Table -->
+<div class="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 overflow-hidden shadow-sm">
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-slate-50 dark:bg-slate-800/50 border-b border-slate-200 dark:border-slate-800">
+<th class="px-6 py-4 text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider w-20">Icono</th>
+<th class="px-6 py-4 text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Nombre</th>
+<th class="px-6 py-4 text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider hidden md:table-cell">Descripción</th>
+<th class="px-6 py-4 text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Unidad</th>
+<th class="px-6 py-4 text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Precio</th>
+<th class="px-6 py-4 text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider text-right">Acciones</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-100 dark:divide-slate-800">
+<tr class="hover:bg-slate-50/50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="px-6 py-4">
+<div class="size-10 rounded-lg bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center text-blue-600 dark:text-blue-400">
+<span class="material-symbols-outlined">waves</span>
+</div>
+</td>
+<td class="px-6 py-4 font-semibold text-slate-900 dark:text-white">Lavado Express</td>
+<td class="px-6 py-4 text-slate-500 dark:text-slate-400 hidden md:table-cell max-w-xs truncate">Servicio rápido de lavado y secado en menos de 24 horas.</td>
+<td class="px-6 py-4">
+<span class="inline-flex px-2 py-1 rounded-md bg-slate-100 dark:bg-slate-800 text-xs font-bold text-slate-600 dark:text-slate-400">KG</span>
+</td>
+<td class="px-6 py-4 font-bold text-primary">$4.50</td>
+<td class="px-6 py-4 text-right">
+<button class="text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">edit</span>
+</button>
+</td>
+</tr>
+<tr class="hover:bg-slate-50/50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="px-6 py-4">
+<div class="size-10 rounded-lg bg-orange-100 dark:bg-orange-900/30 flex items-center justify-center text-orange-600 dark:text-orange-400">
+<span class="material-symbols-outlined">iron</span>
+</div>
+</td>
+<td class="px-6 py-4 font-semibold text-slate-900 dark:text-white">Planchado</td>
+<td class="px-6 py-4 text-slate-500 dark:text-slate-400 hidden md:table-cell max-w-xs truncate">Planchado profesional a vapor para todo tipo de prendas.</td>
+<td class="px-6 py-4">
+<span class="inline-flex px-2 py-1 rounded-md bg-slate-100 dark:bg-slate-800 text-xs font-bold text-slate-600 dark:text-slate-400">Prenda</span>
+</td>
+<td class="px-6 py-4 font-bold text-primary">$2.00</td>
+<td class="px-6 py-4 text-right">
+<button class="text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">edit</span>
+</button>
+</td>
+</tr>
+<tr class="hover:bg-slate-50/50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="px-6 py-4">
+<div class="size-10 rounded-lg bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center text-purple-600 dark:text-purple-400">
+<span class="material-symbols-outlined">dry_cleaning</span>
+</div>
+</td>
+<td class="px-6 py-4 font-semibold text-slate-900 dark:text-white">Tintorería</td>
+<td class="px-6 py-4 text-slate-500 dark:text-slate-400 hidden md:table-cell max-w-xs truncate">Limpieza en seco especializada para prendas delicadas y trajes.</td>
+<td class="px-6 py-4">
+<span class="inline-flex px-2 py-1 rounded-md bg-slate-100 dark:bg-slate-800 text-xs font-bold text-slate-600 dark:text-slate-400">Prenda</span>
+</td>
+<td class="px-6 py-4 font-bold text-primary">$12.00</td>
+<td class="px-6 py-4 text-right">
+<button class="text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">edit</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- New Service Form Section -->
+<div class="space-y-6">
+<div class="flex items-center gap-3">
+<div class="h-8 w-1.5 bg-primary rounded-full"></div>
+<h2 class="text-2xl font-bold text-slate-900 dark:text-white">Crear Nuevo Servicio</h2>
+</div>
+<div class="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 p-8 shadow-sm">
+<form class="space-y-8">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-8">
+<!-- Left Column -->
+<div class="space-y-6">
+<div class="space-y-2">
+<label class="text-sm font-semibold text-slate-700 dark:text-slate-300">Nombre del Servicio</label>
+<input class="w-full rounded-lg border-slate-200 dark:border-slate-700 dark:bg-slate-800 dark:text-white focus:border-primary focus:ring-primary transition-all" placeholder="Ej. Lavado de Edredones" type="text"/>
+</div>
+<div class="space-y-2">
+<label class="text-sm font-semibold text-slate-700 dark:text-slate-300">Descripción</label>
+<textarea class="w-full rounded-lg border-slate-200 dark:border-slate-700 dark:bg-slate-800 dark:text-white focus:border-primary focus:ring-primary transition-all" placeholder="Escribe una breve descripción del servicio..." rows="4"></textarea>
+</div>
+</div>
+<!-- Right Column -->
+<div class="space-y-6">
+<div class="grid grid-cols-2 gap-4">
+<div class="space-y-2">
+<label class="text-sm font-semibold text-slate-700 dark:text-slate-300">Unidad de Medida</label>
+<select class="w-full rounded-lg border-slate-200 dark:border-slate-700 dark:bg-slate-800 dark:text-white focus:border-primary focus:ring-primary transition-all">
+<option>Por Kilo</option>
+<option>Por Prenda</option>
+<option>Por Docena</option>
+</select>
+</div>
+<div class="space-y-2">
+<label class="text-sm font-semibold text-slate-700 dark:text-slate-300">Precio</label>
+<div class="relative">
+<span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 font-medium">$</span>
+<input class="w-full pl-8 rounded-lg border-slate-200 dark:border-slate-700 dark:bg-slate-800 dark:text-white focus:border-primary focus:ring-primary transition-all" placeholder="0.00" step="0.01" type="number"/>
+</div>
+</div>
+</div>
+<div class="space-y-4">
+<label class="text-sm font-semibold text-slate-700 dark:text-slate-300">Icono y Estilo</label>
+<div class="flex flex-wrap gap-4 items-end">
+<div class="space-y-2">
+<p class="text-xs text-slate-500 mb-1 uppercase tracking-tighter">Seleccionar Icono</p>
+<div class="flex gap-2 p-2 bg-slate-50 dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700">
+<button class="size-10 flex items-center justify-center rounded-md bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 text-slate-700 dark:text-slate-200 shadow-sm" type="button">
+<span class="material-symbols-outlined">local_laundry_service</span>
+</button>
+<button class="size-10 flex items-center justify-center rounded-md hover:bg-white dark:hover:bg-slate-700 text-slate-400" type="button">
+<span class="material-symbols-outlined">checkroom</span>
+</button>
+<button class="size-10 flex items-center justify-center rounded-md hover:bg-white dark:hover:bg-slate-700 text-slate-400" type="button">
+<span class="material-symbols-outlined">countertops</span>
+</button>
+<button class="size-10 flex items-center justify-center rounded-md hover:bg-white dark:hover:bg-slate-700 text-slate-400" type="button">
+<span class="material-symbols-outlined">soap</span>
+</button>
+</div>
+</div>
+<div class="space-y-2">
+<p class="text-xs text-slate-500 mb-1 uppercase tracking-tighter">Color del Tema</p>
+<div class="flex gap-3 h-10 items-center">
+<button class="size-6 rounded-full bg-primary border-2 border-white dark:border-slate-800 ring-2 ring-primary" type="button"></button>
+<button class="size-6 rounded-full bg-emerald-500 border-2 border-white dark:border-slate-800" type="button"></button>
+<button class="size-6 rounded-full bg-amber-500 border-2 border-white dark:border-slate-800" type="button"></button>
+<button class="size-6 rounded-full bg-rose-500 border-2 border-white dark:border-slate-800" type="button"></button>
+<div class="size-8 w-px bg-slate-200 dark:bg-slate-700 mx-1"></div>
+<input class="size-8 p-0 border-0 bg-transparent cursor-pointer" type="color" value="#136dec"/>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="pt-6 border-t border-slate-100 dark:border-slate-800 flex justify-end gap-4">
+<button class="px-6 py-2.5 rounded-lg font-bold text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all" type="button">
+                                        Cancelar
+                                    </button>
+<button class="px-8 py-2.5 bg-primary text-white font-bold rounded-lg hover:bg-primary/90 transition-all shadow-lg shadow-primary/20" type="submit">
+                                        Guardar Servicio
+                                    </button>
+</div>
+</form>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

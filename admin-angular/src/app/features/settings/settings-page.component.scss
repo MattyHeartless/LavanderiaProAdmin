@@ -1,0 +1,24 @@
+.page {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+}
+
+h2 {
+  margin: 0;
+  font-size: 1.4rem;
+}
+
+p {
+  margin: 0.5rem 0 0;
+  color: #64748b;
+}
+
+.action-link {
+  display: inline-flex;
+  margin-top: 1rem;
+  color: #1d4ed8;
+  text-decoration: none;
+  font-weight: 600;
+}

@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html class="light" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Admin - Reportes y Estadísticas</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#136dec",
+                        "mint": "#2ed573",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#101822",
+                    },
+                    fontFamily: {
+                        "display": ["Inter"]
+                    },
+                    borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .chart-bar {
+            transition: height 1s ease-in-out;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen">
+<div class="flex h-screen overflow-hidden">
+<aside class="w-64 border-r border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 flex flex-col shrink-0">
+<div class="p-6 flex items-center gap-3">
+<div class="bg-primary size-10 rounded-lg flex items-center justify-center text-white shadow-lg shadow-primary/20">
+<span class="material-symbols-outlined">local_laundry_service</span>
+</div>
+<div>
+<h1 class="text-sm font-bold leading-none">LavaMaster</h1>
+<p class="text-[10px] text-slate-500 uppercase tracking-wider font-semibold mt-1">Admin Panel</p>
+</div>
+</div>
+<nav class="flex-1 px-4 py-4 space-y-1">
+<a class="flex items-center gap-3 px-3 py-2 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined text-[22px]">dashboard</span>
+<span class="text-sm font-medium">Tablero</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined text-[22px]">inventory_2</span>
+<span class="text-sm font-medium">Pedidos</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined text-[22px]">local_shipping</span>
+<span class="text-sm font-medium">Recolectores</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined text-[22px]">group</span>
+<span class="text-sm font-medium">Clientes</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 bg-primary/10 text-primary rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined text-[22px]" style="font-variation-settings: 'FILL' 1">bar_chart</span>
+<span class="text-sm font-medium">Reportes</span>
+</a>
+</nav>
+<div class="p-4 border-t border-slate-200 dark:border-slate-800">
+<a class="flex items-center gap-3 px-3 py-2 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined text-[22px]">settings</span>
+<span class="text-sm font-medium">Configuración</span>
+</a>
+</div>
+</aside>
+<main class="flex-1 flex flex-col overflow-hidden">
+<header class="h-16 border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 flex items-center justify-between px-8 shrink-0">
+<div class="flex items-center gap-4 w-96">
+<div class="relative w-full">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-[20px]">search</span>
+<input class="w-full bg-slate-100 dark:bg-slate-800 border-none rounded-lg pl-10 pr-4 py-2 text-sm focus:ring-2 focus:ring-primary transition-all" placeholder="Buscar reportes específicos..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="relative p-2 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-2 right-2.5 block h-2 w-2 rounded-full bg-red-500 ring-2 ring-white dark:ring-slate-900"></span>
+</button>
+<div class="h-8 w-[1px] bg-slate-200 dark:bg-slate-800 mx-2"></div>
+<div class="flex items-center gap-3 cursor-pointer group">
+<div class="text-right">
+<p class="text-sm font-semibold leading-none group-hover:text-primary transition-colors">Carlos Méndez</p>
+<p class="text-[11px] text-slate-500 font-medium mt-1">Super Administrador</p>
+</div>
+<div class="size-10 rounded-full bg-slate-200 dark:bg-slate-700 border-2 border-white dark:border-slate-800 overflow-hidden">
+<img alt="Admin profile" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCxfwSzPYqxYANW6D41yEMwEoXIdgWOBEGXtvg78mkOzYF1wRBhPkLsEdAu9FB5Wa2sDnTncQ1-NnDDgu5sEXng9sY0DrjVJZzsT7VMt9_Df9vFSpzg6C_xEza9G_e3IdRlBq1Su_0r007SoSYql-eU9socd09RTvon28nk5V1z44z4cxJy4dfVCXNhyyjs4xzfDxpgOhQ5RuIIuRzhGSUEmLizPo-5hCJsTN2eDIzF594tg_vOpsq_cOjdXvE08sASGZUGThDo1LM"/>
+</div>
+</div>
+</div>
+</header>
+<div class="flex-1 overflow-y-auto p-8 bg-background-light dark:bg-slate-950/20">
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
+<div>
+<h2 class="text-3xl font-black text-slate-900 dark:text-white tracking-tight">Reportes y Estadísticas</h2>
+<p class="text-slate-500 dark:text-slate-400 mt-1">Monitorea el rendimiento operativo y financiero de tu negocio.</p>
+</div>
+<div class="flex items-center gap-3">
+<div class="relative bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg px-4 py-2.5 flex items-center gap-2 shadow-sm">
+<span class="material-symbols-outlined text-slate-400 text-[20px]">calendar_today</span>
+<select class="bg-transparent border-none text-sm font-semibold p-0 focus:ring-0 cursor-pointer">
+<option>Últimos 30 días</option>
+<option>Últimos 7 días</option>
+<option>Este mes</option>
+<option>Año actual</option>
+</select>
+</div>
+<button class="bg-primary text-white px-5 py-2.5 rounded-lg text-sm font-semibold flex items-center gap-2 shadow-lg shadow-primary/20 hover:brightness-110 transition-all">
+<span class="material-symbols-outlined text-[20px]">download</span>
+                        Exportar PDF
+                    </button>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+<div class="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
+<div class="flex items-center justify-between mb-4">
+<div class="size-10 rounded-lg bg-mint/10 text-mint flex items-center justify-center">
+<span class="material-symbols-outlined">payments</span>
+</div>
+<div class="flex items-center gap-1 text-mint text-xs font-bold bg-mint/10 px-2 py-1 rounded-full">
+<span class="material-symbols-outlined text-[14px]">trending_up</span>
+                            12.5%
+                        </div>
+</div>
+<p class="text-slate-500 dark:text-slate-400 text-xs font-bold uppercase tracking-wider">Ingresos Totales</p>
+<h3 class="text-2xl font-black text-slate-900 dark:text-white mt-1">$42,850.00</h3>
+</div>
+<div class="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
+<div class="flex items-center justify-between mb-4">
+<div class="size-10 rounded-lg bg-primary/10 text-primary flex items-center justify-center">
+<span class="material-symbols-outlined">check_circle</span>
+</div>
+<div class="flex items-center gap-1 text-primary text-xs font-bold bg-primary/10 px-2 py-1 rounded-full">
+<span class="material-symbols-outlined text-[14px]">trending_up</span>
+                            8.2%
+                        </div>
+</div>
+<p class="text-slate-500 dark:text-slate-400 text-xs font-bold uppercase tracking-wider">Pedidos Completados</p>
+<h3 class="text-2xl font-black text-slate-900 dark:text-white mt-1">1,248</h3>
+</div>
+<div class="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
+<div class="flex items-center justify-between mb-4">
+<div class="size-10 rounded-lg bg-amber-500/10 text-amber-500 flex items-center justify-center">
+<span class="material-symbols-outlined">shopping_basket</span>
+</div>
+<div class="flex items-center gap-1 text-red-500 text-xs font-bold bg-red-500/10 px-2 py-1 rounded-full">
+<span class="material-symbols-outlined text-[14px]">trending_down</span>
+                            1.4%
+                        </div>
+</div>
+<p class="text-slate-500 dark:text-slate-400 text-xs font-bold uppercase tracking-wider">Ticket Promedio</p>
+<h3 class="text-2xl font-black text-slate-900 dark:text-white mt-1">$343.34</h3>
+</div>
+<div class="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
+<div class="flex items-center justify-between mb-4">
+<div class="size-10 rounded-lg bg-indigo-500/10 text-indigo-500 flex items-center justify-center">
+<span class="material-symbols-outlined">person_add</span>
+</div>
+<div class="flex items-center gap-1 text-mint text-xs font-bold bg-mint/10 px-2 py-1 rounded-full">
+<span class="material-symbols-outlined text-[14px]">trending_up</span>
+                            24%
+                        </div>
+</div>
+<p class="text-slate-500 dark:text-slate-400 text-xs font-bold uppercase tracking-wider">Nuevos Clientes</p>
+<h3 class="text-2xl font-black text-slate-900 dark:text-white mt-1">156</h3>
+</div>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+<div class="lg:col-span-2 bg-white dark:bg-slate-900 p-8 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
+<div class="flex items-center justify-between mb-8">
+<div>
+<h4 class="text-lg font-bold text-slate-900 dark:text-white">Ventas Mensuales</h4>
+<p class="text-sm text-slate-500">Comparativa de ingresos por mes (Ene - Jun 2023)</p>
+</div>
+<div class="flex gap-4">
+<div class="flex items-center gap-2">
+<span class="size-3 rounded-full bg-primary"></span>
+<span class="text-xs font-medium text-slate-500">Este año</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="size-3 rounded-full bg-slate-200"></span>
+<span class="text-xs font-medium text-slate-500">Año anterior</span>
+</div>
+</div>
+</div>
+<div class="h-64 relative">
+<div class="absolute inset-0 flex items-end justify-between gap-2 px-2">
+<svg class="absolute inset-0 w-full h-full" preserveAspectRatio="none" viewBox="0 0 100 100">
+<path d="M0,80 Q10,75 20,60 T40,40 T60,50 T80,20 T100,30" fill="none" stroke="#136dec" stroke-width="3" vector-effect="non-scaling-stroke"></path>
+<path d="M0,80 Q10,75 20,60 T40,40 T60,50 T80,20 T100,30 V100 H0 Z" fill="url(#grad1)" opacity="0.1"></path>
+<defs>
+<linearGradient id="grad1" x1="0%" x2="0%" y1="0%" y2="100%">
+<stop offset="0%" style="stop-color:#136dec;stop-opacity:1"></stop>
+<stop offset="100%" style="stop-color:#136dec;stop-opacity:0"></stop>
+</linearGradient>
+</defs>
+</svg>
+<div class="absolute bottom-[-24px] w-full flex justify-between text-[10px] font-bold text-slate-400 uppercase">
+<span>Ene</span><span>Feb</span><span>Mar</span><span>Abr</span><span>May</span><span>Jun</span>
+</div>
+</div>
+</div>
+</div>
+<div class="bg-white dark:bg-slate-900 p-8 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
+<h4 class="text-lg font-bold text-slate-900 dark:text-white mb-6">Servicios más Solicitados</h4>
+<div class="space-y-6">
+<div>
+<div class="flex justify-between items-center mb-2">
+<span class="text-sm font-semibold text-slate-700 dark:text-slate-300">Lavado por kilo</span>
+<span class="text-sm font-bold text-primary">65%</span>
+</div>
+<div class="w-full bg-slate-100 dark:bg-slate-800 h-2.5 rounded-full overflow-hidden">
+<div class="bg-primary h-full w-[65%] rounded-full"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between items-center mb-2">
+<span class="text-sm font-semibold text-slate-700 dark:text-slate-300">Planchado</span>
+<span class="text-sm font-bold text-mint">20%</span>
+</div>
+<div class="w-full bg-slate-100 dark:bg-slate-800 h-2.5 rounded-full overflow-hidden">
+<div class="bg-mint h-full w-[20%] rounded-full"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between items-center mb-2">
+<span class="text-sm font-semibold text-slate-700 dark:text-slate-300">Tintorería</span>
+<span class="text-sm font-bold text-indigo-500">10%</span>
+</div>
+<div class="w-full bg-slate-100 dark:bg-slate-800 h-2.5 rounded-full overflow-hidden">
+<div class="bg-indigo-500 h-full w-[10%] rounded-full"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between items-center mb-2">
+<span class="text-sm font-semibold text-slate-700 dark:text-slate-300">Otros</span>
+<span class="text-sm font-bold text-slate-400">5%</span>
+</div>
+<div class="w-full bg-slate-100 dark:bg-slate-800 h-2.5 rounded-full overflow-hidden">
+<div class="bg-slate-300 dark:bg-slate-700 h-full w-[5%] rounded-full"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="mt-8 bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
+<div class="p-6 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
+<h4 class="text-lg font-bold text-slate-900 dark:text-white">Top Recolectores</h4>
+<a class="text-primary text-sm font-bold hover:underline" href="#">Ver todos</a>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left">
+<thead>
+<tr class="bg-slate-50 dark:bg-slate-800/50 text-slate-500 text-[11px] font-bold uppercase tracking-wider">
+<th class="px-6 py-4">Recolector</th>
+<th class="px-6 py-4">Entregas Totales</th>
+<th class="px-6 py-4">Velocidad Promedio</th>
+<th class="px-6 py-4">Calificación</th>
+<th class="px-6 py-4 text-right">Rendimiento</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-100 dark:divide-slate-800">
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex items-center gap-3">
+<div class="size-8 rounded-full overflow-hidden border border-slate-200">
+<img alt="R1" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBxMBtAxD0KY2Bg77v7WNcD-Dg4i5l7x1OykEQSmGvUbsbyOSye1GJRjSbyql2GTf67r9RkVU7Vh-_HVloSe3J_HcU1OpZynz_fFzuW00kcId_1c7X86N4Dtn31kW7do5DydgduywyJ8ZmPHDC1DNQcdg8lNQFgm3TdRqo__PSyagn6J2BEopUHgSxHF3e2txSz2mDoHuhJy39NChTF7O5Do4eV-NCCt9O-Wxodc7ZdbjXOnQUCR5i0S2mfyfw9GvLnL9KFX7cEE9A"/>
+</div>
+<span class="text-sm font-bold text-slate-900 dark:text-white">Mateo Rodríguez</span>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-sm font-medium">342</td>
+<td class="px-6 py-4 whitespace-nowrap text-sm text-slate-600 dark:text-slate-400">42 min</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex items-center gap-1 text-amber-500">
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1">star</span>
+<span class="text-sm font-bold">4.9</span>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-right">
+<span class="px-2.5 py-1 bg-mint/10 text-mint text-[10px] font-black rounded-lg uppercase tracking-tight">Excelente</span>
+</td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex items-center gap-3">
+<div class="size-8 rounded-full overflow-hidden border border-slate-200">
+<img alt="R2" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBxgoLb2JYPodkz9G1SUktUyEN6hW08IC02LbNFYLYF-lWudw9BnHRyIGUQf48wx4oC9-Y256Q7pqng7j_rRiAmoUvGy2FcrNleBsT6NPhoy5-ZWlmydJYnxuP28uAnHMosrZUJBMFweVnJsty_h1rX7xtVaerHYY9jpRGqoDjxObhGEe5oRJTlXZtCo2yY3EZrIpVOTDD3FqVRgDvyqvjTv8vYXPGuv8PuhLR3k8Foz-FCA6ZLj_dvQ5z-Gsj4XWX_NWtZM2Pkm50"/>
+</div>
+<span class="text-sm font-bold text-slate-900 dark:text-white">Lucía Ferrán</span>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-sm font-medium">289</td>
+<td class="px-6 py-4 whitespace-nowrap text-sm text-slate-600 dark:text-slate-400">38 min</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex items-center gap-1 text-amber-500">
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1">star</span>
+<span class="text-sm font-bold">4.8</span>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-right">
+<span class="px-2.5 py-1 bg-mint/10 text-mint text-[10px] font-black rounded-lg uppercase tracking-tight">Excelente</span>
+</td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex items-center gap-3">
+<div class="size-8 rounded-full overflow-hidden border border-slate-200">
+<img alt="R3" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBkpz0SoB_uc1x8KBvsLxzhiyxLQakuOqLTH8Ir0cifncTlAVWVmSQtWNQLEftL9JKP-3JOWDwA7PpArsMOTRy2IlZLLXdCoWpfr-tw-2obEitiP9bD7sNHPRBfjW56kOOSVPEa9_v9GMBj1yxrZsLHxaLuZq58LfbJLZ3tCDIJv2xyR_p9wzWtx6opsFuDu99SBzSqq1wKH4dakDOw-4Qfm_1zBAa1WHqEFZtMlx1X6fMGIu-axwvOozzUBDjjhmy6h37dojI3Ay4"/>
+</div>
+<span class="text-sm font-bold text-slate-900 dark:text-white">Diego Morales</span>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-sm font-medium">215</td>
+<td class="px-6 py-4 whitespace-nowrap text-sm text-slate-600 dark:text-slate-400">55 min</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex items-center gap-1 text-amber-500">
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1">star</span>
+<span class="text-sm font-bold">4.5</span>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-right">
+<span class="px-2.5 py-1 bg-primary/10 text-primary text-[10px] font-black rounded-lg uppercase tracking-tight">Sobresaliente</span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</main>
+</div>
+
+</body></html>

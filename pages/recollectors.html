@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html class="light" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Admin - Gestión de Recolectores</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#136dec",
+                        "mint": "#2ed573",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#101822",
+                    },
+                    fontFamily: {
+                        "display": ["Inter"]
+                    },
+                    borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .map-grid {
+            background-image: radial-gradient(#cbd5e1 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen">
+<div class="flex h-screen overflow-hidden">
+<aside class="w-64 border-r border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 flex flex-col shrink-0">
+<div class="p-6 flex items-center gap-3">
+<div class="bg-primary size-10 rounded-lg flex items-center justify-center text-white shadow-lg shadow-primary/20">
+<span class="material-symbols-outlined">local_laundry_service</span>
+</div>
+<div>
+<h1 class="text-sm font-bold leading-none">LavaMaster</h1>
+<p class="text-[10px] text-slate-500 uppercase tracking-wider font-semibold mt-1">Admin Panel</p>
+</div>
+</div>
+<nav class="flex-1 px-4 py-4 space-y-1">
+<a class="flex items-center gap-3 px-3 py-2 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined text-[22px]">dashboard</span>
+<span class="text-sm font-medium">Tablero</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined text-[22px]">inventory_2</span>
+<span class="text-sm font-medium">Pedidos</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 bg-primary/10 text-primary rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined text-[22px]" style="font-variation-settings: 'FILL' 1">local_shipping</span>
+<span class="text-sm font-medium">Recolectores</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined text-[22px]">group</span>
+<span class="text-sm font-medium">Clientes</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined text-[22px]">bar_chart</span>
+<span class="text-sm font-medium">Reportes</span>
+</a>
+</nav>
+<div class="p-4 border-t border-slate-200 dark:border-slate-800">
+<a class="flex items-center gap-3 px-3 py-2 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined text-[22px]">settings</span>
+<span class="text-sm font-medium">Configuración</span>
+</a>
+</div>
+</aside>
+<main class="flex-1 flex flex-col overflow-hidden">
+<header class="h-16 border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 flex items-center justify-between px-8 shrink-0">
+<div class="flex items-center gap-4 w-96">
+<div class="relative w-full">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-[20px]">search</span>
+<input class="w-full bg-slate-100 dark:bg-slate-800 border-none rounded-lg pl-10 pr-4 py-2 text-sm focus:ring-2 focus:ring-primary transition-all" placeholder="Buscar recolector por nombre o ID..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="relative p-2 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-2 right-2.5 block h-2 w-2 rounded-full bg-red-500 ring-2 ring-white dark:ring-slate-900"></span>
+</button>
+<div class="h-8 w-[1px] bg-slate-200 dark:bg-slate-800 mx-2"></div>
+<div class="flex items-center gap-3 cursor-pointer group">
+<div class="text-right">
+<p class="text-sm font-semibold leading-none group-hover:text-primary transition-colors">Carlos Méndez</p>
+<p class="text-[11px] text-slate-500 font-medium mt-1">Super Administrador</p>
+</div>
+<div class="size-10 rounded-full bg-slate-200 dark:bg-slate-700 border-2 border-white dark:border-slate-800 overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Admin user profile picture" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCxfwSzPYqxYANW6D41yEMwEoXIdgWOBEGXtvg78mkOzYF1wRBhPkLsEdAu9FB5Wa2sDnTncQ1-NnDDgu5sEXng9sY0DrjVJZzsT7VMt9_Df9vFSpzg6C_xEza9G_e3IdRlBq1Su_0r007SoSYql-eU9socd09RTvon28nk5V1z44z4cxJy4dfVCXNhyyjs4xzfDxpgOhQ5RuIIuRzhGSUEmLizPo-5hCJsTN2eDIzF594tg_vOpsq_cOjdXvE08sASGZUGThDo1LM"/>
+</div>
+</div>
+</div>
+</header>
+<div class="flex-1 overflow-y-auto p-8">
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
+<div>
+<h2 class="text-3xl font-black text-slate-900 dark:text-white tracking-tight">Gestión de Recolectores</h2>
+<p class="text-slate-500 dark:text-slate-400 mt-1">Administra el personal de entrega y monitorea su actividad en tiempo real.</p>
+</div>
+<div class="flex items-center gap-3">
+<button class="bg-primary text-white px-5 py-2.5 rounded-lg text-sm font-semibold flex items-center gap-2 shadow-lg shadow-primary/20 hover:brightness-110 transition-all">
+<span class="material-symbols-outlined text-[20px]">person_add</span>
+                            Nuevo Recolector
+                        </button>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-10">
+<div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+<div class="p-5">
+<div class="flex justify-between items-start mb-4">
+<div class="flex items-center gap-3">
+<div class="size-12 rounded-full border-2 border-white dark:border-slate-800 overflow-hidden shadow-sm">
+<img alt="Driver" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBxMBtAxD0KY2Bg77v7WNcD-Dg4i5l7x1OykEQSmGvUbsbyOSye1GJRjSbyql2GTf67r9RkVU7Vh-_HVloSe3J_HcU1OpZynz_fFzuW00kcId_1c7X86N4Dtn31kW7do5DydgduywyJ8ZmPHDC1DNQcdg8lNQFgm3TdRqo__PSyagn6J2BEopUHgSxHF3e2txSz2mDoHuhJy39NChTF7O5Do4eV-NCCt9O-Wxodc7ZdbjXOnQUCR5i0S2mfyfw9GvLnL9KFX7cEE9A"/>
+</div>
+<div>
+<h4 class="text-sm font-bold text-slate-900 dark:text-white">Roberto Sánchez</h4>
+<div class="flex items-center gap-1 text-slate-500">
+<span class="material-symbols-outlined text-[14px]">electric_moped</span>
+<span class="text-[11px] font-medium uppercase tracking-wider">Motocicleta</span>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-600 dark:bg-emerald-900/20 dark:text-emerald-400 text-[10px] font-bold uppercase border border-emerald-100 dark:border-emerald-800">
+<span class="size-1.5 rounded-full bg-emerald-500"></span>
+                                    En línea
+                                </div>
+</div>
+<div class="flex items-center justify-between py-3 border-y border-slate-100 dark:border-slate-800">
+<div class="text-center flex-1">
+<p class="text-xs text-slate-500 mb-0.5">Pedidos Hoy</p>
+<p class="text-sm font-bold text-slate-900 dark:text-white">12</p>
+</div>
+<div class="w-px h-6 bg-slate-100 dark:border-slate-800"></div>
+<div class="text-center flex-1">
+<p class="text-xs text-slate-500 mb-0.5">Activos</p>
+<p class="text-sm font-bold text-primary">2</p>
+</div>
+</div>
+</div>
+<div class="h-24 bg-slate-100 dark:bg-slate-800 relative overflow-hidden group">
+<div class="absolute inset-0 map-grid opacity-50"></div>
+<div class="absolute inset-0 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary/40 text-4xl">location_on</span>
+</div>
+<div class="absolute bottom-2 left-2 right-2 px-2 py-1 bg-white/90 dark:bg-slate-900/90 backdrop-blur rounded text-[10px] font-medium flex items-center gap-1">
+<span class="material-symbols-outlined text-[12px] text-slate-500">near_me</span>
+                                Av. Reforma, CDMX
+                            </div>
+</div>
+</div>
+<div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+<div class="p-5">
+<div class="flex justify-between items-start mb-4">
+<div class="flex items-center gap-3">
+<div class="size-12 rounded-full border-2 border-white dark:border-slate-800 overflow-hidden shadow-sm">
+<img alt="Driver" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBxgoLb2JYPodkz9G1SUktUyEN6hW08IC02LbNFYLYF-lWudw9BnHRyIGUQf48wx4oC9-Y256Q7pqng7j_rRiAmoUvGy2FcrNleBsT6NPhoy5-ZWlmydJYnxuP28uAnHMosrZUJBMFweVnJsty_h1rX7xtVaerHYY9jpRGqoDjxObhGEe5oRJTlXZtCo2yY3EZrIpVOTDD3FqVRgDvyqvjTv8vYXPGuv8PuhLR3k8Foz-FCA6ZLj_dvQ5z-Gsj4XWX_NWtZM2Pkm50"/>
+</div>
+<div>
+<h4 class="text-sm font-bold text-slate-900 dark:text-white">Marcos Díaz</h4>
+<div class="flex items-center gap-1 text-slate-500">
+<span class="material-symbols-outlined text-[14px]">local_shipping</span>
+<span class="text-[11px] font-medium uppercase tracking-wider">Van</span>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-blue-50 text-blue-600 dark:bg-blue-900/20 dark:text-blue-400 text-[10px] font-bold uppercase border border-blue-100 dark:border-blue-800">
+<span class="size-1.5 rounded-full bg-blue-500 animate-pulse"></span>
+                                    En ruta
+                                </div>
+</div>
+<div class="flex items-center justify-between py-3 border-y border-slate-100 dark:border-slate-800">
+<div class="text-center flex-1">
+<p class="text-xs text-slate-500 mb-0.5">Pedidos Hoy</p>
+<p class="text-sm font-bold text-slate-900 dark:text-white">8</p>
+</div>
+<div class="w-px h-6 bg-slate-100 dark:border-slate-800"></div>
+<div class="text-center flex-1">
+<p class="text-xs text-slate-500 mb-0.5">Activos</p>
+<p class="text-sm font-bold text-primary">5</p>
+</div>
+</div>
+</div>
+<div class="h-24 bg-slate-100 dark:bg-slate-800 relative overflow-hidden">
+<div class="absolute inset-0 map-grid opacity-50"></div>
+<div class="absolute inset-0 flex items-center justify-center">
+<span class="material-symbols-outlined text-blue-500/40 text-4xl">location_on</span>
+</div>
+<div class="absolute bottom-2 left-2 right-2 px-2 py-1 bg-white/90 dark:bg-slate-900/90 backdrop-blur rounded text-[10px] font-medium flex items-center gap-1">
+<span class="material-symbols-outlined text-[12px] text-slate-500">near_me</span>
+                                Polanco, CDMX
+                            </div>
+</div>
+</div>
+<div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow grayscale">
+<div class="p-5">
+<div class="flex justify-between items-start mb-4">
+<div class="flex items-center gap-3">
+<div class="size-12 rounded-full border-2 border-white dark:border-slate-800 overflow-hidden shadow-sm opacity-60">
+<img alt="Driver" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBkpz0SoB_uc1x8KBvsLxzhiyxLQakuOqLTH8Ir0cifncTlAVWVmSQtWNQLEftL9JKP-3JOWDwA7PpArsMOTRy2IlZLLXdCoWpfr-tw-2obEitiP9bD7sNHPRBfjW56kOOSVPEa9_v9GMBj1yxrZsLHxaLuZq58LfbJLZ3tCDIJv2xyR_p9wzWtx6opsFuDu99SBzSqq1wKH4dakDOw-4Qfm_1zBAa1WHqEFZtMlx1X6fMGIu-axwvOozzUBDjjhmy6h37dojI3Ay4"/>
+</div>
+<div>
+<h4 class="text-sm font-bold text-slate-900 dark:text-white">Luis Méndez</h4>
+<div class="flex items-center gap-1 text-slate-500">
+<span class="material-symbols-outlined text-[14px]">electric_moped</span>
+<span class="text-[11px] font-medium uppercase tracking-wider">Motocicleta</span>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-slate-100 text-slate-500 dark:bg-slate-800 dark:text-slate-400 text-[10px] font-bold uppercase border border-slate-200 dark:border-slate-700">
+                                    Desconectado
+                                </div>
+</div>
+<div class="flex items-center justify-between py-3 border-y border-slate-100 dark:border-slate-800">
+<div class="text-center flex-1">
+<p class="text-xs text-slate-500 mb-0.5">Pedidos Hoy</p>
+<p class="text-sm font-bold text-slate-900 dark:text-white">0</p>
+</div>
+<div class="w-px h-6 bg-slate-100 dark:border-slate-800"></div>
+<div class="text-center flex-1">
+<p class="text-xs text-slate-500 mb-0.5">Activos</p>
+<p class="text-sm font-bold text-primary">0</p>
+</div>
+</div>
+</div>
+<div class="h-24 bg-slate-50 dark:bg-slate-800/50 flex items-center justify-center">
+<p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest italic">Sin ubicación activa</p>
+</div>
+</div>
+<div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+<div class="p-5">
+<div class="flex justify-between items-start mb-4">
+<div class="flex items-center gap-3">
+<div class="size-12 rounded-full border-2 border-white dark:border-slate-800 overflow-hidden shadow-sm">
+<img alt="Driver" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB1ZHja3VeIgd3sYpEFWzlic0LZ6pIHbQtZd2KaQgisecUU2IWClkbw8OT69ksPKeL-rXlp1QmveOroa4Wbpdndl03becN58h42uQ1feiZRip8OHeUCZpFEQ-LS44i4GEIaX75RwRQr4EfPkEHQ2MvPPQ4abtIM6Sm26y9nBmsz3HOJzBvkmfiSZyCjLfOCB32QFdYGjLqLGD6LSapj6YntBRURx-GVWpnxW47mGeQLDOSB_HXABmckK36WbV7pr5AGBsoS9z_Rpw8"/>
+</div>
+<div>
+<h4 class="text-sm font-bold text-slate-900 dark:text-white">Ana Martínez</h4>
+<div class="flex items-center gap-1 text-slate-500">
+<span class="material-symbols-outlined text-[14px]">electric_moped</span>
+<span class="text-[11px] font-medium uppercase tracking-wider">Motocicleta</span>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-600 dark:bg-emerald-900/20 dark:text-emerald-400 text-[10px] font-bold uppercase border border-emerald-100 dark:border-emerald-800">
+<span class="size-1.5 rounded-full bg-emerald-500"></span>
+                                    En línea
+                                </div>
+</div>
+<div class="flex items-center justify-between py-3 border-y border-slate-100 dark:border-slate-800">
+<div class="text-center flex-1">
+<p class="text-xs text-slate-500 mb-0.5">Pedidos Hoy</p>
+<p class="text-sm font-bold text-slate-900 dark:text-white">15</p>
+</div>
+<div class="w-px h-6 bg-slate-100 dark:border-slate-800"></div>
+<div class="text-center flex-1">
+<p class="text-xs text-slate-500 mb-0.5">Activos</p>
+<p class="text-sm font-bold text-primary">1</p>
+</div>
+</div>
+</div>
+<div class="h-24 bg-slate-100 dark:bg-slate-800 relative overflow-hidden">
+<div class="absolute inset-0 map-grid opacity-50"></div>
+<div class="absolute inset-0 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary/40 text-4xl">location_on</span>
+</div>
+<div class="absolute bottom-2 left-2 right-2 px-2 py-1 bg-white/90 dark:bg-slate-900/90 backdrop-blur rounded text-[10px] font-medium flex items-center gap-1">
+<span class="material-symbols-outlined text-[12px] text-slate-500">near_me</span>
+                                Santa Fe, CDMX
+                            </div>
+</div>
+</div>
+</div>
+<div class="mb-6">
+<h3 class="text-lg font-bold text-slate-900 dark:text-white">Historial de Entregas por Recolector</h3>
+<p class="text-sm text-slate-500">Últimos movimientos y desempeño de la flota.</p>
+</div>
+<div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl overflow-hidden shadow-sm">
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-slate-50 dark:bg-slate-800/50 border-b border-slate-200 dark:border-slate-800">
+<th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Recolector</th>
+<th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">ID Orden</th>
+<th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Destino</th>
+<th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Hora Entrega</th>
+<th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Calificación</th>
+<th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider text-right">Acciones</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-100 dark:divide-slate-800">
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex items-center gap-3">
+<div class="size-8 rounded-full bg-slate-100 overflow-hidden">
+<img alt="" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB5rYUyDuC4W6arww89nQGIAgYIqfydOnC4ysM80yDq6ctW7mMmmRsqjPDVOVryZLRUxJju3ettMKh5OytE4ps22ZPz4YVGil-6ezhIRGknb4Tbj1mBVtfVLDx7wpkKuD0c8z6rcjYdUlu_hB8F20TRHtToDyx7YohtvtppBFXKxtbzJ_ydG4WaUHgQG1mJ5TPqU2p4kgEZHm0cbfP2YFMax06IPzrZCJHekEayOWYBALDQmJwQ4vBhQvDwInaXg6QKn36cITgoXpg"/>
+</div>
+<span class="text-sm font-medium text-slate-700 dark:text-slate-300">Roberto Sánchez</span>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<span class="font-bold text-slate-900 dark:text-white">#ORD-5290</span>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<span class="text-sm text-slate-600 dark:text-slate-400">Condesa, CDMX</span>
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-sm">
+<p class="font-medium text-slate-900 dark:text-white">Hace 15 min</p>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex items-center text-amber-400">
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1">star</span>
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1">star</span>
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1">star</span>
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1">star</span>
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1">star</span>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-right">
+<button class="p-2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
+<span class="material-symbols-outlined">visibility</span>
+</button>
+</td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex items-center gap-3">
+<div class="size-8 rounded-full bg-slate-100 overflow-hidden">
+<img alt="" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBTL_Vt2u_Gmrdhd7g32GBaoq_Do0ogjL3x3TQNWGEm6jBHDkAlSCnQkX8_zm4gP-UUF2t0iMB-tb0uWsMuVPyNC45xVh_stYq9OXc2Bljo-etgL4KW3s1il0suik64ibi6zTtyqxMB3tGdqN7_MThYN9JNMn1JOJ-p8Q7Kxp1Q_moE7SpCLQhgjHpZP_0aDtf8fhebrFZUnRG_n6uu3MnbQteUKjqlob4kuLBJwm57YeNKwEZ1HEXuSYpiHB_V07LkL_-H_BCiHRs"/>
+</div>
+<span class="text-sm font-medium text-slate-700 dark:text-slate-300">Ana Martínez</span>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<span class="font-bold text-slate-900 dark:text-white">#ORD-5285</span>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<span class="text-sm text-slate-600 dark:text-slate-400">Roma Norte, CDMX</span>
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-sm">
+<p class="font-medium text-slate-900 dark:text-white">Hace 42 min</p>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex items-center text-amber-400">
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1">star</span>
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1">star</span>
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1">star</span>
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1">star</span>
+<span class="material-symbols-outlined text-[18px]">star</span>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-right">
+<button class="p-2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
+<span class="material-symbols-outlined">visibility</span>
+</button>
+</td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex items-center gap-3">
+<div class="size-8 rounded-full bg-slate-100 overflow-hidden">
+<img alt="" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA0GhJGWD_TPf1ieNtebIVPoVjtrmdvUKzh_fQ8ykoeZEjKMFSHrrGmxJ3da7GDc9xiSJ3BHnHRevnfe2Yjoo2tygi88g8hym1Ldd90_e1mwxzpHli9FaSjaqyK8s1lvfsO9Svtf9K0EtRtKfoPv3C5Q_D-Rq3YJYS_Z7AFlvZT9Jz4iUC3OXo0QGmdGHWeQI3759xlbTil3Sb9QXSAnuvgVGOXTLn8VWGc4-c9YdHeqXojLAZQHitnmXvW_rb2SKqOeQv7h8Zclrg"/>
+</div>
+<span class="text-sm font-medium text-slate-700 dark:text-slate-300">Marcos Díaz</span>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<span class="font-bold text-slate-900 dark:text-white">#ORD-5280</span>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<span class="text-sm text-slate-600 dark:text-slate-400">Nápoles, CDMX</span>
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-sm">
+<p class="font-medium text-slate-900 dark:text-white">Hace 1 h</p>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex items-center text-amber-400">
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1">star</span>
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1">star</span>
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1">star</span>
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1">star_half</span>
+<span class="material-symbols-outlined text-[18px]">star</span>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-right">
+<button class="p-2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
+<span class="material-symbols-outlined">visibility</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="px-6 py-4 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between bg-slate-50/50 dark:bg-slate-800/30">
+<p class="text-xs font-medium text-slate-500">Mostrando 1 a 3 de 42 entradas</p>
+<div class="flex gap-2">
+<button class="size-8 flex items-center justify-center rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-400 hover:bg-slate-50 transition-colors">
+<span class="material-symbols-outlined text-[18px]">chevron_left</span>
+</button>
+<button class="size-8 flex items-center justify-center rounded-lg border border-primary bg-primary text-white text-xs font-bold">1</button>
+<button class="size-8 flex items-center justify-center rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-400 text-xs font-bold hover:bg-slate-50 transition-colors">2</button>
+<button class="size-8 flex items-center justify-center rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-400 hover:bg-slate-50 transition-colors">
+<span class="material-symbols-outlined text-[18px]">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+
+</body></html>

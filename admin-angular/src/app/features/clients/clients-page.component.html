@@ -1,0 +1,226 @@
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
+<div>
+<h2 class="text-3xl font-black text-slate-900 dark:text-white tracking-tight">Clientes</h2>
+<p class="text-slate-500 dark:text-slate-400 mt-1">Administra los perfiles de clientes, saldos y su historial de servicios.</p>
+</div>
+<div class="flex items-center gap-3">
+<button class="bg-primary text-white px-5 py-2.5 rounded-lg text-sm font-semibold flex items-center gap-2 shadow-lg shadow-primary/20 hover:brightness-110 transition-all">
+<span class="material-symbols-outlined text-[20px]">person_add</span>
+                        Nuevo Cliente
+                    </button>
+</div>
+</div>
+<div class="flex items-center gap-2 mb-6">
+<button class="px-4 py-2 bg-white dark:bg-slate-900 border border-primary text-primary text-sm font-bold rounded-full shadow-sm">Todos</button>
+<button class="px-4 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 text-sm font-medium rounded-full hover:border-mint transition-colors flex items-center gap-2">
+<span class="size-2 rounded-full bg-mint"></span>
+                    Activos
+                </button>
+<button class="px-4 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 text-sm font-medium rounded-full hover:border-primary transition-colors flex items-center gap-2">
+<span class="size-2 rounded-full bg-primary"></span>
+                    Nuevos
+                </button>
+<button class="px-4 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 text-sm font-medium rounded-full hover:border-slate-400 transition-colors flex items-center gap-2">
+<span class="size-2 rounded-full bg-slate-300"></span>
+                    Inactivos
+                </button>
+</div>
+<div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl overflow-hidden shadow-sm">
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-slate-50 dark:bg-slate-800/50 border-b border-slate-200 dark:border-slate-800">
+<th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Cliente</th>
+<th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Email</th>
+<th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Teléfono</th>
+<th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider text-center">Pedidos Totales</th>
+<th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Último Pedido</th>
+<th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Saldo/Créditos</th>
+<th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider text-right">Acciones</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-100 dark:divide-slate-800">
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex items-center gap-3">
+<div class="size-9 rounded-full bg-slate-100 border border-slate-200 dark:border-slate-700 overflow-hidden">
+<img alt="Elena Torres" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBxMBtAxD0KY2Bg77v7WNcD-Dg4i5l7x1OykEQSmGvUbsbyOSye1GJRjSbyql2GTf67r9RkVU7Vh-_HVloSe3J_HcU1OpZynz_fFzuW00kcId_1c7X86N4Dtn31kW7do5DydgduywyJ8ZmPHDC1DNQcdg8lNQFgm3TdRqo__PSyagn6J2BEopUHgSxHF3e2txSz2mDoHuhJy39NChTF7O5Do4eV-NCCt9O-Wxodc7ZdbjXOnQUCR5i0S2mfyfw9GvLnL9KFX7cEE9A"/>
+</div>
+<div>
+<p class="text-sm font-bold text-slate-900 dark:text-white">Elena Torres</p>
+<p class="text-[11px] text-slate-500 font-medium">ID: #CL-8821</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<span class="text-sm text-slate-600 dark:text-slate-400">elena.t&#64;email.com</span>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<span class="text-sm text-slate-600 dark:text-slate-400">+52 55 1234 5678</span>
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-center">
+<span class="inline-flex items-center justify-center px-2.5 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs font-bold">24</span>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="text-sm">
+<p class="font-medium text-slate-900 dark:text-white">12 Oct, 2023</p>
+<p class="text-[11px] text-mint font-bold uppercase">Entregado</p>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<span class="text-sm font-bold text-slate-900 dark:text-white">$450.00 MXN</span>
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-right">
+<div class="flex items-center justify-end gap-1">
+<button class="p-2 text-slate-400 hover:text-primary transition-colors" title="Ver perfil">
+<span class="material-symbols-outlined text-[20px]">visibility</span>
+</button>
+<button class="p-2 text-slate-400 hover:text-primary transition-colors" title="Editar">
+<span class="material-symbols-outlined text-[20px]">edit</span>
+</button>
+</div>
+</td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex items-center gap-3">
+<div class="size-9 rounded-full bg-slate-100 border border-slate-200 dark:border-slate-700 overflow-hidden">
+<img alt="Ricardo Palma" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBxgoLb2JYPodkz9G1SUktUyEN6hW08IC02LbNFYLYF-lWudw9BnHRyIGUQf48wx4oC9-Y256Q7pqng7j_rRiAmoUvGy2FcrNleBsT6NPhoy5-ZWlmydJYnxuP28uAnHMosrZUJBMFweVnJsty_h1rX7xtVaerHYY9jpRGqoDjxObhGEe5oRJTlXZtCo2yY3EZrIpVOTDD3FqVRgDvyqvjTv8vYXPGuv8PuhLR3k8Foz-FCA6ZLj_dvQ5z-Gsj4XWX_NWtZM2Pkm50"/>
+</div>
+<div>
+<p class="text-sm font-bold text-slate-900 dark:text-white">Ricardo Palma</p>
+<p class="text-[11px] text-slate-500 font-medium">ID: #CL-8815</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<span class="text-sm text-slate-600 dark:text-slate-400">rpalma_90&#64;domain.mx</span>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<span class="text-sm text-slate-600 dark:text-slate-400">+52 55 9876 5432</span>
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-center">
+<span class="inline-flex items-center justify-center px-2.5 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs font-bold">12</span>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="text-sm">
+<p class="font-medium text-slate-900 dark:text-white">08 Oct, 2023</p>
+<p class="text-[11px] text-primary font-bold uppercase">En Proceso</p>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<span class="text-sm font-bold text-red-500">-$120.50 MXN</span>
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-right">
+<div class="flex items-center justify-end gap-1">
+<button class="p-2 text-slate-400 hover:text-primary transition-colors" title="Ver perfil">
+<span class="material-symbols-outlined text-[20px]">visibility</span>
+</button>
+<button class="p-2 text-slate-400 hover:text-primary transition-colors" title="Editar">
+<span class="material-symbols-outlined text-[20px]">edit</span>
+</button>
+</div>
+</td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex items-center gap-3">
+<div class="size-9 rounded-full bg-slate-100 border border-slate-200 dark:border-slate-700 overflow-hidden">
+<img alt="Beatriz Luna" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBkpz0SoB_uc1x8KBvsLxzhiyxLQakuOqLTH8Ir0cifncTlAVWVmSQtWNQLEftL9JKP-3JOWDwA7PpArsMOTRy2IlZLLXdCoWpfr-tw-2obEitiP9bD7sNHPRBfjW56kOOSVPEa9_v9GMBj1yxrZsLHxaLuZq58LfbJLZ3tCDIJv2xyR_p9wzWtx6opsFuDu99SBzSqq1wKH4dakDOw-4Qfm_1zBAa1WHqEFZtMlx1X6fMGIu-axwvOozzUBDjjhmy6h37dojI3Ay4"/>
+</div>
+<div>
+<p class="text-sm font-bold text-slate-900 dark:text-white">Beatriz Luna</p>
+<p class="text-[11px] text-slate-500 font-medium">ID: #CL-8799</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<span class="text-sm text-slate-600 dark:text-slate-400">beatriz.luna&#64;gmail.com</span>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<span class="text-sm text-slate-600 dark:text-slate-400">+52 55 4545 6767</span>
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-center">
+<span class="inline-flex items-center justify-center px-2.5 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs font-bold">5</span>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="text-sm">
+<p class="font-medium text-slate-900 dark:text-white">25 Sep, 2023</p>
+<p class="text-[11px] text-slate-400 font-bold uppercase">Inactivo</p>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<span class="text-sm font-bold text-slate-900 dark:text-white">$0.00 MXN</span>
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-right">
+<div class="flex items-center justify-end gap-1">
+<button class="p-2 text-slate-400 hover:text-primary transition-colors" title="Ver perfil">
+<span class="material-symbols-outlined text-[20px]">visibility</span>
+</button>
+<button class="p-2 text-slate-400 hover:text-primary transition-colors" title="Editar">
+<span class="material-symbols-outlined text-[20px]">edit</span>
+</button>
+</div>
+</td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex items-center gap-3">
+<div class="size-9 rounded-full bg-slate-100 border border-slate-200 dark:border-slate-700 overflow-hidden">
+<img alt="Julian Casablancas" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB1ZHja3VeIgd3sYpEFWzlic0LZ6pIHbQtZd2KaQgisecUU2IWClkbw8OT69ksPKeL-rXlp1QmveOroa4Wbpdndl03becN58h42uQ1feiZRip8OHeUCZpFEQ-LS44i4GEIaX75RwRQr4EfPkEHQ2MvPPQ4abtIM6Sm26y9nBmsz3HOJzBvkmfiSZyCjLfOCB32QFdYGjLqLGD6LSapj6YntBRURx-GVWpnxW47mGeQLDOSB_HXABmckK36WbV7pr5AGBsoS9z_Rpw8"/>
+</div>
+<div>
+<p class="text-sm font-bold text-slate-900 dark:text-white">Julian Casablancas</p>
+<p class="text-[11px] text-slate-500 font-medium">ID: #CL-8802</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<span class="text-sm text-slate-600 dark:text-slate-400">julian&#64;thestrokes.com</span>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<span class="text-sm text-slate-600 dark:text-slate-400">+52 55 3322 1100</span>
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-center">
+<span class="inline-flex items-center justify-center px-2.5 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs font-bold">1</span>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="text-sm">
+<p class="font-medium text-slate-900 dark:text-white">Hoy, 10:45 AM</p>
+<p class="text-[11px] text-primary font-bold uppercase">Nuevo</p>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<span class="text-sm font-bold text-slate-900 dark:text-white">$1,200.00 MXN</span>
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-right">
+<div class="flex items-center justify-end gap-1">
+<button class="p-2 text-slate-400 hover:text-primary transition-colors" title="Ver perfil">
+<span class="material-symbols-outlined text-[20px]">visibility</span>
+</button>
+<button class="p-2 text-slate-400 hover:text-primary transition-colors" title="Editar">
+<span class="material-symbols-outlined text-[20px]">edit</span>
+</button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="px-6 py-4 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between bg-slate-50/50 dark:bg-slate-800/30">
+<p class="text-xs font-medium text-slate-500">Mostrando 1 a 4 de 128 clientes</p>
+<div class="flex gap-2">
+<button class="size-8 flex items-center justify-center rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-400 hover:bg-slate-50 transition-colors">
+<span class="material-symbols-outlined text-[18px]">chevron_left</span>
+</button>
+<button class="size-8 flex items-center justify-center rounded-lg border border-primary bg-primary text-white text-xs font-bold">1</button>
+<button class="size-8 flex items-center justify-center rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-400 text-xs font-bold hover:bg-slate-50 transition-colors">2</button>
+<button class="size-8 flex items-center justify-center rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-400 text-xs font-bold hover:bg-slate-50 transition-colors">3</button>
+<button class="size-8 flex items-center justify-center rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-400 hover:bg-slate-50 transition-colors">
+<span class="material-symbols-outlined text-[18px]">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+
+
