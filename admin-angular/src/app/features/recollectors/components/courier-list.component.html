@@ -1,0 +1,82 @@
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
+  <div>
+    <h2 class="text-2xl font-black text-slate-900 tracking-tight">Recolectores</h2>
+    <p class="text-slate-500 mt-1">Administra el catalogo de recolectores y sus datos de contacto.</p>
+  </div>
+  <button
+    class="bg-primary text-white px-4 py-2 rounded-lg text-sm font-semibold flex items-center gap-2 shadow-lg shadow-primary/20 hover:brightness-110 transition-all"
+    type="button"
+    (click)="createRequested.emit()"
+  >
+    <span class="material-symbols-outlined text-[20px]">person_add</span>
+    <span>Nuevo Recolector</span>
+  </button>
+</div>
+
+<div class="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm mb-8">
+  <div class="overflow-x-auto">
+    <table class="w-full text-left border-collapse">
+      <thead>
+        <tr class="bg-slate-50 border-b border-slate-200">
+          <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Nombre</th>
+          <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Vehiculo</th>
+          <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Telefono</th>
+          <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider hidden md:table-cell">
+            Ciudad
+          </th>
+          <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Activo</th>
+          <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider text-right">Acciones</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-slate-100">
+        @if (loading) {
+          <tr>
+            <td class="px-6 py-8 text-sm text-slate-500" colspan="6">Cargando recolectores...</td>
+          </tr>
+        } @else if (couriers.length === 0) {
+          <tr>
+            <td class="px-6 py-8 text-sm text-slate-500" colspan="6">
+              No hay recolectores registrados todavia.
+            </td>
+          </tr>
+        } @else {
+          @for (courier of couriers; track trackById($index, courier)) {
+            <tr class="hover:bg-slate-50/60 transition-colors">
+              <td class="px-6 py-4">
+                <p class="font-semibold text-slate-900">{{ courier.name }} {{ courier.middleName }} {{ courier.lastName }}</p>
+              </td>
+              <td class="px-6 py-4 text-slate-600">{{ courier.vehicle }}</td>
+              <td class="px-6 py-4 text-slate-600">{{ courier.phoneNumber }}</td>
+              <td class="px-6 py-4 text-slate-600 hidden md:table-cell">{{ courier.city }}</td>
+              <td class="px-6 py-4">
+                @if (courier.isActive) {
+                  <span class="inline-flex px-2 py-1 rounded-md bg-emerald-100 text-xs font-bold text-emerald-700">Si</span>
+                } @else {
+                  <span class="inline-flex px-2 py-1 rounded-md bg-rose-100 text-xs font-bold text-rose-700">No</span>
+                }
+              </td>
+              <td class="px-6 py-4 text-right">
+                <div class="inline-flex gap-2">
+                  <button
+                    class="text-slate-400 hover:text-primary transition-colors"
+                    type="button"
+                    (click)="editRequested.emit(courier)"
+                  >
+                    <span class="material-symbols-outlined">edit</span>
+                  </button>
+                  <button
+                    class="text-slate-400 hover:text-rose-600 transition-colors"
+                    type="button"
+                    (click)="deleteRequested.emit(courier)"
+                  >
+                    <span class="material-symbols-outlined">delete</span>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          }
+        }
+      </tbody>
+    </table>
+  </div>
+</div>

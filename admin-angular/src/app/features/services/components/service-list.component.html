@@ -1,0 +1,96 @@
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
+  <div>
+    <h2 class="text-2xl font-black text-slate-900 tracking-tight">Servicios</h2>
+    <p class="text-slate-500 mt-1">Administra y actualiza el catalogo de servicios de lavanderia.</p>
+  </div>
+  <button
+    class="bg-primary text-white px-4 py-2 rounded-lg text-sm font-semibold flex items-center gap-2 shadow-lg shadow-primary/20 hover:brightness-110 transition-all"
+    type="button"
+    (click)="createRequested.emit()"
+  >
+    <span class="material-symbols-outlined text-[20px]">add</span>
+    <span>Nuevo Servicio</span>
+  </button>
+</div>
+
+<div class="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm mb-8">
+  <div class="overflow-x-auto">
+    <table class="w-full text-left border-collapse">
+      <thead>
+        <tr class="bg-slate-50 border-b border-slate-200">
+          <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider w-20">Icono</th>
+          <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Nombre</th>
+          <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider hidden md:table-cell">
+            Descripcion
+          </th>
+          <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Unidad</th>
+          <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Precio</th>
+          <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Activo</th>
+          <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider text-right">Acciones</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-slate-100">
+        @if (loading) {
+          <tr>
+            <td class="px-6 py-8 text-sm text-slate-500" colspan="7">Cargando servicios...</td>
+          </tr>
+        } @else if (services.length === 0) {
+          <tr>
+            <td class="px-6 py-8 text-sm text-slate-500" colspan="7">
+              No hay servicios registrados todavia.
+            </td>
+          </tr>
+        } @else {
+          @for (service of services; track trackById($index, service)) {
+            <tr class="hover:bg-slate-50/60 transition-colors">
+              <td class="px-6 py-4">
+                <div [class]="resolveThemeIcon(service.themeIcon)">
+                  <span class="material-symbols-outlined">{{ service.icon }}</span>
+                </div>
+              </td>
+              <td class="px-6 py-4 font-semibold text-slate-900">{{ service.name }}</td>
+              <td class="px-6 py-4 text-slate-500 hidden md:table-cell max-w-xs truncate">
+                {{ service.description }}
+              </td>
+              <td class="px-6 py-4">
+                <span class="inline-flex px-2 py-1 rounded-md bg-slate-100 text-xs font-bold text-slate-600">
+                  {{ service.uoM }}
+                </span>
+              </td>
+              <td class="px-6 py-4 font-bold text-primary">${{ service.price | number: '1.2-2' }}</td>
+              <td class="px-6 py-4">
+                @if (service.isActive) {
+                  <span class="inline-flex px-2 py-1 rounded-md bg-emerald-100 text-xs font-bold text-emerald-700">
+                    Si
+                  </span>
+                } @else {
+                  <span class="inline-flex px-2 py-1 rounded-md bg-rose-100 text-xs font-bold text-rose-700">
+                    No
+                  </span>
+                }
+              </td>
+              <td class="px-6 py-4 text-right">
+                <div class="inline-flex gap-2">
+                  <button
+                    class="text-slate-400 hover:text-primary transition-colors"
+                    type="button"
+                    (click)="editRequested.emit(service)"
+                  >
+                    <span class="material-symbols-outlined">edit</span>
+                  </button>
+                  <button
+                    class="text-slate-400 hover:text-rose-600 transition-colors"
+                    type="button"
+                    (click)="deleteRequested.emit(service)"
+                  >
+                    <span class="material-symbols-outlined">delete</span>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          }
+        }
+      </tbody>
+    </table>
+  </div>
+</div>

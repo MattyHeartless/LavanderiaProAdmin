@@ -8,35 +8,45 @@
 <h1 class="text-2xl font-bold text-slate-900 tracking-tight">LavanderiaPro <span class="text-primary font-black uppercase text-xs align-top ml-1">Admin</span></h1>
 <p class="text-slate-500 text-sm mt-2 font-medium">Panel Administrativo</p>
 </div>
-<form class="px-10 pb-8 space-y-5">
+<form class="px-10 pb-8 space-y-5" [formGroup]="loginForm" (ngSubmit)="submit()">
 <div>
 <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5 ml-1" for="email">Correo electrónico institucional</label>
 <div class="relative group">
 <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-lg group-focus-within:text-primary transition-colors">mail</span>
-<input class="w-full pl-10 pr-4 py-3 bg-slate-50/50 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-primary focus:border-primary transition-all outline-none" id="email" placeholder="nombre&#64;lavanderiapro.com" required="" type="email"/>
+<input class="w-full pl-10 pr-4 py-3 bg-slate-50/50 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-primary focus:border-primary transition-all outline-none" [class.border-red-400]="isInvalid('email')" id="email" placeholder="nombre&#64;lavanderiapro.com" formControlName="email" required type="email"/>
 </div>
+@if (isInvalid('email')) {
+<p class="mt-1 ml-1 text-xs text-red-600">Ingresa un correo valido.</p>
+}
 </div>
 <div>
 <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5 ml-1" for="password">Contraseña</label>
 <div class="relative group">
 <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-lg group-focus-within:text-primary transition-colors">lock</span>
-<input class="w-full pl-10 pr-12 py-3 bg-slate-50/50 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-primary focus:border-primary transition-all outline-none" id="password" placeholder="••••••••" required="" type="password"/>
-<button class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600" type="button">
-<span class="material-symbols-outlined text-lg">visibility</span>
+<input class="w-full pl-10 pr-12 py-3 bg-slate-50/50 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-primary focus:border-primary transition-all outline-none" [class.border-red-400]="isInvalid('password')" id="password" placeholder="••••••••" formControlName="password" required [type]="showPassword() ? 'text' : 'password'"/>
+<button class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600" type="button" (click)="togglePasswordVisibility()">
+<span class="material-symbols-outlined text-lg">{{ showPassword() ? 'visibility_off' : 'visibility' }}</span>
 </button>
 </div>
+@if (isInvalid('password')) {
+<p class="mt-1 ml-1 text-xs text-red-600">La contrasena es obligatoria.</p>
+}
 </div>
 <div class="flex items-center justify-between py-1">
 <div class="flex items-center">
-<input class="h-4 w-4 text-primary focus:ring-primary border-slate-300 rounded cursor-pointer" id="remember" type="checkbox"/>
+<input class="h-4 w-4 text-primary focus:ring-primary border-slate-300 rounded cursor-pointer" id="remember" type="checkbox" formControlName="remember"/>
 <label class="ml-2 block text-sm text-slate-600 cursor-pointer" for="remember">Recordar sesión</label>
 </div>
 <a class="text-sm font-semibold text-primary hover:underline" href="#">¿Olvidaste tu contraseña?</a>
 </div>
-<a class="w-full bg-primary hover:bg-blue-900 text-white font-bold py-3.5 rounded-lg shadow-lg shadow-primary/20 transition-all flex items-center justify-center gap-2 group no-underline" routerLink="/admin/dashboard">
-                    Ingresar al Panel
-                    <span class="material-symbols-outlined text-lg group-hover:translate-x-1 transition-transform">login</span>
-</a>
+<button class="w-full bg-primary hover:bg-blue-900 text-white font-bold py-3.5 rounded-lg shadow-lg shadow-primary/20 transition-all flex items-center justify-center gap-2 group disabled:opacity-70 disabled:cursor-not-allowed" type="submit" [disabled]="isLoading()">
+@if (!isLoading()) {
+<span>Ingresar al Panel</span>
+<span class="material-symbols-outlined text-lg group-hover:translate-x-1 transition-transform">login</span>
+} @else {
+<span>Validando credenciales...</span>
+}
+</button>
 </form>
 <div class="bg-slate-50/80 border-t border-slate-100 px-10 py-4 flex items-center justify-center gap-2">
 <span class="material-symbols-outlined text-amber-500 text-sm">verified_user</span>

@@ -1,0 +1,124 @@
+<div class="space-y-6 mt-8">
+  <div class="flex items-center gap-3">
+    <div class="h-8 w-1.5 bg-primary rounded-full"></div>
+    <h2 class="text-2xl font-bold text-slate-900">
+      @if (mode === 'create') {
+        Crear Nuevo Recolector
+      } @else {
+        Editar Recolector
+      }
+    </h2>
+  </div>
+  <div class="bg-white rounded-xl border border-slate-200 p-8 shadow-sm">
+    <form class="space-y-8" [formGroup]="courierForm" (ngSubmit)="submit()">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-8">
+        <div class="space-y-6">
+          <div class="space-y-2">
+            <label class="text-sm font-semibold text-slate-700">Nombre</label>
+            <input
+              #nameInput
+              class="w-full rounded-lg border-slate-200 focus:border-primary focus:ring-primary transition-all"
+              type="text"
+              formControlName="name"
+            />
+          </div>
+          <div class="space-y-2">
+            <label class="text-sm font-semibold text-slate-700">Segundo Nombre</label>
+            <input
+              class="w-full rounded-lg border-slate-200 focus:border-primary focus:ring-primary transition-all"
+              type="text"
+              formControlName="middleName"
+            />
+          </div>
+          <div class="space-y-2">
+            <label class="text-sm font-semibold text-slate-700">Apellido</label>
+            <input
+              class="w-full rounded-lg border-slate-200 focus:border-primary focus:ring-primary transition-all"
+              type="text"
+              formControlName="lastName"
+            />
+          </div>
+          <div class="space-y-2">
+            <label class="text-sm font-semibold text-slate-700">Vehiculo</label>
+            <input
+              class="w-full rounded-lg border-slate-200 focus:border-primary focus:ring-primary transition-all"
+              type="text"
+              formControlName="vehicle"
+            />
+          </div>
+          <div class="space-y-2">
+            <label class="text-sm font-semibold text-slate-700">Telefono</label>
+            <input
+              class="w-full rounded-lg border-slate-200 focus:border-primary focus:ring-primary transition-all"
+              type="text"
+              formControlName="phoneNumber"
+            />
+          </div>
+        </div>
+        <div class="space-y-6">
+          <div class="space-y-2">
+            <label class="text-sm font-semibold text-slate-700">Direccion</label>
+            <input
+              class="w-full rounded-lg border-slate-200 focus:border-primary focus:ring-primary transition-all"
+              type="text"
+              formControlName="address"
+            />
+          </div>
+          <div class="space-y-2">
+            <label class="text-sm font-semibold text-slate-700">Colonia</label>
+            <input
+              class="w-full rounded-lg border-slate-200 focus:border-primary focus:ring-primary transition-all"
+              type="text"
+              formControlName="neighborhood"
+            />
+          </div>
+          <div class="grid grid-cols-2 gap-4">
+            <div class="space-y-2">
+              <label class="text-sm font-semibold text-slate-700">CP</label>
+              <input
+                class="w-full rounded-lg border-slate-200 focus:border-primary focus:ring-primary transition-all"
+                type="text"
+                formControlName="zipCode"
+              />
+            </div>
+            <div class="space-y-2">
+              <label class="text-sm font-semibold text-slate-700">Ciudad</label>
+              <input
+                class="w-full rounded-lg border-slate-200 focus:border-primary focus:ring-primary transition-all"
+                type="text"
+                formControlName="city"
+              />
+            </div>
+          </div>
+          <label class="flex items-center gap-2">
+            <input class="h-4 w-4 rounded border-slate-300 text-primary" type="checkbox" formControlName="isActive" />
+            <span class="text-sm text-slate-700">Recolector activo</span>
+          </label>
+        </div>
+      </div>
+      <div class="pt-6 border-t border-slate-100 flex justify-end gap-4">
+        <button
+          class="px-6 py-2.5 rounded-lg font-bold text-slate-600 hover:bg-slate-100 transition-all"
+          type="button"
+          [disabled]="submitting"
+          (click)="cancelRequested.emit()"
+        >
+          Cancelar
+        </button>
+        <button
+          class="px-8 py-2.5 bg-primary text-white font-bold rounded-lg hover:bg-primary/90 transition-all shadow-lg shadow-primary/20 disabled:opacity-70"
+          type="submit"
+          [disabled]="submitting"
+        >
+          @if (submitting) {
+            Guardando...
+          } @else if (mode === 'create') {
+            Guardar Recolector
+          } @else {
+            Actualizar Recolector
+          }
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

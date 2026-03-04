@@ -1,0 +1,14 @@
+@if (notification(); as toast) {
+  <div class="toast-layer" data-testid="floating-notification">
+    <article [class]="containerClass()" role="status" aria-live="polite">
+      <span class="material-symbols-outlined toast-icon">{{ toast.icon }}</span>
+      <div class="toast-content">
+        <h4>{{ toast.title }}</h4>
+        <p>{{ toast.description }}</p>
+      </div>
+      <button type="button" class="toast-close" (click)="dismiss()" aria-label="Cerrar notificacion">
+        <span class="material-symbols-outlined">close</span>
+      </button>
+    </article>
+  </div>
+}
