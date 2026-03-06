@@ -3,12 +3,14 @@ export interface LoginAdminRequest {
   password: string;
 }
 
-export interface AdminProfile {
+export interface AuthUser {
   id: string;
   email: string;
   fullName: string;
   phoneNumber: string;
 }
+
+export interface AdminProfile extends AuthUser {}
 
 export interface LoginAdminRejected {
   message: string;

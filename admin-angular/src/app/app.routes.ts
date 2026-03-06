@@ -29,6 +29,11 @@ export const routes: Routes = [
           import('./features/reports/reports-page.component').then((m) => m.ReportsPageComponent)
       },
       {
+        path: 'orders/:id',
+        loadComponent: () =>
+          import('./features/orders/order-detail-page.component').then((m) => m.OrderDetailPageComponent)
+      },
+      {
         path: 'orders',
         loadComponent: () =>
           import('./features/orders/orders-page.component').then((m) => m.OrdersPageComponent)

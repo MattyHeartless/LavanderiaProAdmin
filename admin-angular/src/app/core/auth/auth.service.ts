@@ -4,6 +4,7 @@ import { Observable, catchError, finalize, map, tap, throwError } from 'rxjs';
 
 import {
   AdminProfile,
+  AuthUser,
   LoginAdminRequest,
   LoginAdminResponse,
   isAdminProfile
@@ -16,6 +17,7 @@ const ADMIN_SESSION_KEY = 'admin_session_v1';
 export class AuthService {
   private readonly http = inject(HttpClient);
   private readonly storage = this.loadStoredAdmin();
+  private readonly usersPath = `${environment.apiBaseUrl}/api/Auth/users`;
 
   readonly currentAdmin = signal<AdminProfile | null>(this.storage);
   readonly isLoading = signal(false);
@@ -48,6 +50,10 @@ export class AuthService {
           this.isLoading.set(false);
         })
       );
+  }
+
+  listUsers(): Observable<AuthUser[]> {
+    return this.http.get<AuthUser[]>(this.usersPath).pipe(map((response) => (Array.isArray(response) ? response : [])));
   }
 
   clearSession(): void {

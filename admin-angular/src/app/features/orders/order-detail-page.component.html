@@ -1,0 +1,286 @@
+<div class="flex items-center gap-2 mb-6">
+  <a class="text-slate-500 hover:text-primary text-sm font-medium" routerLink="/admin/dashboard">Panel</a>
+  <span class="material-symbols-outlined text-slate-400 text-sm">chevron_right</span>
+  <a class="text-slate-500 hover:text-primary text-sm font-medium" routerLink="/admin/orders">Pedidos</a>
+  <span class="material-symbols-outlined text-slate-400 text-sm">chevron_right</span>
+  <span class="text-primary text-sm font-semibold">Detalle #{{ orderCode() }}</span>
+</div>
+
+@if (loading()) {
+  <div class="bg-white rounded-xl border border-slate-200 p-8 shadow-sm">
+    <p class="text-sm text-slate-500">Cargando detalle del pedido...</p>
+  </div>
+} @else {
+  @if (orderRecord(); as record) {
+  <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 mb-6">
+    <div class="flex flex-col lg:flex-row justify-between gap-6">
+      <div class="space-y-2">
+        <div class="flex items-center gap-3">
+          <h1 class="text-2xl md:text-3xl font-black text-slate-900 tracking-tight">Orden #{{ orderCode() }}</h1>
+          <span [class]="'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold uppercase tracking-wider ' + statusMeta().badgeClass">
+            {{ statusMeta().label }}
+          </span>
+        </div>
+        <p class="text-slate-500 text-sm flex items-center gap-2">
+          <span class="material-symbols-outlined text-base">calendar_today</span>
+          Creada el {{ formatDate(record.order.createdAt, 'long') }} • {{ formatTime(record.order.createdAt) }}
+        </p>
+      </div>
+      <div class="flex flex-wrap gap-4 items-center">
+        <div class="bg-slate-50 p-3 rounded-lg border border-slate-100 min-w-[150px]">
+          <p class="text-[10px] uppercase font-bold text-slate-400 tracking-widest mb-1">Monto Total</p>
+          <p class="text-xl font-black text-primary">{{ formatCurrency(record.order.totalAmount) }}</p>
+        </div>
+        <div class="bg-slate-50 p-3 rounded-lg border border-slate-100 min-w-[150px]">
+          <p class="text-[10px] uppercase font-bold text-slate-400 tracking-widest mb-1">Costo Envio</p>
+          <p class="text-xl font-black text-slate-700">{{ formatCurrency(record.order.deliveryFee) }}</p>
+        </div>
+        <button
+          class="flex items-center gap-2 bg-primary text-white px-5 py-2.5 rounded-lg font-bold text-sm opacity-70 cursor-not-allowed"
+          type="button"
+          disabled
+        >
+          <span class="material-symbols-outlined text-lg">download</span>
+          Factura
+        </button>
+      </div>
+    </div>
+
+    <div class="mt-10 mb-2 relative">
+      <div class="absolute top-1/2 left-0 w-full h-1 bg-slate-100 -translate-y-1/2 rounded-full overflow-hidden">
+        <div class="h-full bg-primary" [style.width.%]="progressPercent()"></div>
+      </div>
+      <div class="relative flex justify-between">
+        @for (step of progressSteps(); track step.key) {
+          <div class="flex flex-col items-center">
+            <div [class]="step.circleClass">
+              <span class="material-symbols-outlined text-sm">{{ step.icon }}</span>
+            </div>
+            <span [class]="step.labelClass">{{ step.label }}</span>
+          </div>
+        }
+      </div>
+    </div>
+
+    @if (isCancelled()) {
+      <div class="mt-4 rounded-lg bg-rose-50 text-rose-700 text-sm font-semibold px-4 py-3">
+        Esta orden fue cancelada y no continuara en el flujo operativo.
+      </div>
+    }
+  </div>
+
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+    <div class="lg:col-span-2 space-y-6">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+          <div class="flex items-center gap-2 mb-4">
+            <span class="material-symbols-outlined text-primary">person</span>
+            <h3 class="font-bold text-slate-900 uppercase tracking-wider text-xs">Informacion del Cliente</h3>
+          </div>
+          <div class="space-y-4">
+            <div>
+              <p class="text-xs text-slate-400 font-bold uppercase tracking-tight">Cliente</p>
+              <p class="text-slate-900 font-medium">{{ customerName() }}</p>
+              <p class="text-sm text-slate-500">{{ customerEmail() }} • {{ customerPhone() }}</p>
+            </div>
+            <div>
+              <p class="text-xs text-slate-400 font-bold uppercase tracking-tight">Usuario ID</p>
+              <code class="text-xs bg-slate-100 px-2 py-1 rounded text-primary">{{ record.order.userId }}</code>
+            </div>
+            <div>
+              <p class="text-xs text-slate-400 font-bold uppercase tracking-tight">Direccion de Envio</p>
+              <p class="text-slate-900 font-medium">{{ shippingLineOne() }}</p>
+              <p class="text-slate-600 text-sm">{{ shippingLineTwo() }}</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+          <div class="flex items-center gap-2 mb-4">
+            <span class="material-symbols-outlined text-primary">local_shipping</span>
+            <h3 class="font-bold text-slate-900 uppercase tracking-wider text-xs">Logistica y Entrega</h3>
+          </div>
+          <div class="space-y-4">
+            <div class="flex justify-between gap-3">
+              <div>
+                <p class="text-xs text-slate-400 font-bold uppercase tracking-tight">Mensajero</p>
+                <p class="text-slate-900 font-medium">{{ record.order.courierName || 'Sin asignar' }}</p>
+                <p class="text-sm text-slate-500">{{ record.order.courierPhone || 'Sin telefono' }}</p>
+              </div>
+              <button
+                class="size-8 flex items-center justify-center bg-primary/10 text-primary rounded-full opacity-70 cursor-not-allowed"
+                type="button"
+                disabled
+              >
+                <span class="material-symbols-outlined text-sm">call</span>
+              </button>
+            </div>
+            <div>
+              <p class="text-xs text-slate-400 font-bold uppercase tracking-tight">Guia (GUID)</p>
+              <code class="text-[11px] bg-slate-100 px-2 py-1 rounded text-primary">
+                {{ record.order.courierGuid || 'Sin guia' }}
+              </code>
+            </div>
+            <div>
+              <p class="text-xs text-slate-400 font-bold uppercase tracking-tight">Programado para Recoleccion</p>
+              <p class="text-slate-900 font-medium">{{ pickupScheduleLabel() }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+        <div class="p-6 border-b border-slate-100">
+          <div class="flex items-center gap-2">
+            <span class="material-symbols-outlined text-primary">list_alt</span>
+            <h3 class="font-bold text-slate-900 uppercase tracking-wider text-xs">Servicios Solicitados</h3>
+          </div>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="w-full text-left border-collapse">
+            <thead>
+              <tr class="bg-slate-50">
+                <th class="px-6 py-3 text-xs font-bold uppercase tracking-wider text-slate-400">Servicio</th>
+                <th class="px-6 py-3 text-xs font-bold uppercase tracking-wider text-slate-400 text-center">Cantidad</th>
+                <th class="px-6 py-3 text-xs font-bold uppercase tracking-wider text-slate-400 text-center">UoM</th>
+                <th class="px-6 py-3 text-xs font-bold uppercase tracking-wider text-slate-400 text-right">Precio Unitario</th>
+                <th class="px-6 py-3 text-xs font-bold uppercase tracking-wider text-slate-400 text-right">Subtotal</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-100">
+              @for (detail of record.orderDetails; track trackByDetailId($index, detail)) {
+                <tr>
+                  <td class="px-6 py-4">
+                    <div class="flex items-center gap-3">
+                      <div class="size-8 rounded bg-primary/10 flex items-center justify-center">
+                        <span class="material-symbols-outlined text-primary text-lg">checkroom</span>
+                      </div>
+                      <span class="font-semibold text-slate-900">{{ detail.serviceName }}</span>
+                    </div>
+                  </td>
+                  <td class="px-6 py-4 text-center text-slate-600">{{ detail.quantity }}</td>
+                  <td class="px-6 py-4 text-center">
+                    <span class="bg-slate-100 px-2 py-0.5 rounded text-[10px] font-bold text-slate-500 uppercase">
+                      {{ detail.uoM }}
+                    </span>
+                  </td>
+                  <td class="px-6 py-4 text-right text-slate-600">{{ formatCurrency(detail.servicePrice) }}</td>
+                  <td class="px-6 py-4 text-right font-bold text-slate-900">{{ formatCurrency(detail.subTotal) }}</td>
+                </tr>
+              }
+            </tbody>
+            <tfoot>
+              <tr class="bg-slate-50/50">
+                <td class="px-6 py-4 text-right font-bold text-slate-500" colspan="4">Subtotal de servicios</td>
+                <td class="px-6 py-4 text-right font-bold text-slate-900">{{ formatCurrency(servicesSubtotal()) }}</td>
+              </tr>
+              <tr class="bg-slate-50/50">
+                <td class="px-6 py-4 text-right font-bold text-slate-500 border-t border-slate-200" colspan="4">
+                  Costo de envio
+                </td>
+                <td class="px-6 py-4 text-right font-bold text-slate-900 border-t border-slate-200">
+                  {{ formatCurrency(record.order.deliveryFee) }}
+                </td>
+              </tr>
+              <tr class="bg-primary/5">
+                <td class="px-6 py-5 text-right font-black uppercase text-slate-900" colspan="4">Total Final</td>
+                <td class="px-6 py-5 text-right font-black text-xl text-primary">
+                  {{ formatCurrency(record.order.totalAmount) }}
+                </td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="space-y-6">
+      <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+        <div class="flex items-center gap-2 mb-4">
+          <span class="material-symbols-outlined text-primary">credit_score</span>
+          <h3 class="font-bold text-slate-900 uppercase tracking-wider text-xs">Informacion de Pago</h3>
+        </div>
+        <div class="bg-slate-50 rounded-lg p-4 flex items-center justify-between">
+          <div>
+            <p class="text-xs font-bold text-slate-400 uppercase">Metodo</p>
+            <p class="text-slate-900 font-bold">{{ paymentMethodLabel() }}</p>
+            <p class="text-xs text-slate-500 mt-1">ID Metodo: {{ record.order.userPaymentMethodId }}</p>
+          </div>
+          <span class="material-symbols-outlined text-3xl text-primary/40">credit_card</span>
+        </div>
+        <div class="mt-4 pt-4 border-t border-slate-100 flex justify-between items-center">
+          <span class="text-sm font-medium text-slate-500">Estado del pago</span>
+          <span [class]="'px-2.5 py-1 rounded text-xs font-bold ' + paymentStatusClass()">{{ paymentStatusLabel() }}</span>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+        <div class="flex items-center gap-2 mb-6">
+          <span class="material-symbols-outlined text-primary">history</span>
+          <h3 class="font-bold text-slate-900 uppercase tracking-wider text-xs">Linea de Tiempo</h3>
+        </div>
+        <div class="relative space-y-6 before:absolute before:left-[11px] before:top-2 before:h-[calc(100%-16px)] before:w-[2px] before:bg-slate-100">
+          @for (event of timelineItems(); track trackByTimelineId($index, event)) {
+            <div class="relative pl-8">
+              <div
+                [class]="
+                  event.current
+                    ? 'absolute left-0 top-1 size-6 rounded-full bg-primary flex items-center justify-center ring-4 ring-white z-10'
+                    : 'absolute left-0 top-1 size-6 rounded-full bg-slate-200 flex items-center justify-center ring-4 ring-white z-10'
+                "
+              >
+                <span [class]="event.current ? 'material-symbols-outlined text-[12px] text-white' : 'material-symbols-outlined text-[12px] text-slate-500'">
+                  schedule
+                </span>
+              </div>
+              <div class="space-y-1">
+                <p [class]="event.current ? 'text-sm font-bold text-primary' : 'text-sm font-bold text-slate-900'">
+                  {{ event.label }}
+                </p>
+                <p class="text-[11px] text-slate-400 font-medium">{{ event.dateLabel }} • {{ event.timeLabel }}</p>
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="mt-8 flex flex-col sm:flex-row justify-end gap-3 pb-2">
+    <button
+      class="px-6 py-2.5 rounded-lg border border-slate-200 text-slate-600 font-bold text-sm opacity-70 cursor-not-allowed"
+      type="button"
+      disabled
+    >
+      Cancelar Orden
+    </button>
+    <button
+      class="px-6 py-2.5 rounded-lg border border-primary text-primary font-bold text-sm opacity-70 cursor-not-allowed"
+      type="button"
+      disabled
+    >
+      Contactar Cliente
+    </button>
+    <button
+      class="px-6 py-2.5 rounded-lg bg-primary text-white font-bold text-sm opacity-70 cursor-not-allowed"
+      type="button"
+      disabled
+    >
+      Actualizar Estado
+    </button>
+  </div>
+  } @else {
+    <div class="bg-white rounded-xl border border-slate-200 p-8 shadow-sm">
+      <h2 class="text-xl font-black text-slate-900">Pedido no encontrado</h2>
+      <p class="text-sm text-slate-500 mt-2">No fue posible encontrar la orden solicitada.</p>
+      <button
+        class="mt-6 inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-primary text-white text-sm font-bold hover:brightness-110 transition-all"
+        type="button"
+        (click)="backToOrders()"
+      >
+        <span class="material-symbols-outlined text-[18px]">arrow_back</span>
+        Volver a pedidos
+      </button>
+    </div>
+  }
+}
