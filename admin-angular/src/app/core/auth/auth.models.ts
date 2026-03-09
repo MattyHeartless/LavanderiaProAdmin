@@ -3,6 +3,23 @@ export interface LoginAdminRequest {
   password: string;
 }
 
+export interface RegisterCourierRequest {
+  fullName: string;
+  email: string;
+  password: string;
+  phoneNumber: string;
+}
+
+export interface RegisterCourierResponse {
+  id: string;
+  email: string;
+  fullName: string;
+}
+
+export interface CourierAccountExistsResponse {
+  exists: boolean;
+}
+
 export interface AuthUser {
   id: string;
   email: string;

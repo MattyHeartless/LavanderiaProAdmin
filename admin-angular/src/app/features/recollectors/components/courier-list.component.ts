@@ -12,6 +12,7 @@ export class CourierListComponent {
   @Input() loading = false;
 
   @Output() createRequested = new EventEmitter<void>();
+  @Output() createAccessRequested = new EventEmitter<Courier>();
   @Output() editRequested = new EventEmitter<Courier>();
   @Output() deleteRequested = new EventEmitter<Courier>();
 

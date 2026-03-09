@@ -33,6 +33,7 @@ export class CourierFormComponent implements OnChanges {
     zipCode: ['', [Validators.required, Validators.maxLength(12)]],
     city: ['', [Validators.required, Validators.maxLength(120)]],
     phoneNumber: ['', [Validators.required, Validators.maxLength(20)]],
+    authUserId: [''],
     isActive: [true, [Validators.required]]
   });
 
@@ -67,7 +68,20 @@ export class CourierFormComponent implements OnChanges {
 
   private hydrateForm(): void {
     if (this.initialValue) {
-      this.courierForm.reset(this.initialValue);
+      this.courierForm.reset({
+        id: this.initialValue.id,
+        name: this.initialValue.name,
+        middleName: this.initialValue.middleName,
+        lastName: this.initialValue.lastName,
+        vehicle: this.initialValue.vehicle,
+        address: this.initialValue.address,
+        neighborhood: this.initialValue.neighborhood,
+        zipCode: this.initialValue.zipCode,
+        city: this.initialValue.city,
+        phoneNumber: this.initialValue.phoneNumber,
+        authUserId: this.initialValue.authUserId ?? '',
+        isActive: this.initialValue.isActive
+      });
       return;
     }
 
@@ -82,6 +96,7 @@ export class CourierFormComponent implements OnChanges {
       zipCode: '',
       city: '',
       phoneNumber: '',
+      authUserId: '',
       isActive: true
     });
   }

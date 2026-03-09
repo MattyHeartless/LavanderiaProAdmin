@@ -4,9 +4,12 @@ import { Observable, catchError, finalize, map, tap, throwError } from 'rxjs';
 
 import {
   AdminProfile,
+  CourierAccountExistsResponse,
   AuthUser,
   LoginAdminRequest,
   LoginAdminResponse,
+  RegisterCourierRequest,
+  RegisterCourierResponse,
   isAdminProfile
 } from './auth.models';
 import { environment } from '../../../environments/environment';
@@ -18,6 +21,8 @@ export class AuthService {
   private readonly http = inject(HttpClient);
   private readonly storage = this.loadStoredAdmin();
   private readonly usersPath = `${environment.apiBaseUrl}/api/Auth/users`;
+  private readonly registerCourierPath = `${environment.apiBaseUrl}/api/Auth/register-courier`;
+  private readonly courierAccountExistsPath = `${environment.apiBaseUrl}/api/Auth/courier-account-exists`;
 
   readonly currentAdmin = signal<AdminProfile | null>(this.storage);
   readonly isLoading = signal(false);
@@ -54,6 +59,26 @@ export class AuthService {
 
   listUsers(): Observable<AuthUser[]> {
     return this.http.get<AuthUser[]>(this.usersPath).pipe(map((response) => (Array.isArray(response) ? response : [])));
+  }
+
+  registerCourier(payload: RegisterCourierRequest): Observable<RegisterCourierResponse> {
+    return this.http.post<RegisterCourierResponse>(this.registerCourierPath, payload).pipe(
+      catchError((error) => {
+        const message = this.getErrorMessage(error);
+        return throwError(() => new Error(message));
+      })
+    );
+  }
+
+  checkCourierAccountExists(email: string): Observable<CourierAccountExistsResponse> {
+    return this.http
+      .get<CourierAccountExistsResponse>(`${this.courierAccountExistsPath}?email=${encodeURIComponent(email)}`)
+      .pipe(
+        catchError((error) => {
+          const message = this.getErrorMessage(error);
+          return throwError(() => new Error(message));
+        })
+      );
   }
 
   clearSession(): void {

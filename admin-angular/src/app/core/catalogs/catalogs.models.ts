@@ -38,6 +38,7 @@ export interface Courier {
   zipCode: string;
   city: string;
   phoneNumber: string;
+  authUserId?: string | null;
   isActive: boolean;
 }
 
