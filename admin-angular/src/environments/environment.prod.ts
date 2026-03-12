@@ -1,6 +1,7 @@
 export const environment = {
   production: true,
-  apiBaseUrl: 'https://auth-api.your-domain.com',
-  catalogsApiBaseUrl: 'https://catalogs-api.your-domain.com',
-  ordersApiBaseUrl: 'https://orders-api.your-domain.com'
+  authApiUrl: 'https://ca-auth-api.ashywater-a0d6b972.westus2.azurecontainerapps.io/api/Auth',
+  profileApiUrl: 'https://profile-service.ashywater-a0d6b972.westus2.azurecontainerapps.io/api/Profile',
+  catalogsApiUrl: 'https://catalogs-service.ashywater-a0d6b972.westus2.azurecontainerapps.io/api/Catalogs',
+  ordersApiUrl: 'https://orders.ashywater-a0d6b972.westus2.azurecontainerapps.io/api/Orders'
 };

@@ -17,8 +17,8 @@ import {
 @Injectable({ providedIn: 'root' })
 export class CatalogsService {
   private readonly http = inject(HttpClient);
-  private readonly servicesPath = `${environment.catalogsApiBaseUrl}/api/Catalogs/services`;
-  private readonly couriersPath = `${environment.catalogsApiBaseUrl}/api/Catalogs/couriers`;
+  private readonly servicesPath = `${environment.catalogsApiUrl}/services`;
+  private readonly couriersPath = `${environment.catalogsApiUrl}/couriers`;
 
   listServices(): Observable<ListServicesResponse> {
     return this.http.get<ListServicesResponse>(this.servicesPath);

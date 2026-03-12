@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+
+<html lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#136dec",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#101822",
+                    },
+                    fontFamily: {
+                        "display": ["Inter"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<title>LavaMaster Admin - Detalle de Orden</title>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100">
+<div class="relative flex h-auto min-h-screen w-full flex-col group/design-root overflow-x-hidden">
+<div class="layout-container flex h-full grow flex-col">
+<!-- Top Navigation Bar -->
+<header class="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 px-6 py-3 lg:px-10">
+<div class="flex items-center gap-8">
+<div class="flex items-center gap-3 text-primary">
+<div class="size-8 flex items-center justify-center bg-primary/10 rounded-lg">
+<span class="material-symbols-outlined text-primary">local_laundry_service</span>
+</div>
+<h2 class="text-slate-900 dark:text-white text-lg font-bold leading-tight tracking-tight">LavaMaster Admin</h2>
+</div>
+<label class="hidden md:flex flex-col min-w-40 h-10 max-w-64">
+<div class="flex w-full flex-1 items-stretch rounded-lg h-full">
+<div class="text-slate-500 flex border-none bg-slate-100 dark:bg-slate-800 items-center justify-center pl-4 rounded-l-lg" data-icon="MagnifyingGlass">
+<span class="material-symbols-outlined text-xl">search</span>
+</div>
+<input class="form-input flex w-full min-w-0 flex-1 border-none bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-0 h-full placeholder:text-slate-500 px-4 rounded-r-lg text-sm" placeholder="Buscar orden, cliente o guía..." value=""/>
+</div>
+</label>
+</div>
+<div class="flex items-center gap-4">
+<button class="flex items-center justify-center rounded-lg size-10 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<div class="h-8 w-[1px] bg-slate-200 dark:bg-slate-700 mx-2"></div>
+<div class="flex items-center gap-3">
+<div class="text-right hidden sm:block">
+<p class="text-xs font-bold text-slate-900 dark:text-white leading-none">Admin Usuario</p>
+<p class="text-[10px] text-slate-500 font-medium">Super Administrador</p>
+</div>
+<div class="bg-primary/20 rounded-full size-10 border-2 border-primary/30 flex items-center justify-center text-primary font-bold overflow-hidden">
+<span class="material-symbols-outlined">account_circle</span>
+</div>
+</div>
+</div>
+</header>
+<main class="flex-1 px-4 py-6 md:px-10 lg:px-20 max-w-[1440px] mx-auto w-full">
+<!-- Breadcrumbs -->
+<div class="flex items-center gap-2 mb-6">
+<a class="text-slate-500 hover:text-primary text-sm font-medium" href="#">Panel</a>
+<span class="material-symbols-outlined text-slate-400 text-sm">chevron_right</span>
+<a class="text-slate-500 hover:text-primary text-sm font-medium" href="#">Pedidos</a>
+<span class="material-symbols-outlined text-slate-400 text-sm">chevron_right</span>
+<span class="text-primary text-sm font-semibold">Detalle #LM-98765</span>
+</div>
+<!-- Order Header Card -->
+<div class="bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 p-6 mb-6">
+<div class="flex flex-col lg:flex-row justify-between gap-6">
+<div class="space-y-2">
+<div class="flex items-center gap-3">
+<h1 class="text-2xl md:text-3xl font-black text-slate-900 dark:text-white tracking-tight">Orden #LM-98765</h1>
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-primary/10 text-primary uppercase tracking-wider">
+                                Procesando
+                            </span>
+</div>
+<p class="text-slate-500 text-sm flex items-center gap-2">
+<span class="material-symbols-outlined text-base">calendar_today</span>
+                            Creada el 24 de Octubre, 2023 • 10:30 AM
+                        </p>
+</div>
+<div class="flex flex-wrap gap-4 items-center">
+<div class="bg-slate-50 dark:bg-slate-800/50 p-3 rounded-lg border border-slate-100 dark:border-slate-800 min-w-[140px]">
+<p class="text-[10px] uppercase font-bold text-slate-400 tracking-widest mb-1">Monto Total</p>
+<p class="text-xl font-black text-primary">$450.00 MXN</p>
+</div>
+<div class="bg-slate-50 dark:bg-slate-800/50 p-3 rounded-lg border border-slate-100 dark:border-slate-800 min-w-[140px]">
+<p class="text-[10px] uppercase font-bold text-slate-400 tracking-widest mb-1">Costo Envío</p>
+<p class="text-xl font-black text-slate-700 dark:text-slate-200">$50.00 MXN</p>
+</div>
+<button class="flex items-center gap-2 bg-primary text-white px-5 py-2.5 rounded-lg font-bold text-sm hover:bg-primary/90 transition-all shadow-lg shadow-primary/20">
+<span class="material-symbols-outlined text-lg">download</span>
+                            Factura
+                        </button>
+</div>
+</div>
+<!-- Progress Bar -->
+<div class="mt-10 mb-2 relative">
+<div class="absolute top-1/2 left-0 w-full h-1 bg-slate-100 dark:bg-slate-800 -translate-y-1/2 rounded-full overflow-hidden">
+<div class="h-full bg-primary" style="width: 60%;"></div>
+</div>
+<div class="relative flex justify-between">
+<!-- Step 1: Created -->
+<div class="flex flex-col items-center">
+<div class="size-8 rounded-full bg-primary text-white flex items-center justify-center ring-4 ring-white dark:ring-slate-900 z-10">
+<span class="material-symbols-outlined text-sm">check</span>
+</div>
+<span class="mt-2 text-[10px] font-bold uppercase text-slate-900 dark:text-white">Creada</span>
+</div>
+<!-- Step 2: Paid -->
+<div class="flex flex-col items-center">
+<div class="size-8 rounded-full bg-primary text-white flex items-center justify-center ring-4 ring-white dark:ring-slate-900 z-10">
+<span class="material-symbols-outlined text-sm">payments</span>
+</div>
+<span class="mt-2 text-[10px] font-bold uppercase text-slate-900 dark:text-white">Pagada</span>
+</div>
+<!-- Step 3: Recollecting -->
+<div class="flex flex-col items-center">
+<div class="size-8 rounded-full bg-primary text-white flex items-center justify-center ring-4 ring-white dark:ring-slate-900 z-10">
+<span class="material-symbols-outlined text-sm">local_shipping</span>
+</div>
+<span class="mt-2 text-[10px] font-bold uppercase text-slate-900 dark:text-white">Recolección</span>
+</div>
+<!-- Step 4: Processing (Current) -->
+<div class="flex flex-col items-center">
+<div class="size-8 rounded-full bg-primary text-white flex items-center justify-center ring-4 ring-white dark:ring-slate-900 z-10 animate-pulse">
+<span class="material-symbols-outlined text-sm">dry_cleaning</span>
+</div>
+<span class="mt-2 text-[10px] font-bold uppercase text-primary">Procesando</span>
+</div>
+<!-- Step 5: Delivering -->
+<div class="flex flex-col items-center">
+<div class="size-8 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-400 flex items-center justify-center ring-4 ring-white dark:ring-slate-900 z-10">
+<span class="material-symbols-outlined text-sm">delivery_dining</span>
+</div>
+<span class="mt-2 text-[10px] font-bold uppercase text-slate-400">Entrega</span>
+</div>
+<!-- Step 6: Completed -->
+<div class="flex flex-col items-center">
+<div class="size-8 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-400 flex items-center justify-center ring-4 ring-white dark:ring-slate-900 z-10">
+<span class="material-symbols-outlined text-sm">task_alt</span>
+</div>
+<span class="mt-2 text-[10px] font-bold uppercase text-slate-400">Finalizada</span>
+</div>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+<!-- Customer & Logistics Info -->
+<div class="lg:col-span-2 space-y-6">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<!-- Customer Info -->
+<div class="bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 p-6">
+<div class="flex items-center gap-2 mb-4">
+<span class="material-symbols-outlined text-primary">person</span>
+<h3 class="font-bold text-slate-900 dark:text-white uppercase tracking-wider text-xs">Información del Cliente</h3>
+</div>
+<div class="space-y-4">
+<div>
+<p class="text-xs text-slate-400 font-bold uppercase tracking-tight">Usuario ID</p>
+<p class="text-slate-900 dark:text-white font-medium">USR-44219</p>
+</div>
+<div>
+<p class="text-xs text-slate-400 font-bold uppercase tracking-tight">Dirección de Envío</p>
+<p class="text-slate-900 dark:text-white font-medium">Av. Reforma 1234, Interior 5B</p>
+<p class="text-slate-600 dark:text-slate-400 text-sm">Col. Juárez, CDMX, México, 06600</p>
+</div>
+</div>
+</div>
+<!-- Logistics Info -->
+<div class="bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 p-6">
+<div class="flex items-center gap-2 mb-4">
+<span class="material-symbols-outlined text-primary">local_shipping</span>
+<h3 class="font-bold text-slate-900 dark:text-white uppercase tracking-wider text-xs">Logística &amp; Entrega</h3>
+</div>
+<div class="space-y-4">
+<div class="flex justify-between">
+<div>
+<p class="text-xs text-slate-400 font-bold uppercase tracking-tight">Mensajero</p>
+<p class="text-slate-900 dark:text-white font-medium">Ricardo Montes</p>
+</div>
+<button class="size-8 flex items-center justify-center bg-primary/10 text-primary rounded-full">
+<span class="material-symbols-outlined text-sm">call</span>
+</button>
+</div>
+<div>
+<p class="text-xs text-slate-400 font-bold uppercase tracking-tight">Guía (GUID)</p>
+<code class="text-[11px] bg-slate-100 dark:bg-slate-800 px-2 py-1 rounded text-primary">LVM-TRK-987-AX2</code>
+</div>
+<div>
+<p class="text-xs text-slate-400 font-bold uppercase tracking-tight">Fecha de Recolección</p>
+<p class="text-slate-900 dark:text-white font-medium">24 Oct 2023 - 14:00 PM</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Order Items Table -->
+<div class="bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 overflow-hidden">
+<div class="p-6 border-b border-slate-100 dark:border-slate-800">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">list_alt</span>
+<h3 class="font-bold text-slate-900 dark:text-white uppercase tracking-wider text-xs">Servicios Solicitados</h3>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-slate-50 dark:bg-slate-800/50">
+<th class="px-6 py-3 text-xs font-bold uppercase tracking-wider text-slate-400">Servicio</th>
+<th class="px-6 py-3 text-xs font-bold uppercase tracking-wider text-slate-400 text-center">Cantidad</th>
+<th class="px-6 py-3 text-xs font-bold uppercase tracking-wider text-slate-400 text-center">UoM</th>
+<th class="px-6 py-3 text-xs font-bold uppercase tracking-wider text-slate-400 text-right">Precio Unitario</th>
+<th class="px-6 py-3 text-xs font-bold uppercase tracking-wider text-slate-400 text-right">Subtotal</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-100 dark:divide-slate-800">
+<tr>
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="size-8 rounded bg-primary/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-lg">checkroom</span>
+</div>
+<span class="font-semibold text-slate-900 dark:text-white">Lavado y Secado</span>
+</div>
+</td>
+<td class="px-6 py-4 text-center text-slate-600 dark:text-slate-400">5.0</td>
+<td class="px-6 py-4 text-center">
+<span class="bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded text-[10px] font-bold text-slate-500 uppercase">Kg</span>
+</td>
+<td class="px-6 py-4 text-right text-slate-600 dark:text-slate-400">$60.00</td>
+<td class="px-6 py-4 text-right font-bold text-slate-900 dark:text-white">$300.00</td>
+</tr>
+<tr>
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="size-8 rounded bg-primary/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-lg">iron</span>
+</div>
+<span class="font-semibold text-slate-900 dark:text-white">Planchado Camisa</span>
+</div>
+</td>
+<td class="px-6 py-4 text-center text-slate-600 dark:text-slate-400">4.0</td>
+<td class="px-6 py-4 text-center">
+<span class="bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded text-[10px] font-bold text-slate-500 uppercase">Pz</span>
+</td>
+<td class="px-6 py-4 text-right text-slate-600 dark:text-slate-400">$25.00</td>
+<td class="px-6 py-4 text-right font-bold text-slate-900 dark:text-white">$100.00</td>
+</tr>
+</tbody>
+<tfoot>
+<tr class="bg-slate-50/50 dark:bg-slate-800/30">
+<td class="px-6 py-4 text-right font-bold text-slate-500" colspan="4">Subtotal de servicios</td>
+<td class="px-6 py-4 text-right font-bold text-slate-900 dark:text-white">$400.00</td>
+</tr>
+<tr class="bg-slate-50/50 dark:bg-slate-800/30">
+<td class="px-6 py-4 text-right font-bold text-slate-500 border-t border-slate-200 dark:border-slate-800" colspan="4">Costo de envío</td>
+<td class="px-6 py-4 text-right font-bold text-slate-900 dark:text-white border-t border-slate-200 dark:border-slate-800">$50.00</td>
+</tr>
+<tr class="bg-primary/5">
+<td class="px-6 py-5 text-right font-black uppercase text-slate-900 dark:text-white" colspan="4">Total Final</td>
+<td class="px-6 py-5 text-right font-black text-xl text-primary">$450.00 MXN</td>
+</tr>
+</tfoot>
+</table>
+</div>
+</div>
+</div>
+<!-- Right Column: Payment & Timeline -->
+<div class="space-y-6">
+<!-- Payment Info -->
+<div class="bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 p-6">
+<div class="flex items-center gap-2 mb-4">
+<span class="material-symbols-outlined text-primary">credit_score</span>
+<h3 class="font-bold text-slate-900 dark:text-white uppercase tracking-wider text-xs">Información de Pago</h3>
+</div>
+<div class="bg-slate-50 dark:bg-slate-800/50 rounded-lg p-4 flex items-center justify-between">
+<div>
+<p class="text-xs font-bold text-slate-400 uppercase">Método</p>
+<p class="text-slate-900 dark:text-white font-bold">Prepago Online</p>
+</div>
+<span class="material-symbols-outlined text-3xl text-primary/40">credit_card</span>
+</div>
+<div class="mt-4 pt-4 border-t border-slate-100 dark:border-slate-800 flex justify-between items-center">
+<span class="text-sm font-medium text-slate-500">Estado del pago</span>
+<span class="bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 px-2.5 py-1 rounded text-xs font-bold flex items-center gap-1">
+<span class="material-symbols-outlined text-xs">verified</span>
+                                APROBADO
+                            </span>
+</div>
+</div>
+<!-- Timeline -->
+<div class="bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 p-6">
+<div class="flex items-center gap-2 mb-6">
+<span class="material-symbols-outlined text-primary">history</span>
+<h3 class="font-bold text-slate-900 dark:text-white uppercase tracking-wider text-xs">Línea de Tiempo</h3>
+</div>
+<div class="relative space-y-6 before:absolute before:left-[11px] before:top-2 before:h-[calc(100%-16px)] before:w-[2px] before:bg-slate-100 dark:before:bg-slate-800">
+<!-- Created -->
+<div class="relative pl-8">
+<div class="absolute left-0 top-1 size-6 rounded-full bg-primary flex items-center justify-center ring-4 ring-white dark:ring-slate-900 z-10">
+<span class="material-symbols-outlined text-[12px] text-white">add</span>
+</div>
+<div class="space-y-1">
+<p class="text-sm font-bold text-slate-900 dark:text-white">Pedido Creado</p>
+<p class="text-[11px] text-slate-400 font-medium">24 Oct, 2023 • 10:30 AM</p>
+</div>
+</div>
+<!-- Recollected -->
+<div class="relative pl-8">
+<div class="absolute left-0 top-1 size-6 rounded-full bg-primary flex items-center justify-center ring-4 ring-white dark:ring-slate-900 z-10">
+<span class="material-symbols-outlined text-[12px] text-white">inventory</span>
+</div>
+<div class="space-y-1">
+<p class="text-sm font-bold text-slate-900 dark:text-white">Recolección Completada</p>
+<p class="text-[11px] text-slate-400 font-medium">24 Oct, 2023 • 14:15 PM</p>
+</div>
+</div>
+<!-- In Process -->
+<div class="relative pl-8">
+<div class="absolute left-0 top-1 size-6 rounded-full bg-primary/20 flex items-center justify-center ring-4 ring-white dark:ring-slate-900 z-10 border border-primary">
+<span class="material-symbols-outlined text-[12px] text-primary">pending</span>
+</div>
+<div class="space-y-1">
+<p class="text-sm font-bold text-primary">En Procesamiento</p>
+<p class="text-[11px] text-slate-400 font-medium">24 Oct, 2023 • 15:00 PM</p>
+<div class="mt-2 bg-slate-50 dark:bg-slate-800/50 p-2 rounded text-[10px] text-slate-500">
+                                        Lavandería "Clean &amp; Fast" recibió la carga.
+                                    </div>
+</div>
+</div>
+<!-- Future Step -->
+<div class="relative pl-8 opacity-40">
+<div class="absolute left-0 top-1 size-6 rounded-full bg-slate-200 dark:bg-slate-800 flex items-center justify-center ring-4 ring-white dark:ring-slate-900 z-10">
+<span class="material-symbols-outlined text-[12px] text-slate-400">delivery_dining</span>
+</div>
+<div class="space-y-1">
+<p class="text-sm font-bold text-slate-900 dark:text-white">Entrega Final</p>
+<p class="text-[11px] text-slate-400 font-medium">Pendiente</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Footer Section Buttons -->
+<div class="mt-8 flex flex-col sm:flex-row justify-end gap-3 pb-10">
+<button class="px-6 py-2.5 rounded-lg border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 font-bold text-sm hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">
+                    Cancelar Orden
+                </button>
+<button class="px-6 py-2.5 rounded-lg border border-primary text-primary font-bold text-sm hover:bg-primary/5 transition-colors">
+                    Contactar Cliente
+                </button>
+<button class="px-6 py-2.5 rounded-lg bg-primary text-white font-bold text-sm hover:bg-primary/90 shadow-lg shadow-primary/20 transition-all">
+                    Actualizar Estado
+                </button>
+</div>
+</main>
+</div>
+</div>
+</body></html>

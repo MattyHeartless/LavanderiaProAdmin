@@ -20,9 +20,9 @@ const ADMIN_SESSION_KEY = 'admin_session_v1';
 export class AuthService {
   private readonly http = inject(HttpClient);
   private readonly storage = this.loadStoredAdmin();
-  private readonly usersPath = `${environment.apiBaseUrl}/api/Auth/users`;
-  private readonly registerCourierPath = `${environment.apiBaseUrl}/api/Auth/register-courier`;
-  private readonly courierAccountExistsPath = `${environment.apiBaseUrl}/api/Auth/courier-account-exists`;
+  private readonly usersPath = `${environment.authApiUrl}/users`;
+  private readonly registerCourierPath = `${environment.authApiUrl}/register-courier`;
+  private readonly courierAccountExistsPath = `${environment.authApiUrl}/courier-account-exists`;
 
   readonly currentAdmin = signal<AdminProfile | null>(this.storage);
   readonly isLoading = signal(false);
@@ -33,7 +33,7 @@ export class AuthService {
     this.errorMessage.set(null);
 
     return this.http
-      .post<LoginAdminResponse>(`${environment.apiBaseUrl}/api/Auth/login-admin`, payload)
+      .post<LoginAdminResponse>(`${environment.authApiUrl}/login-admin`, payload)
       .pipe(
         map((response) => {
           if (isAdminProfile(response)) {

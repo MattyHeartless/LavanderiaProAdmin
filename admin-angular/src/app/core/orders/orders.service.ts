@@ -8,7 +8,7 @@ import { ListOrdersResponse, OrderRecord } from './orders.models';
 @Injectable({ providedIn: 'root' })
 export class OrdersService {
   private readonly http = inject(HttpClient);
-  private readonly ordersPath = `${environment.ordersApiBaseUrl}/api/Orders`;
+  private readonly ordersPath = environment.ordersApiUrl;
 
   listOrders(): Observable<OrderRecord[]> {
     return this.http

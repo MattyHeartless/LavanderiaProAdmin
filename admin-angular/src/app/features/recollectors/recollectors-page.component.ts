@@ -372,7 +372,7 @@ export class RecollectorsPageComponent {
 
   private createCourier(payload: Courier): void {
     this.submitting.set(true);
-    const normalizedAuthUserId = payload.authUserId?.trim() || null;
+    const normalizedAuthUserId = payload.authUserId?.trim() ?? '';
     const createPayload: Courier = {
       ...payload,
       id: this.generateGuid(),
