@@ -39,6 +39,19 @@ export interface OrderDetail {
   subTotal: number;
 }
 
+export interface OrderEvidence {
+  id: string;
+  orderId: string;
+  orderStatusEvidence: number;
+  courierId: string | null;
+  fileUrl: string;
+  relativePath: string;
+  mimeType: string;
+  sizeBytes: number;
+  note: string | null;
+  createdAt: string;
+}
+
 export interface OrderRecord {
   order: OrderEntity;
   orderDetails: OrderDetail[];

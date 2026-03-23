@@ -1,11 +1,11 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, OnDestroy, computed, inject, signal } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { finalize, forkJoin } from 'rxjs';
+import { catchError, finalize, forkJoin, of } from 'rxjs';
 
 import { AuthUser } from '../../core/auth/auth.models';
 import { AuthService } from '../../core/auth/auth.service';
 import { NotificationService } from '../../core/notifications/notification.service';
-import { OrderDetail, OrderRecord } from '../../core/orders/orders.models';
+import { OrderDetail, OrderEvidence, OrderRecord } from '../../core/orders/orders.models';
 import { OrdersService } from '../../core/orders/orders.service';
 
 type StatusMeta = {
@@ -24,10 +24,12 @@ type ProgressStep = {
 
 type TimelineItem = {
   id: string;
+  statusKey: number;
   label: string;
   dateLabel: string;
   timeLabel: string;
   current: boolean;
+  evidenceId: string | null;
 };
 
 @Component({
@@ -47,6 +49,11 @@ export class OrderDetailPageComponent {
   readonly loading = signal(false);
   readonly orderRecord = signal<OrderRecord | null>(null);
   readonly customer = signal<AuthUser | null>(null);
+  readonly evidences = signal<OrderEvidence[]>([]);
+  readonly openingEvidenceId = signal<string | null>(null);
+  readonly evidenceModalOpen = signal(false);
+  readonly evidencePreviewUrl = signal<string | null>(null);
+  readonly evidencePreviewTitle = signal('');
 
   private readonly orderId = this.route.snapshot.paramMap.get('id') ?? '';
   private readonly stepConfig = [
@@ -154,6 +161,7 @@ export class OrderDetailPageComponent {
       return [];
     }
 
+    const evidencesByStatus = this.buildEvidenceMap(this.evidences());
     const createdAt = record.order.createdAt;
     const pickupDateTime = this.parsePickupDateTime(record.order.pickupDate, record.order.pickupTime);
     const recollectedAt = record.order.recollectedAt;
@@ -161,76 +169,42 @@ export class OrderDetailPageComponent {
     const status = record.order.status;
 
     const items: TimelineItem[] = [
-      {
-        id: 'created',
-        label: 'Pedido creado',
-        dateLabel: this.formatDate(createdAt, 'short'),
-        timeLabel: this.formatTime(createdAt),
-        current: status === 1
-      }
+      this.createTimelineItem('created', 1, 'Pedido creado', createdAt, status === 1, evidencesByStatus)
     ];
 
     if (status >= 2) {
-      items.push({
-        id: 'paid',
-        label: 'Pago confirmado',
-        dateLabel: this.formatDate(createdAt, 'short'),
-        timeLabel: this.formatTime(createdAt),
-        current: status === 2
-      });
+      items.push(this.createTimelineItem('paid', 2, 'Pago confirmado', createdAt, status === 2, evidencesByStatus));
     }
 
     if (status >= 3 || recollectedAt) {
       const reference = recollectedAt ?? pickupDateTime;
-      items.push({
-        id: 'recollecting',
-        label: 'Recoleccion',
-        dateLabel: this.formatDate(reference, 'short'),
-        timeLabel: this.formatTime(reference),
-        current: status === 3
-      });
+      items.push(
+        this.createTimelineItem('recollecting', 3, 'Recoleccion', reference, status === 3, evidencesByStatus)
+      );
     }
 
     if (status >= 4) {
       const reference = recollectedAt ?? pickupDateTime ?? createdAt;
-      items.push({
-        id: 'processing',
-        label: 'En procesamiento',
-        dateLabel: this.formatDate(reference, 'short'),
-        timeLabel: this.formatTime(reference),
-        current: status === 4
-      });
+      items.push(
+        this.createTimelineItem('processing', 4, 'En procesamiento', reference, status === 4, evidencesByStatus)
+      );
     }
 
     if (status >= 5) {
       const reference = deliveredAt ?? recollectedAt ?? pickupDateTime ?? createdAt;
-      items.push({
-        id: 'delivering',
-        label: 'En entrega',
-        dateLabel: this.formatDate(reference, 'short'),
-        timeLabel: this.formatTime(reference),
-        current: status === 5
-      });
+      items.push(
+        this.createTimelineItem('delivering', 5, 'En entrega', reference, status === 5, evidencesByStatus)
+      );
     }
 
     if (status >= 6 && deliveredAt) {
-      items.push({
-        id: 'completed',
-        label: 'Pedido completado',
-        dateLabel: this.formatDate(deliveredAt, 'short'),
-        timeLabel: this.formatTime(deliveredAt),
-        current: status === 6
-      });
+      items.push(
+        this.createTimelineItem('completed', 6, 'Pedido completado', deliveredAt, status === 6, evidencesByStatus)
+      );
     }
 
     if (status === 7) {
-      items.push({
-        id: 'cancelled',
-        label: 'Pedido cancelado',
-        dateLabel: this.formatDate(createdAt, 'short'),
-        timeLabel: this.formatTime(createdAt),
-        current: true
-      });
+      items.push(this.createTimelineItem('cancelled', 7, 'Pedido cancelado', createdAt, true, evidencesByStatus));
     }
 
     return items;
@@ -240,12 +214,54 @@ export class OrderDetailPageComponent {
     this.loadOrder();
   }
 
+  ngOnDestroy(): void {
+    this.releaseEvidencePreviewUrl();
+  }
+
   trackByDetailId(_index: number, detail: OrderDetail): string {
     return detail.id;
   }
 
   trackByTimelineId(_index: number, item: TimelineItem): string {
     return item.id;
+  }
+
+  openEvidence(item: TimelineItem): void {
+    if (!item.evidenceId) {
+      return;
+    }
+
+    this.evidencePreviewTitle.set(item.label);
+    this.evidenceModalOpen.set(true);
+    this.releaseEvidencePreviewUrl();
+    this.openingEvidenceId.set(item.evidenceId);
+
+    this.ordersService
+      .getEvidenceImage(item.evidenceId)
+      .pipe(
+        finalize(() => {
+          this.openingEvidenceId.set(null);
+        })
+      )
+      .subscribe({
+        next: (blob) => {
+          this.evidencePreviewUrl.set(URL.createObjectURL(blob));
+        },
+        error: (error: Error) => {
+          this.closeEvidenceModal();
+          this.notificationService.show({
+            type: 'error',
+            title: 'No fue posible abrir la evidencia',
+            description: error.message || 'Intenta nuevamente en unos momentos.'
+          });
+        }
+      });
+  }
+
+  closeEvidenceModal(): void {
+    this.evidenceModalOpen.set(false);
+    this.evidencePreviewTitle.set('');
+    this.releaseEvidencePreviewUrl();
   }
 
   backToOrders(): void {
@@ -368,7 +384,17 @@ export class OrderDetailPageComponent {
     this.loading.set(true);
     forkJoin({
       order: this.ordersService.getOrderById(this.orderId),
-      users: this.authService.listUsers()
+      users: this.authService.listUsers(),
+      evidences: this.ordersService.getOrderEvidences(this.orderId).pipe(
+        catchError((error: Error) => {
+          this.notificationService.show({
+            type: 'warning',
+            title: 'No fue posible cargar evidencias',
+            description: error.message || 'La linea de tiempo se mostrara sin evidencias.'
+          });
+          return of([]);
+        })
+      )
     })
       .pipe(
         finalize(() => {
@@ -376,10 +402,11 @@ export class OrderDetailPageComponent {
         })
       )
       .subscribe({
-        next: ({ order, users }) => {
+        next: ({ order, users, evidences }) => {
           if (!order) {
             this.orderRecord.set(null);
             this.customer.set(null);
+            this.evidences.set([]);
             this.notificationService.show({
               type: 'warning',
               title: 'Pedido no encontrado',
@@ -389,12 +416,14 @@ export class OrderDetailPageComponent {
           }
 
           this.orderRecord.set(order);
+          this.evidences.set(evidences);
           const customer = users.find((user) => user.id === order.order.userId) ?? null;
           this.customer.set(customer);
         },
         error: (error: Error) => {
           this.orderRecord.set(null);
           this.customer.set(null);
+          this.evidences.set([]);
           this.notificationService.show({
             type: 'error',
             title: 'No fue posible cargar el detalle',
@@ -430,6 +459,40 @@ export class OrderDetailPageComponent {
     return { label: `Estado ${status}`, badgeClass: 'bg-slate-100 text-slate-700', progressStep: 0 };
   }
 
+  private createTimelineItem(
+    id: string,
+    statusKey: number,
+    label: string,
+    reference: string | Date | null,
+    current: boolean,
+    evidencesByStatus: Map<number, OrderEvidence>
+  ): TimelineItem {
+    const evidence = evidencesByStatus.get(statusKey) ?? null;
+
+    return {
+      id,
+      statusKey,
+      label,
+      dateLabel: this.formatDate(reference, 'short'),
+      timeLabel: this.formatTime(reference),
+      current,
+      evidenceId: evidence?.id ?? null
+    };
+  }
+
+  private buildEvidenceMap(evidences: OrderEvidence[]): Map<number, OrderEvidence> {
+    const orderedEvidences = [...evidences].sort(
+      (left, right) => this.toTimestamp(right.createdAt) - this.toTimestamp(left.createdAt)
+    );
+
+    return orderedEvidences.reduce((map, evidence) => {
+      if (!map.has(evidence.orderStatusEvidence)) {
+        map.set(evidence.orderStatusEvidence, evidence);
+      }
+      return map;
+    }, new Map<number, OrderEvidence>());
+  }
+
   private parsePickupDateTime(pickupDate: string, pickupTime: string): Date | null {
     if (!pickupDate) {
       return null;
@@ -458,5 +521,17 @@ export class OrderDetailPageComponent {
       return null;
     }
     return parsed;
+  }
+
+  private toTimestamp(value: string | Date | null): number {
+    return this.toDate(value)?.getTime() ?? 0;
+  }
+
+  private releaseEvidencePreviewUrl(): void {
+    const currentUrl = this.evidencePreviewUrl();
+    if (currentUrl) {
+      URL.revokeObjectURL(currentUrl);
+    }
+    this.evidencePreviewUrl.set(null);
   }
 }
