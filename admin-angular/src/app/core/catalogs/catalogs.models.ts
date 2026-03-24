@@ -17,9 +17,9 @@ export interface GetServiceResponse {
   service: CatalogService;
 }
 
-export interface MutationMessageResponse {
+export interface MutationMessageResponse<T = unknown> {
   message: string;
-  data: unknown;
+  data: T;
 }
 
 export interface DeleteMessageResponse {
@@ -48,4 +48,41 @@ export interface ListCouriersResponse {
 
 export interface GetCourierResponse {
   courier: Courier;
+}
+
+export interface Coupon {
+  id: string;
+  code: string;
+  name: string;
+  description: string | null;
+  benefitType: string;
+  benefitValue: number;
+  eventType: string;
+  isActive: boolean;
+  expiresAt: string;
+  usageLimit: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface CreateCouponRequest {
+  code: string;
+  name: string;
+  description: string | null;
+  benefitType: string;
+  benefitValue: number;
+  eventType: string;
+  isActive: boolean;
+  expiresAt: string;
+  usageLimit: number;
+}
+
+export type UpdateCouponRequest = CreateCouponRequest;
+
+export interface ListCouponsResponse {
+  coupons: Coupon[];
+}
+
+export interface GetCouponResponse {
+  coupon: Coupon;
 }

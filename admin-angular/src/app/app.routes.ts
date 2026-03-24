@@ -49,6 +49,11 @@ export const routes: Routes = [
           import('./features/recollectors/recollectors-page.component').then((m) => m.RecollectorsPageComponent)
       },
       {
+        path: 'coupons',
+        loadComponent: () =>
+          import('./features/coupons/coupons-page.component').then((m) => m.CouponsPageComponent)
+      },
+      {
         path: 'clients',
         loadComponent: () =>
           import('./features/clients/clients-page.component').then((m) => m.ClientsPageComponent)

@@ -5,13 +5,18 @@ import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import {
   CatalogService,
+  Coupon,
+  CreateCouponRequest,
   Courier,
   DeleteMessageResponse,
+  GetCouponResponse,
   GetCourierResponse,
   GetServiceResponse,
+  ListCouponsResponse,
   ListCouriersResponse,
   ListServicesResponse,
-  MutationMessageResponse
+  MutationMessageResponse,
+  UpdateCouponRequest
 } from './catalogs.models';
 
 @Injectable({ providedIn: 'root' })
@@ -19,6 +24,7 @@ export class CatalogsService {
   private readonly http = inject(HttpClient);
   private readonly servicesPath = `${environment.catalogsApiUrl}/services`;
   private readonly couriersPath = `${environment.catalogsApiUrl}/couriers`;
+  private readonly couponsPath = `${environment.catalogsApiUrl}/coupons`;
 
   listServices(): Observable<ListServicesResponse> {
     return this.http.get<ListServicesResponse>(this.servicesPath);
@@ -58,5 +64,25 @@ export class CatalogsService {
 
   deleteCourier(id: string): Observable<DeleteMessageResponse> {
     return this.http.delete<DeleteMessageResponse>(`${this.couriersPath}/${id}`);
+  }
+
+  listCoupons(): Observable<ListCouponsResponse> {
+    return this.http.get<ListCouponsResponse>(this.couponsPath);
+  }
+
+  getCouponById(id: string): Observable<GetCouponResponse> {
+    return this.http.get<GetCouponResponse>(`${this.couponsPath}/${id}`);
+  }
+
+  createCoupon(payload: CreateCouponRequest): Observable<MutationMessageResponse<Coupon>> {
+    return this.http.post<MutationMessageResponse<Coupon>>(this.couponsPath, payload);
+  }
+
+  updateCoupon(id: string, payload: UpdateCouponRequest): Observable<MutationMessageResponse<Coupon>> {
+    return this.http.put<MutationMessageResponse<Coupon>>(`${this.couponsPath}/${id}`, payload);
+  }
+
+  deleteCoupon(id: string): Observable<DeleteMessageResponse> {
+    return this.http.delete<DeleteMessageResponse>(`${this.couponsPath}/${id}`);
   }
 }

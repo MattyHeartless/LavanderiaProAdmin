@@ -1,0 +1,16 @@
+<app-coupon-list
+  [coupons]="coupons()"
+  [loading]="loading()"
+  (createRequested)="startCreate(true)"
+  (editRequested)="startEdit($event, true)"
+  (deleteRequested)="deleteCoupon($event)"
+></app-coupon-list>
+
+<app-coupon-form
+  [mode]="formMode()"
+  [submitting]="submitting()"
+  [loadingInitialValue]="loadingSelectedCoupon()"
+  [initialValue]="selectedCoupon()"
+  (cancelRequested)="cancelForm()"
+  (saveRequested)="saveCoupon($event)"
+></app-coupon-form>

@@ -1,0 +1,102 @@
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
+  <div>
+    <h2 class="text-2xl font-black text-slate-900 tracking-tight">Cupones y Promociones</h2>
+    <p class="text-slate-500 mt-1">Administra los cupones promocionales disponibles en el microservicio de catalogos.</p>
+  </div>
+  <button
+    class="bg-primary text-white px-4 py-2 rounded-lg text-sm font-semibold flex items-center gap-2 shadow-lg shadow-primary/20 hover:brightness-110 transition-all"
+    type="button"
+    (click)="createRequested.emit()"
+  >
+    <span class="material-symbols-outlined text-[20px]">add</span>
+    <span>Nuevo Cupon</span>
+  </button>
+</div>
+
+<div class="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm mb-8">
+  <div class="overflow-x-auto">
+    <table class="w-full text-left border-collapse">
+      <thead>
+        <tr class="bg-slate-50 border-b border-slate-200">
+          <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Codigo</th>
+          <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Nombre</th>
+          <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider hidden lg:table-cell">Descripcion</th>
+          <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Beneficio</th>
+          <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Evento</th>
+          <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Limite</th>
+          <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Expira</th>
+          <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Activo</th>
+          <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider text-right">Acciones</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-slate-100">
+        @if (loading) {
+          <tr>
+            <td class="px-6 py-8 text-sm text-slate-500" colspan="9">Cargando cupones...</td>
+          </tr>
+        } @else if (coupons.length === 0) {
+          <tr>
+            <td class="px-6 py-8 text-sm text-slate-500" colspan="9">
+              No hay cupones registrados todavia.
+            </td>
+          </tr>
+        } @else {
+          @for (coupon of coupons; track trackById($index, coupon)) {
+            <tr class="hover:bg-slate-50/60 transition-colors">
+              <td class="px-6 py-4">
+                <span class="inline-flex rounded-lg bg-slate-900 px-3 py-1.5 text-xs font-black tracking-[0.2em] text-white">
+                  {{ coupon.code }}
+                </span>
+              </td>
+              <td class="px-6 py-4">
+                <div class="font-semibold text-slate-900">{{ coupon.name }}</div>
+                <div class="text-xs text-slate-400 md:hidden mt-1">{{ coupon.eventType }}</div>
+              </td>
+              <td class="px-6 py-4 text-slate-500 hidden lg:table-cell max-w-xs truncate">
+                {{ coupon.description || 'Sin descripcion' }}
+              </td>
+              <td class="px-6 py-4">
+                <div class="font-semibold text-primary">{{ formatBenefit(coupon) }}</div>
+                <div class="text-xs text-slate-400">{{ coupon.benefitType }}</div>
+              </td>
+              <td class="px-6 py-4">
+                <span class="inline-flex px-2 py-1 rounded-md bg-sky-100 text-xs font-bold text-sky-700">
+                  {{ coupon.eventType }}
+                </span>
+              </td>
+              <td class="px-6 py-4 text-slate-600">{{ coupon.usageLimit }}</td>
+              <td class="px-6 py-4 text-slate-600">
+                {{ coupon.expiresAt | date: 'dd/MM/yyyy HH:mm' }}
+              </td>
+              <td class="px-6 py-4">
+                @if (coupon.isActive) {
+                  <span class="inline-flex px-2 py-1 rounded-md bg-emerald-100 text-xs font-bold text-emerald-700">Si</span>
+                } @else {
+                  <span class="inline-flex px-2 py-1 rounded-md bg-rose-100 text-xs font-bold text-rose-700">No</span>
+                }
+              </td>
+              <td class="px-6 py-4 text-right">
+                <div class="inline-flex gap-2">
+                  <button
+                    class="text-slate-400 hover:text-primary transition-colors"
+                    type="button"
+                    (click)="editRequested.emit(coupon)"
+                  >
+                    <span class="material-symbols-outlined">edit</span>
+                  </button>
+                  <button
+                    class="text-slate-400 hover:text-rose-600 transition-colors"
+                    type="button"
+                    (click)="deleteRequested.emit(coupon)"
+                  >
+                    <span class="material-symbols-outlined">delete</span>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          }
+        }
+      </tbody>
+    </table>
+  </div>
+</div>

@@ -1,0 +1,140 @@
+<div class="space-y-6 mt-8">
+  <div class="flex items-center gap-3">
+    <div class="h-8 w-1.5 bg-primary rounded-full"></div>
+    <h2 class="text-2xl font-bold text-slate-900">
+      @if (mode === 'create') {
+        Crear Nuevo Cupon
+      } @else {
+        Editar Cupon
+      }
+    </h2>
+  </div>
+  <div class="bg-white rounded-xl border border-slate-200 p-8 shadow-sm">
+    @if (loadingInitialValue) {
+      <div class="rounded-lg border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-500">
+        Cargando informacion del cupon...
+      </div>
+    }
+
+    <form class="space-y-8" [formGroup]="couponForm" (ngSubmit)="submit()">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-8">
+        <div class="space-y-6">
+          <div class="space-y-2">
+            <label class="text-sm font-semibold text-slate-700">Codigo</label>
+            <input
+              #codeInput
+              class="w-full rounded-lg border-slate-200 focus:border-primary focus:ring-primary transition-all uppercase"
+              placeholder="Ej. PROMO10"
+              type="text"
+              formControlName="code"
+            />
+          </div>
+          <div class="space-y-2">
+            <label class="text-sm font-semibold text-slate-700">Nombre</label>
+            <input
+              class="w-full rounded-lg border-slate-200 focus:border-primary focus:ring-primary transition-all"
+              placeholder="Promo primer pedido"
+              type="text"
+              formControlName="name"
+            />
+          </div>
+          <div class="space-y-2">
+            <label class="text-sm font-semibold text-slate-700">Descripcion</label>
+            <textarea
+              class="w-full rounded-lg border-slate-200 focus:border-primary focus:ring-primary transition-all"
+              placeholder="Describe cuando aplica este cupon..."
+              rows="4"
+              formControlName="description"
+            ></textarea>
+          </div>
+        </div>
+
+        <div class="space-y-6">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div class="space-y-2">
+              <label class="text-sm font-semibold text-slate-700">Tipo de beneficio</label>
+              <input
+                class="w-full rounded-lg border-slate-200 focus:border-primary focus:ring-primary transition-all"
+                placeholder="percentage"
+                type="text"
+                formControlName="benefitType"
+              />
+            </div>
+            <div class="space-y-2">
+              <label class="text-sm font-semibold text-slate-700">Valor del beneficio</label>
+              <input
+                class="w-full rounded-lg border-slate-200 focus:border-primary focus:ring-primary transition-all"
+                placeholder="10"
+                step="0.01"
+                type="number"
+                formControlName="benefitValue"
+              />
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div class="space-y-2">
+              <label class="text-sm font-semibold text-slate-700">Evento</label>
+              <select
+                class="w-full rounded-lg border-slate-200 focus:border-primary focus:ring-primary transition-all"
+                formControlName="eventType"
+              >
+                @for (eventType of eventTypeOptions; track eventType) {
+                  <option [value]="eventType">{{ eventType }}</option>
+                }
+              </select>
+            </div>
+            <div class="space-y-2">
+              <label class="text-sm font-semibold text-slate-700">Limite de uso</label>
+              <input
+                class="w-full rounded-lg border-slate-200 focus:border-primary focus:ring-primary transition-all"
+                min="1"
+                step="1"
+                type="number"
+                formControlName="usageLimit"
+              />
+            </div>
+          </div>
+
+          <div class="space-y-2">
+            <label class="text-sm font-semibold text-slate-700">Expira el</label>
+            <input
+              class="w-full rounded-lg border-slate-200 focus:border-primary focus:ring-primary transition-all"
+              type="datetime-local"
+              formControlName="expiresAt"
+            />
+          </div>
+
+          <label class="flex items-center gap-2">
+            <input class="h-4 w-4 rounded border-slate-300 text-primary" type="checkbox" formControlName="isActive" />
+            <span class="text-sm text-slate-700">Cupon activo</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="pt-6 border-t border-slate-100 flex justify-end gap-4">
+        <button
+          class="px-6 py-2.5 rounded-lg font-bold text-slate-600 hover:bg-slate-100 transition-all"
+          type="button"
+          [disabled]="submitting"
+          (click)="cancelRequested.emit()"
+        >
+          Cancelar
+        </button>
+        <button
+          class="px-8 py-2.5 bg-primary text-white font-bold rounded-lg hover:bg-primary/90 transition-all shadow-lg shadow-primary/20 disabled:opacity-70"
+          type="submit"
+          [disabled]="submitting || loadingInitialValue"
+        >
+          @if (submitting) {
+            Guardando...
+          } @else if (mode === 'create') {
+            Guardar Cupon
+          } @else {
+            Actualizar Cupon
+          }
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
