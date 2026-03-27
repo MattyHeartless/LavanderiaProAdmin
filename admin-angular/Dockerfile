@@ -6,7 +6,7 @@ COPY package*.json ./
 RUN npm ci
 
 COPY . .
-RUN npm run build -- --configuration production
+RUN npm run build:prod
 
 FROM nginxinc/nginx-unprivileged:1.27-alpine
 

@@ -15,10 +15,11 @@ body {
 }
 
 .bg-laundry-overlay {
-  background-image: linear-gradient(to bottom, rgba(30, 58, 138, 0.4), rgba(15, 23, 42, 0.7)),
-    url(https://lh3.googleusercontent.com/aida-public/AB6AXuCr6bYXSJQvzemCnmNKbi_8TiAckKZNVknmEM9c9RSO9BinKi7AwdskkTX2bytb331QK2m5zjBRHm2IAFRM3MLg2rqQds7BQpkx1SwKuWSXXx1Y1rht_uvOMOY4Xq1RETuCOkiOBBegpGxBwPl6S089O_6-uqyNVOnUOMRsPCwl2uzXa4Infvdqvgldr51Cy171HDmPIm29S33XHW3qVtsUV-j3ctbrjRAhFrsLHbupDbEnmrNtD84nCKkn0ETIfI_RN7eCqeMgys4);
-  background-size: cover;
+  background-color: #fff;
+  background-image: url('/login-pattern.svg');
+  background-size: 560px;
   background-position: center;
+  background-repeat: repeat;
 }
 
 .map-grid {

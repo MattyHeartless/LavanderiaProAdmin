@@ -1,5 +1,13 @@
 <div class="admin-shell" data-testid="admin-shell">
-  <aside class="sidebar">
+  <button
+    type="button"
+    class="sidebar-backdrop"
+    [class.is-open]="isMobileMenuOpen()"
+    aria-label="Cerrar menu"
+    (click)="closeMobileMenu()"
+  ></button>
+
+  <aside class="sidebar" [class.is-mobile-open]="isMobileMenuOpen()">
     <div class="brand">
       <div class="brand-icon">
         <span class="material-symbols-outlined">local_laundry_service</span>
@@ -18,6 +26,7 @@
           [routerLinkActiveOptions]="{ exact: item.exact ?? true }"
           [attr.data-testid]="item.testId"
           [class.is-child]="item.child"
+          (click)="closeMobileMenu()"
         >
           <span class="material-symbols-outlined nav-icon">{{ item.icon }}</span>
           {{ item.label }}
@@ -37,6 +46,15 @@
   <main class="content">
     <header class="topbar" data-testid="topbar">
       <div class="topbar-title">
+        <button
+          class="menu-toggle"
+          type="button"
+          aria-label="Abrir menu"
+          [attr.aria-expanded]="isMobileMenuOpen()"
+          (click)="toggleMobileMenu()"
+        >
+          <span class="material-symbols-outlined">{{ isMobileMenuOpen() ? 'close' : 'menu' }}</span>
+        </button>
         <p>Panel Administrativo</p>
       </div>
       <div class="topbar-user" data-testid="logged-user">

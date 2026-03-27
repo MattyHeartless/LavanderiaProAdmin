@@ -9,6 +9,11 @@
   height: 100vh;
   background: #f6f7f8;
   overflow: hidden;
+  position: relative;
+}
+
+.sidebar-backdrop {
+  display: none;
 }
 
 .sidebar {
@@ -47,12 +52,12 @@
   width: 40px;
   height: 40px;
   border-radius: 0.5rem;
-  background: #136dec;
+  background: #39e079;
   color: #fff;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 8px 20px rgb(19 109 236 / 20%);
+  box-shadow: 0 8px 20px rgb(57 224 121 / 28%);
 }
 
 .brand-icon .material-symbols-outlined {
@@ -82,12 +87,12 @@
 }
 
 .menu a:hover {
-  background: #eff6ff;
+  background: #ebfff2;
 }
 
 .menu a.is-active {
-  background: #dbeafe;
-  color: #1d4ed8;
+  background: #d7fbe4;
+  color: #1c9c4d;
   font-weight: 600;
 }
 
@@ -119,7 +124,7 @@
 }
 
 .logout-btn:hover {
-  background: #eff6ff;
+  background: #ebfff2;
 }
 
 .footer {
@@ -153,6 +158,29 @@
 .topbar-title p {
   color: #334155;
   font-weight: 600;
+}
+
+.topbar-title {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.menu-toggle {
+  display: none;
+  border: 0;
+  background: transparent;
+  color: #334155;
+  width: 40px;
+  height: 40px;
+  border-radius: 9999px;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.menu-toggle:hover {
+  background: #f1f5f9;
 }
 
 .topbar-user {
@@ -252,12 +280,55 @@
   }
 
   .sidebar {
-    border-right: 0;
-    border-bottom: 1px solid #e2e8f0;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: min(280px, calc(100vw - 2rem));
+    height: 100vh;
+    border-right: 1px solid #e2e8f0;
+    border-bottom: 0;
+    z-index: 30;
+    box-shadow: 0 24px 60px rgb(15 23 42 / 18%);
+    transform: translateX(-100%);
+    transition: transform 180ms ease;
+  }
+
+  .sidebar.is-mobile-open {
+    transform: translateX(0);
+  }
+
+  .sidebar-backdrop {
+    display: block;
+    position: fixed;
+    inset: 0;
+    border: 0;
+    padding: 0;
+    background: rgb(15 23 42 / 45%);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 180ms ease;
+    z-index: 20;
+  }
+
+  .sidebar-backdrop.is-open {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .menu-toggle {
+    display: inline-flex;
   }
 
   .topbar-user .user-text {
     display: none;
+  }
+
+  .topbar {
+    padding: 0 1rem;
+  }
+
+  .view {
+    padding: 1rem;
   }
 }
 

@@ -41,8 +41,18 @@ export class AdminLayoutComponent {
   ]);
 
   readonly year = computed(() => new Date().getFullYear());
+  readonly isMobileMenuOpen = signal(false);
+
+  toggleMobileMenu(): void {
+    this.isMobileMenuOpen.update((value) => !value);
+  }
+
+  closeMobileMenu(): void {
+    this.isMobileMenuOpen.set(false);
+  }
 
   logout(): void {
+    this.closeMobileMenu();
     this.authService.clearSession();
     void this.router.navigateByUrl('/login');
   }
