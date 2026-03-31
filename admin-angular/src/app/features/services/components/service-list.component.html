@@ -19,12 +19,11 @@
       <thead>
         <tr class="bg-slate-50 border-b border-slate-200">
           <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider w-20">Icono</th>
-          <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Nombre</th>
-          <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider hidden md:table-cell">
+          <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider min-w-[190px]">Nombre</th>
+          <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider min-w-[320px]">Opciones de precio</th>
+          <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider hidden xl:table-cell min-w-[260px]">
             Descripcion
           </th>
-          <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Unidad</th>
-          <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Precio</th>
           <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Activo</th>
           <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider text-right">Acciones</th>
         </tr>
@@ -32,32 +31,59 @@
       <tbody class="divide-y divide-slate-100">
         @if (loading) {
           <tr>
-            <td class="px-6 py-8 text-sm text-slate-500" colspan="7">Cargando servicios...</td>
+            <td class="px-6 py-8 text-sm text-slate-500" colspan="6">Cargando servicios...</td>
           </tr>
         } @else if (services.length === 0) {
           <tr>
-            <td class="px-6 py-8 text-sm text-slate-500" colspan="7">
-              No hay servicios registrados todavia.
-            </td>
+            <td class="px-6 py-8 text-sm text-slate-500" colspan="6">No hay servicios registrados todavia.</td>
           </tr>
         } @else {
           @for (service of services; track trackById($index, service)) {
-            <tr class="hover:bg-slate-50/60 transition-colors">
+            <tr class="hover:bg-slate-50/60 transition-colors align-top">
               <td class="px-6 py-4">
                 <div [class]="resolveThemeIcon(service.themeIcon)">
                   <span class="material-symbols-outlined">{{ service.icon }}</span>
                 </div>
               </td>
-              <td class="px-6 py-4 font-semibold text-slate-900">{{ service.name }}</td>
-              <td class="px-6 py-4 text-slate-500 hidden md:table-cell max-w-xs truncate">
-                {{ service.description }}
+              <td class="px-6 py-4">
+                <p class="font-semibold text-slate-900">{{ service.name }}</p>
+                <p class="mt-1 text-xs text-slate-500 xl:hidden">{{ service.description }}</p>
               </td>
               <td class="px-6 py-4">
-                <span class="inline-flex px-2 py-1 rounded-md bg-slate-100 text-xs font-bold text-slate-600">
-                  {{ service.uoM }}
-                </span>
+                @if (primaryPricingOption(service); as option) {
+                  <div class="flex flex-wrap items-center gap-2 rounded-lg border border-slate-200 bg-slate-50 px-3 py-2">
+                    <span class="text-sm font-semibold text-slate-900">{{ option.optionName }}</span>
+                    <span class="text-xs font-bold uppercase text-slate-500">{{ option.uoM }}</span>
+                    <span class="text-sm font-bold text-primary">${{ option.price | number: '1.2-2' }}</span>
+                    <span
+                      [class]="
+                        option.isActive
+                          ? 'inline-flex rounded-full bg-emerald-100 px-2 py-0.5 text-[10px] font-bold uppercase text-emerald-700'
+                          : 'inline-flex rounded-full bg-slate-200 px-2 py-0.5 text-[10px] font-bold uppercase text-slate-600'
+                      "
+                    >
+                      {{ option.isActive ? 'Activa' : 'Inactiva' }}
+                    </span>
+                  </div>
+                  @if (additionalPricingOptionsCount(service) > 0) {
+                    <button
+                      class="mt-2 inline-flex items-center gap-1 text-xs font-bold text-primary hover:text-primary/80"
+                      type="button"
+                      (click)="openPricingOptionsModal(service)"
+                    >
+                      +{{ additionalPricingOptionsCount(service) }} precios
+                      <span class="material-symbols-outlined text-[16px]">open_in_new</span>
+                    </button>
+                  }
+                } @else {
+                  <span class="inline-flex items-center rounded-full bg-amber-100 px-2.5 py-1 text-[11px] font-bold text-amber-700">
+                    Sin opciones registradas
+                  </span>
+                }
               </td>
-              <td class="px-6 py-4 font-bold text-primary">${{ service.price | number: '1.2-2' }}</td>
+              <td class="px-6 py-4 text-slate-500 hidden xl:table-cell max-w-xs">
+                {{ service.description }}
+              </td>
               <td class="px-6 py-4">
                 @if (service.isActive) {
                   <span class="inline-flex px-2 py-1 rounded-md bg-emerald-100 text-xs font-bold text-emerald-700">
@@ -94,3 +120,53 @@
     </table>
   </div>
 </div>
+
+@if (pricingOptionsModalService(); as service) {
+  <div class="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/55 p-4 backdrop-blur-sm" (click)="closePricingOptionsModal()">
+    <div
+      class="w-full max-w-2xl rounded-2xl border border-slate-200 bg-white shadow-2xl"
+      (click)="$event.stopPropagation()"
+    >
+      <div class="flex items-start justify-between gap-4 border-b border-slate-200 px-6 py-5">
+        <div>
+          <p class="text-[11px] font-black uppercase tracking-[0.22em] text-slate-400">Pricing Options</p>
+          <h3 class="mt-2 text-xl font-black text-slate-900">{{ service.name }}</h3>
+          <p class="mt-1 text-sm text-slate-500">Listado completo de precios configurados para este servicio.</p>
+        </div>
+        <button
+          class="inline-flex size-10 items-center justify-center rounded-full bg-slate-100 text-slate-600 hover:bg-slate-200 transition-colors"
+          type="button"
+          aria-label="Cerrar modal"
+          (click)="closePricingOptionsModal()"
+        >
+          <span class="material-symbols-outlined text-[20px]">close</span>
+        </button>
+      </div>
+
+      <div class="max-h-[70vh] overflow-y-auto px-6 py-5">
+        <div class="space-y-3">
+          @for (option of pricingOptions(service); track option.id || option.optionName) {
+            <div class="flex flex-col gap-3 rounded-xl border border-slate-200 bg-slate-50 px-4 py-4 sm:flex-row sm:items-center sm:justify-between">
+              <div>
+                <p class="text-base font-bold text-slate-900">{{ option.optionName }}</p>
+                <p class="mt-1 text-xs font-bold uppercase tracking-wide text-slate-500">{{ option.uoM }}</p>
+              </div>
+              <div class="flex flex-wrap items-center gap-2 sm:justify-end">
+                <span class="text-base font-black text-primary">${{ option.price | number: '1.2-2' }}</span>
+                <span
+                  [class]="
+                    option.isActive
+                      ? 'inline-flex rounded-full bg-emerald-100 px-2.5 py-1 text-[10px] font-bold uppercase text-emerald-700'
+                      : 'inline-flex rounded-full bg-slate-200 px-2.5 py-1 text-[10px] font-bold uppercase text-slate-600'
+                  "
+                >
+                  {{ option.isActive ? 'Activa' : 'Inactiva' }}
+                </span>
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+}

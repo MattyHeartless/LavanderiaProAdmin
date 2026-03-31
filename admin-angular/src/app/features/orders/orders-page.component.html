@@ -31,6 +31,7 @@
           <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">ID Orden</th>
           <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Cliente</th>
           <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Servicio</th>
+          <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Entrega</th>
           <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Fecha / Hora</th>
           <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Estado</th>
           <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider text-right">Acciones</th>
@@ -39,11 +40,11 @@
       <tbody class="divide-y divide-slate-100">
         @if (loading()) {
           <tr>
-            <td class="px-6 py-8 text-sm text-slate-500" colspan="6">Cargando pedidos...</td>
+            <td class="px-6 py-8 text-sm text-slate-500" colspan="7">Cargando pedidos...</td>
           </tr>
         } @else if (orders().length === 0) {
           <tr>
-            <td class="px-6 py-8 text-sm text-slate-500" colspan="6">No hay pedidos registrados.</td>
+            <td class="px-6 py-8 text-sm text-slate-500" colspan="7">No hay pedidos registrados.</td>
           </tr>
         } @else {
           @for (order of orders(); track trackByOrderId($index, order)) {
@@ -61,6 +62,11 @@
               </td>
               <td class="px-6 py-4">
                 <span class="text-xs font-bold text-slate-700">{{ order.serviceSummary }}</span>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <span class="inline-flex rounded-full bg-slate-100 px-2.5 py-1 text-[11px] font-bold text-slate-700">
+                  {{ order.deliveryModeLabel }}
+                </span>
               </td>
               <td class="px-6 py-4 whitespace-nowrap">
                 <div class="text-sm">

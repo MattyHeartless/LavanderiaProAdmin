@@ -9,9 +9,10 @@
       }
     </h2>
   </div>
-  <div class="bg-white rounded-xl border border-slate-200 p-8 shadow-sm">
-    <form class="space-y-8" [formGroup]="serviceForm" (ngSubmit)="submit()">
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-8">
+
+  <div class="bg-white rounded-xl border border-slate-200 shadow-sm">
+    <form class="space-y-10 p-8" [formGroup]="serviceForm" (ngSubmit)="submit()">
+      <div class="grid grid-cols-1 xl:grid-cols-2 gap-x-12 gap-y-8">
         <div class="space-y-6">
           <div class="space-y-2">
             <label class="text-sm font-semibold text-slate-700">Nombre del Servicio</label>
@@ -23,43 +24,24 @@
               formControlName="name"
             />
           </div>
+
           <div class="space-y-2">
             <label class="text-sm font-semibold text-slate-700">Descripcion</label>
             <textarea
               class="w-full rounded-lg border-slate-200 focus:border-primary focus:ring-primary transition-all"
               placeholder="Escribe una breve descripcion del servicio..."
-              rows="4"
+              rows="5"
               formControlName="description"
             ></textarea>
           </div>
+
+          <label class="inline-flex items-center gap-2">
+            <input class="h-4 w-4 rounded border-slate-300 text-primary" type="checkbox" formControlName="isActive" />
+            <span class="text-sm text-slate-700">Servicio activo</span>
+          </label>
         </div>
+
         <div class="space-y-6">
-          <div class="grid grid-cols-2 gap-4">
-            <div class="space-y-2">
-              <label class="text-sm font-semibold text-slate-700">Unidad de Medida</label>
-              <select
-                class="w-full rounded-lg border-slate-200 focus:border-primary focus:ring-primary transition-all"
-                formControlName="uoM"
-              >
-                <option value="KG">KG</option>
-                <option value="PZ">PZ</option>
-                <option value="DOC">DOC</option>
-              </select>
-            </div>
-            <div class="space-y-2">
-              <label class="text-sm font-semibold text-slate-700">Precio</label>
-              <div class="relative">
-                <span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 font-medium">$</span>
-                <input
-                  class="w-full pl-8 rounded-lg border-slate-200 focus:border-primary focus:ring-primary transition-all"
-                  placeholder="0.00"
-                  step="0.01"
-                  type="number"
-                  formControlName="price"
-                />
-              </div>
-            </div>
-          </div>
           <div class="space-y-2">
             <label class="text-sm font-semibold text-slate-700">Icono</label>
             <input
@@ -69,6 +51,7 @@
               formControlName="icon"
             />
           </div>
+
           <div class="space-y-2">
             <label class="text-sm font-semibold text-slate-700">Tema del icono (clases CSS)</label>
             <input
@@ -77,13 +60,124 @@
               formControlName="themeIcon"
             />
           </div>
-          <label class="flex items-center gap-2">
-            <input class="h-4 w-4 rounded border-slate-300 text-primary" type="checkbox" formControlName="isActive" />
-            <span class="text-sm text-slate-700">Servicio activo</span>
-          </label>
         </div>
       </div>
-      <div class="pt-6 border-t border-slate-100 flex justify-end gap-4">
+
+      <section class="border-t border-slate-200 pt-8">
+        <div class="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+          <div class="max-w-2xl">
+            <p class="text-[11px] font-black uppercase tracking-[0.22em] text-slate-400">Pricing Options</p>
+            <h3 class="mt-2 text-xl font-black text-slate-900">Opciones de precio del servicio</h3>
+            <p class="mt-2 text-sm text-slate-500">
+              Cada servicio debe tener al menos una opcion activa. La unidad se asigna segun el tipo.
+            </p>
+          </div>
+
+          <button
+            class="inline-flex items-center justify-center gap-2 rounded-lg border border-primary/20 bg-primary/5 px-4 py-2.5 text-sm font-bold text-primary disabled:opacity-40"
+            type="button"
+            [disabled]="pricingOptions.length >= pricingCatalog.length"
+            (click)="addPricingOption()"
+          >
+            <span class="material-symbols-outlined text-base">add</span>
+            Agregar opcion
+          </button>
+        </div>
+
+        <div class="mt-6 overflow-hidden rounded-2xl border border-slate-200" formArrayName="pricingOptions">
+          <div class="hidden bg-slate-50 px-6 py-3 lg:grid lg:grid-cols-[1.8fr_0.9fr_1fr_0.8fr_56px] lg:gap-4">
+            <span class="text-[11px] font-bold uppercase tracking-[0.18em] text-slate-500">Tipo</span>
+            <span class="text-[11px] font-bold uppercase tracking-[0.18em] text-slate-500">Unidad</span>
+            <span class="text-[11px] font-bold uppercase tracking-[0.18em] text-slate-500">Precio</span>
+            <span class="text-[11px] font-bold uppercase tracking-[0.18em] text-slate-500">Estado</span>
+            <span></span>
+          </div>
+
+          @for (optionGroup of pricingOptions.controls; track $index) {
+            <div
+              class="border-t border-slate-200 px-5 py-5 first:border-t-0 lg:px-6"
+              [formGroupName]="$index"
+            >
+              <div class="grid grid-cols-1 gap-4 lg:grid-cols-[1.8fr_0.9fr_1fr_0.8fr_56px] lg:items-end">
+                <div class="space-y-2">
+                  <label class="text-xs font-bold uppercase tracking-wide text-slate-500 lg:hidden">Tipo</label>
+                  <select
+                    class="w-full rounded-lg border-slate-200 focus:border-primary focus:ring-primary transition-all"
+                    formControlName="optionName"
+                    (change)="syncOptionUom($index)"
+                  >
+                    @for (catalogItem of allowedCatalogItems($index); track catalogItem.optionName) {
+                      <option [value]="catalogItem.optionName">{{ catalogItem.optionName }}</option>
+                    }
+                  </select>
+                </div>
+
+                <div class="space-y-2">
+                  <label class="text-xs font-bold uppercase tracking-wide text-slate-500 lg:hidden">Unidad</label>
+                  <input
+                    class="w-full rounded-lg border-slate-200 bg-slate-50 text-slate-600"
+                    type="text"
+                    formControlName="uoM"
+                    readonly
+                  />
+                </div>
+
+                <div class="space-y-2">
+                  <label class="text-xs font-bold uppercase tracking-wide text-slate-500 lg:hidden">Precio</label>
+                  <div class="relative">
+                    <span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 font-medium">$</span>
+                    <input
+                      class="w-full pl-8 rounded-lg border-slate-200 focus:border-primary focus:ring-primary transition-all"
+                      placeholder="0.00"
+                      step="0.01"
+                      type="number"
+                      formControlName="price"
+                    />
+                  </div>
+                </div>
+
+                <div class="space-y-2">
+                  <label class="text-xs font-bold uppercase tracking-wide text-slate-500 lg:hidden">Estado</label>
+                  <label class="inline-flex h-11 w-full items-center justify-center gap-2 rounded-lg border border-slate-200 bg-white px-3">
+                    <input
+                      class="h-4 w-4 rounded border-slate-300 text-primary"
+                      type="checkbox"
+                      formControlName="isActive"
+                    />
+                    <span class="text-sm font-medium text-slate-700">Activa</span>
+                  </label>
+                </div>
+
+                <div class="flex justify-end">
+                  <button
+                    class="inline-flex size-11 items-center justify-center rounded-full bg-rose-50 text-rose-600 transition-colors hover:bg-rose-100"
+                    type="button"
+                    aria-label="Eliminar opcion de precio"
+                    (click)="removePricingOption($index)"
+                  >
+                    <span class="material-symbols-outlined text-lg">delete</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          }
+        </div>
+
+        @if (hasPricingOptionsError('missingOptions')) {
+          <p class="mt-4 text-sm font-medium text-rose-600">Agrega al menos una opcion de precio.</p>
+        }
+        @if (hasPricingOptionsError('missingActiveOption')) {
+          <p class="mt-4 text-sm font-medium text-rose-600">Debes mantener al menos una opcion activa.</p>
+        }
+        @if (hasPricingOptionsError('duplicateOptionName')) {
+          <p class="mt-4 text-sm font-medium text-rose-600">No puedes repetir el mismo tipo de opcion dentro del servicio.</p>
+        }
+        @if (hasPricingOptionsError('invalidOptionUom')) {
+          <p class="mt-4 text-sm font-medium text-rose-600">La unidad no coincide con el tipo de opcion permitido.</p>
+        }
+      </section>
+
+      <div class="flex justify-end gap-4 border-t border-slate-100 pt-6">
         <button
           class="px-6 py-2.5 rounded-lg font-bold text-slate-600 hover:bg-slate-100 transition-all"
           type="button"

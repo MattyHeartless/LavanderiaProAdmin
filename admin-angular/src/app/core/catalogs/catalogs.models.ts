@@ -2,11 +2,54 @@ export interface CatalogService {
   id: string;
   name: string;
   description: string;
-  price: number;
-  uoM: string;
   isActive: boolean;
   icon: string;
   themeIcon: string;
+  pricingOptions: ServicePricingOption[];
+}
+
+export interface ServicePricingOption {
+  id: string;
+  serviceId: string;
+  optionName: ServicePricingOptionName;
+  price: number;
+  uoM: ServicePricingOptionUom;
+  isActive: boolean;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+export interface ServicePricingOptionPayload {
+  optionName: ServicePricingOptionName;
+  price: number;
+  uoM: ServicePricingOptionUom;
+  isActive: boolean;
+}
+
+export interface ServiceFormValue {
+  id: string;
+  name: string;
+  description: string;
+  isActive: boolean;
+  icon: string;
+  themeIcon: string;
+  pricingOptions: ServicePricingOption[];
+}
+
+export type ServicePricingOptionName =
+  | 'Por kilo'
+  | 'Por pieza'
+  | 'Por docena'
+  | 'Bulto pequeño'
+  | 'Bulto mediano'
+  | 'Bulto grande'
+  | 'Bulto jumbo';
+
+export type ServicePricingOptionUom = 'KG' | 'PZ' | 'DOC' | 'BULTO';
+
+export interface ServiceOptionCatalogItem {
+  optionName: ServicePricingOptionName;
+  uoM: ServicePricingOptionUom;
 }
 
 export interface ListServicesResponse {
@@ -15,6 +58,12 @@ export interface ListServicesResponse {
 
 export interface GetServiceResponse {
   service: CatalogService;
+}
+
+export interface ListServicePricingOptionsResponse {
+  message?: string;
+  data?: ServicePricingOption[];
+  pricingOptions?: ServicePricingOption[];
 }
 
 export interface MutationMessageResponse<T = unknown> {

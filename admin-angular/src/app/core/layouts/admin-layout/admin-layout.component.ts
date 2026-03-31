@@ -33,6 +33,7 @@ export class AdminLayoutComponent {
   readonly navItems = signal<NavItem[]>([
     { label: 'Tablero', path: '/admin/dashboard', icon: 'dashboard', testId: 'nav-dashboard' },
     { label: 'Servicios', path: '/admin/services', icon: 'settings_suggest', testId: 'nav-services' },
+    { label: 'Modos de entrega', path: '/admin/delivery-modes', icon: 'schedule_send', testId: 'nav-delivery-modes' },
     { label: 'Cupones', path: '/admin/coupons', icon: 'sell', testId: 'nav-coupons' },
     { label: 'Pedidos', path: '/admin/orders', icon: 'inventory_2', testId: 'nav-orders' },
     { label: 'Recolectores', path: '/admin/recollectors', icon: 'local_shipping', testId: 'nav-recollectors' },

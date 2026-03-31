@@ -19,6 +19,7 @@ type OrderListItem = {
   customerName: string;
   customerInitials: string;
   serviceSummary: string;
+  deliveryModeLabel: string;
   pickupDateLabel: string;
   pickupTimeLabel: string;
   statusLabel: string;
@@ -103,6 +104,7 @@ export class OrdersPageComponent {
       customerName,
       customerInitials: this.resolveInitials(customerName),
       serviceSummary: this.resolveServiceSummary(orderRecord),
+      deliveryModeLabel: this.resolveDeliveryModeLabel(orderRecord),
       pickupDateLabel: this.resolveDateLabel(orderRecord.order.pickupDate),
       pickupTimeLabel: this.resolveTimeLabel(orderRecord.order.pickupTime),
       statusLabel: statusMeta.label,
@@ -116,6 +118,19 @@ export class OrdersPageComponent {
     }
 
     return orderRecord.orderDetails.map((detail) => detail.serviceName).join(', ');
+  }
+
+  private resolveDeliveryModeLabel(orderRecord: OrderRecord): string {
+    const { deliveryModeName, deliveryEtaHours } = orderRecord.order;
+    if (!deliveryModeName) {
+      return 'Sin modo registrado';
+    }
+
+    if (!deliveryEtaHours) {
+      return deliveryModeName;
+    }
+
+    return `${deliveryModeName} · ${deliveryEtaHours}h`;
   }
 
   private resolveDateLabel(pickupDate: string): string {

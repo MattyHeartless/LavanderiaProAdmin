@@ -1,0 +1,103 @@
+<div class="space-y-8">
+  <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+    <div>
+      <h2 class="text-3xl font-black text-slate-900 tracking-tight">Modos de entrega</h2>
+      <p class="text-slate-500 mt-1">
+        Consulta los modos disponibles en Orders con su prioridad, tiempo estimado y recargo configurado.
+      </p>
+    </div>
+    <div class="rounded-xl border border-slate-200 bg-white px-4 py-3 shadow-sm">
+      <p class="text-[11px] font-black uppercase tracking-[0.22em] text-slate-400">Estado del modulo</p>
+      <p class="mt-1 text-sm font-semibold text-slate-700">Solo lectura por ahora</p>
+    </div>
+  </div>
+
+  <div class="grid gap-4 md:grid-cols-3">
+    <div class="rounded-2xl border border-slate-200 bg-white px-5 py-4 shadow-sm">
+      <p class="text-[11px] font-black uppercase tracking-[0.22em] text-slate-400">Total</p>
+      <p class="mt-2 text-3xl font-black text-slate-900">{{ deliveryModes().length }}</p>
+      <p class="mt-1 text-sm text-slate-500">Modos registrados en el servicio de Orders</p>
+    </div>
+    <div class="rounded-2xl border border-slate-200 bg-white px-5 py-4 shadow-sm">
+      <p class="text-[11px] font-black uppercase tracking-[0.22em] text-slate-400">Activos</p>
+      <p class="mt-2 text-3xl font-black text-emerald-600">{{ activeCount() }}</p>
+      <p class="mt-1 text-sm text-slate-500">Disponibles actualmente para uso operativo</p>
+    </div>
+    <div class="rounded-2xl border border-slate-200 bg-white px-5 py-4 shadow-sm">
+      <p class="text-[11px] font-black uppercase tracking-[0.22em] text-slate-400">Recargo maximo</p>
+      <p class="mt-2 text-3xl font-black text-primary">{{ formatCurrency(maxSurcharge()) }}</p>
+      <p class="mt-1 text-sm text-slate-500">Mayor recargo configurado entre todos los modos</p>
+    </div>
+  </div>
+
+  <div class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+    <div class="flex items-center justify-between gap-4 border-b border-slate-200 px-6 py-5">
+      <div>
+        <p class="text-[11px] font-black uppercase tracking-[0.22em] text-slate-400">Catalogo</p>
+        <h3 class="mt-1 text-lg font-black text-slate-900">Listado de modos de entrega</h3>
+      </div>
+    </div>
+
+    <div class="overflow-x-auto">
+      <table class="w-full text-left border-collapse">
+        <thead>
+          <tr class="bg-slate-50 border-b border-slate-200">
+            <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Orden</th>
+            <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Nombre</th>
+            <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Codigo</th>
+            <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">ETA</th>
+            <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Recargo</th>
+            <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Estado</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-slate-100">
+          @if (loading()) {
+            <tr>
+              <td class="px-6 py-8 text-sm text-slate-500" colspan="6">Cargando modos de entrega...</td>
+            </tr>
+          } @else if (deliveryModes().length === 0) {
+            <tr>
+              <td class="px-6 py-8 text-sm text-slate-500" colspan="6">No hay modos de entrega registrados.</td>
+            </tr>
+          } @else {
+            @for (mode of deliveryModes(); track trackById($index, mode)) {
+              <tr class="hover:bg-slate-50/60 transition-colors">
+                <td class="px-6 py-4">
+                  <span class="inline-flex size-9 items-center justify-center rounded-full bg-slate-100 text-sm font-black text-slate-700">
+                    {{ mode.sortOrder }}
+                  </span>
+                </td>
+                <td class="px-6 py-4">
+                  <div>
+                    <p class="font-semibold text-slate-900">{{ mode.name }}</p>
+                    <p class="mt-1 text-xs text-slate-500">ID {{ mode.id }}</p>
+                  </div>
+                </td>
+                <td class="px-6 py-4">
+                  <code class="rounded bg-slate-100 px-2 py-1 text-[11px] font-bold text-primary">{{ mode.code }}</code>
+                </td>
+                <td class="px-6 py-4">
+                  <span class="text-sm font-semibold text-slate-700">{{ mode.etaHours }} horas</span>
+                </td>
+                <td class="px-6 py-4">
+                  <span class="text-sm font-bold text-primary">{{ formatCurrency(mode.surchargeAmount) }}</span>
+                </td>
+                <td class="px-6 py-4">
+                  <span
+                    [class]="
+                      mode.isActive
+                        ? 'inline-flex rounded-full bg-emerald-100 px-2.5 py-1 text-[11px] font-bold text-emerald-700'
+                        : 'inline-flex rounded-full bg-slate-200 px-2.5 py-1 text-[11px] font-bold text-slate-600'
+                    "
+                  >
+                    {{ mode.isActive ? 'Activo' : 'Inactivo' }}
+                  </span>
+                </td>
+              </tr>
+            }
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

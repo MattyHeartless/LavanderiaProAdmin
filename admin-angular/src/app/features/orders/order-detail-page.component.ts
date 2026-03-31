@@ -346,6 +346,23 @@ export class OrderDetailPageComponent {
     return 'bg-amber-100 text-amber-700';
   }
 
+  deliveryModeLabel(): string {
+    const order = this.orderRecord()?.order;
+    if (!order?.deliveryModeName) {
+      return 'Sin modo registrado';
+    }
+
+    if (!order.deliveryEtaHours) {
+      return order.deliveryModeName;
+    }
+
+    return `${order.deliveryModeName} · ${order.deliveryEtaHours} horas`;
+  }
+
+  deliveryModeCodeLabel(): string {
+    return this.orderRecord()?.order.deliveryModeCode || 'Sin codigo';
+  }
+
   formatCurrency(value: number): string {
     return value.toLocaleString('es-MX', {
       style: 'currency',

@@ -44,6 +44,11 @@ export const routes: Routes = [
           import('./features/services/services-page.component').then((m) => m.ServicesPageComponent)
       },
       {
+        path: 'delivery-modes',
+        loadComponent: () =>
+          import('./features/delivery-modes/delivery-modes-page.component').then((m) => m.DeliveryModesPageComponent)
+      },
+      {
         path: 'recollectors',
         loadComponent: () =>
           import('./features/recollectors/recollectors-page.component').then((m) => m.RecollectorsPageComponent)

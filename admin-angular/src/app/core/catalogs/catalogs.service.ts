@@ -12,10 +12,13 @@ import {
   GetCouponResponse,
   GetCourierResponse,
   GetServiceResponse,
+  ListServicePricingOptionsResponse,
   ListCouponsResponse,
   ListCouriersResponse,
   ListServicesResponse,
   MutationMessageResponse,
+  ServicePricingOption,
+  ServicePricingOptionPayload,
   UpdateCouponRequest
 } from './catalogs.models';
 
@@ -34,16 +37,45 @@ export class CatalogsService {
     return this.http.get<GetServiceResponse>(`${this.servicesPath}/${id}`);
   }
 
-  createService(payload: CatalogService): Observable<MutationMessageResponse> {
+  createService(payload: Omit<CatalogService, 'pricingOptions'>): Observable<MutationMessageResponse> {
     return this.http.post<MutationMessageResponse>(this.servicesPath, payload);
   }
 
-  updateService(id: string, payload: CatalogService): Observable<MutationMessageResponse> {
+  updateService(id: string, payload: Omit<CatalogService, 'pricingOptions'>): Observable<MutationMessageResponse> {
     return this.http.put<MutationMessageResponse>(`${this.servicesPath}/${id}`, payload);
   }
 
   deleteService(id: string): Observable<DeleteMessageResponse> {
     return this.http.delete<DeleteMessageResponse>(`${this.servicesPath}/${id}`);
+  }
+
+  listServicePricingOptions(serviceId: string): Observable<ListServicePricingOptionsResponse> {
+    return this.http.get<ListServicePricingOptionsResponse>(`${this.servicesPath}/${serviceId}/pricing-options`);
+  }
+
+  createServicePricingOption(
+    serviceId: string,
+    payload: ServicePricingOptionPayload
+  ): Observable<MutationMessageResponse<ServicePricingOption>> {
+    return this.http.post<MutationMessageResponse<ServicePricingOption>>(
+      `${this.servicesPath}/${serviceId}/pricing-options`,
+      payload
+    );
+  }
+
+  updateServicePricingOption(
+    serviceId: string,
+    optionId: string,
+    payload: ServicePricingOptionPayload
+  ): Observable<MutationMessageResponse<ServicePricingOption>> {
+    return this.http.put<MutationMessageResponse<ServicePricingOption>>(
+      `${this.servicesPath}/${serviceId}/pricing-options/${optionId}`,
+      payload
+    );
+  }
+
+  deleteServicePricingOption(serviceId: string, optionId: string): Observable<DeleteMessageResponse> {
+    return this.http.delete<DeleteMessageResponse>(`${this.servicesPath}/${serviceId}/pricing-options/${optionId}`);
   }
 
   listCouriers(): Observable<ListCouriersResponse> {

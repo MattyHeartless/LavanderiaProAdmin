@@ -1,7 +1,12 @@
 import { Component, ViewChild, inject, signal } from '@angular/core';
-import { finalize } from 'rxjs';
+import { catchError, finalize, forkJoin, map, of, switchMap } from 'rxjs';
 
-import { CatalogService } from '../../core/catalogs/catalogs.models';
+import {
+  CatalogService,
+  ServiceFormValue,
+  ServicePricingOption,
+  ServicePricingOptionPayload
+} from '../../core/catalogs/catalogs.models';
 import { CatalogsService } from '../../core/catalogs/catalogs.service';
 import { NotificationService } from '../../core/notifications/notification.service';
 import { ServiceFormComponent } from './components/service-form.component';
@@ -43,19 +48,45 @@ export class ServicesPageComponent {
 
   startEdit(service: CatalogService, scrollToForm = false): void {
     this.formMode.set('edit');
-    this.selectedService.set(service);
-    if (scrollToForm) {
-      setTimeout(() => {
-        this.serviceFormComponent?.focusNameInput();
-      });
+    const normalizedService = this.cloneService({
+      ...service,
+      pricingOptions: this.normalizePricingOptions(service.pricingOptions)
+    });
+    this.selectedService.set(normalizedService);
+
+    if (normalizedService.pricingOptions.length > 0) {
+      if (scrollToForm) {
+        setTimeout(() => {
+          this.serviceFormComponent?.focusNameInput();
+        });
+      }
+      return;
     }
+
+    this.catalogsService
+      .listServicePricingOptions(service.id)
+      .pipe(
+        map((response) => this.normalizePricingOptions(response.data ?? response.pricingOptions)),
+        catchError(() => of([] as ServicePricingOption[]))
+      )
+      .subscribe((pricingOptions) => {
+        this.selectedService.set({
+          ...normalizedService,
+          pricingOptions
+        });
+        if (scrollToForm) {
+          setTimeout(() => {
+            this.serviceFormComponent?.focusNameInput();
+          });
+        }
+      });
   }
 
   cancelForm(): void {
     this.startCreate();
   }
 
-  saveService(payload: CatalogService): void {
+  saveService(payload: ServiceFormValue): void {
     if (this.formMode() === 'create') {
       this.createService(payload);
       return;
@@ -104,13 +135,34 @@ export class ServicesPageComponent {
     this.catalogsService
       .listServices()
       .pipe(
+        switchMap((response) => {
+          const services = (response.services ?? []).map((service) => ({
+            ...service,
+            pricingOptions: this.normalizePricingOptions(service.pricingOptions)
+          }));
+
+          if (services.length === 0) {
+            return of([] as CatalogService[]);
+          }
+
+          return forkJoin(
+            services.map((service) =>
+              this.resolveServicePricingOptions(service).pipe(
+                map((pricingResponse) => ({
+                  ...service,
+                  pricingOptions: pricingResponse
+                }))
+              )
+            )
+          );
+        }),
         finalize(() => {
           this.loading.set(false);
         })
       )
       .subscribe({
-        next: (response) => {
-          this.services.set(response.services ?? []);
+        next: (services) => {
+          this.services.set(services);
         },
         error: (error: Error) => {
           this.notificationService.show({
@@ -122,26 +174,28 @@ export class ServicesPageComponent {
       });
   }
 
-  private createService(payload: CatalogService): void {
+  private createService(payload: ServiceFormValue): void {
     this.submitting.set(true);
-    const createPayload: CatalogService = {
+    const serviceId = this.generateGuid();
+    const servicePayload = this.toServiceMutationPayload({
       ...payload,
-      id: this.generateGuid()
-    };
+      id: serviceId
+    });
 
     this.catalogsService
-      .createService(createPayload)
+      .createService(servicePayload)
       .pipe(
+        switchMap(() => this.syncPricingOptions(serviceId, [], payload.pricingOptions)),
         finalize(() => {
           this.submitting.set(false);
         })
       )
       .subscribe({
-        next: (response) => {
+        next: () => {
           this.notificationService.show({
             type: 'success',
             title: 'Servicio creado',
-            description: response.message
+            description: 'El servicio y sus opciones de precio se guardaron correctamente.'
           });
           this.loadServices();
           this.startCreate();
@@ -156,29 +210,27 @@ export class ServicesPageComponent {
       });
   }
 
-  private generateGuid(): string {
-    if (typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function') {
-      return crypto.randomUUID();
+  private updateService(payload: ServiceFormValue): void {
+    const currentService = this.selectedService();
+    if (!currentService) {
+      return;
     }
 
-    return `${Date.now()}-${Math.floor(Math.random() * 1000000)}`;
-  }
-
-  private updateService(payload: CatalogService): void {
     this.submitting.set(true);
     this.catalogsService
-      .updateService(payload.id, payload)
+      .updateService(payload.id, this.toServiceMutationPayload(payload))
       .pipe(
+        switchMap(() => this.syncPricingOptions(payload.id, currentService.pricingOptions, payload.pricingOptions)),
         finalize(() => {
           this.submitting.set(false);
         })
       )
       .subscribe({
-        next: (response) => {
+        next: () => {
           this.notificationService.show({
             type: 'success',
             title: 'Servicio actualizado',
-            description: response.message
+            description: 'El servicio y sus opciones de precio se actualizaron correctamente.'
           });
           this.loadServices();
           this.startCreate();
@@ -191,5 +243,87 @@ export class ServicesPageComponent {
           });
         }
       });
+  }
+
+  private syncPricingOptions(
+    serviceId: string,
+    previousOptions: ServicePricingOption[],
+    nextOptions: ServicePricingOption[]
+  ) {
+    const previousById = new Map(previousOptions.map((option) => [option.id, option]));
+    const deleteRequests = previousOptions
+      .filter((option) => option.id && !nextOptions.some((candidate) => candidate.id === option.id))
+      .map((option) => this.catalogsService.deleteServicePricingOption(serviceId, option.id));
+
+    const saveRequests = nextOptions.map((option) => {
+      const requestPayload: ServicePricingOptionPayload = {
+        optionName: option.optionName,
+        price: Number(option.price),
+        uoM: option.uoM,
+        isActive: option.isActive
+      };
+
+      if (!option.id || !previousById.has(option.id)) {
+        return this.catalogsService.createServicePricingOption(serviceId, requestPayload);
+      }
+
+      return this.catalogsService.updateServicePricingOption(serviceId, option.id, requestPayload);
+    });
+
+    const requests = [...deleteRequests, ...saveRequests];
+    if (requests.length === 0) {
+      return of([]);
+    }
+
+    return forkJoin(requests);
+  }
+
+  private toServiceMutationPayload(payload: ServiceFormValue): Omit<CatalogService, 'pricingOptions'> {
+    return {
+      id: payload.id,
+      name: payload.name,
+      description: payload.description,
+      isActive: payload.isActive,
+      icon: payload.icon,
+      themeIcon: payload.themeIcon
+    };
+  }
+
+  private cloneService(service: CatalogService): CatalogService {
+    return {
+      ...service,
+      pricingOptions: this.normalizePricingOptions(service.pricingOptions)
+    };
+  }
+
+  private resolveServicePricingOptions(service: CatalogService) {
+    const embeddedOptions = this.normalizePricingOptions(service.pricingOptions);
+    if (embeddedOptions.length > 0) {
+      return of(embeddedOptions);
+    }
+
+    return this.catalogsService.listServicePricingOptions(service.id).pipe(
+      map((response) => this.normalizePricingOptions(response.data ?? response.pricingOptions)),
+      catchError(() => of([] as ServicePricingOption[]))
+    );
+  }
+
+  private normalizePricingOptions(options: ServicePricingOption[] | null | undefined): ServicePricingOption[] {
+    if (!Array.isArray(options)) {
+      return [];
+    }
+
+    return options.map((option) => ({
+      ...option,
+      price: Number(option.price)
+    }));
+  }
+
+  private generateGuid(): string {
+    if (typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function') {
+      return crypto.randomUUID();
+    }
+
+    return `${Date.now()}-${Math.floor(Math.random() * 1000000)}`;
   }
 }

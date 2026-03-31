@@ -7,6 +7,16 @@ export interface OrderShippingAddress {
   zipCode: string;
 }
 
+export interface DeliveryMode {
+  id: number;
+  code: string;
+  name: string;
+  etaHours: number;
+  surchargeAmount: number;
+  isActive: boolean;
+  sortOrder: number;
+}
+
 export interface OrderEntity {
   id: string;
   userId: string;
@@ -20,6 +30,11 @@ export interface OrderEntity {
   status: number;
   totalAmount: number;
   deliveryFee: number;
+  deliveryModeId?: number | null;
+  deliveryModeCode?: string | null;
+  deliveryModeName?: string | null;
+  deliveryEtaHours?: number | null;
+  deliveryModeSurcharge?: number | null;
   courierName: string;
   courierPhone: string;
   courierGuid: string | null;

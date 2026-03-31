@@ -3,7 +3,12 @@ import { Injectable, inject } from '@angular/core';
 import { Observable, catchError, map, throwError } from 'rxjs';
 
 import { environment } from '../../../environments/environment';
-import { ListOrdersResponse, OrderEvidence, OrderRecord } from './orders.models';
+import { DeliveryMode, ListOrdersResponse, OrderEvidence, OrderRecord } from './orders.models';
+
+type ListDeliveryModesResponse = {
+  message?: string;
+  data?: DeliveryMode[];
+};
 
 @Injectable({ providedIn: 'root' })
 export class OrdersService {
@@ -33,6 +38,24 @@ export class OrdersService {
   getEvidenceImage(evidenceId: string): Observable<Blob> {
     return this.http.get(`${this.ordersPath}/evidences/${evidenceId}/image`, { responseType: 'blob' }).pipe(
       catchError((error) => throwError(() => new Error(this.getErrorMessage(error, 'No se pudo abrir la evidencia.'))))
+    );
+  }
+
+  listDeliveryModes(): Observable<DeliveryMode[]> {
+    return this.http.get<ListDeliveryModesResponse>(`${this.ordersPath}/delivery-modes`).pipe(
+      map((response) =>
+        Array.isArray(response?.data)
+          ? response.data.map((item) => ({
+              ...item,
+              surchargeAmount: Number(item.surchargeAmount),
+              etaHours: Number(item.etaHours),
+              sortOrder: Number(item.sortOrder)
+            }))
+          : []
+      ),
+      catchError((error) =>
+        throwError(() => new Error(this.getErrorMessage(error, 'No se pudo cargar modos de entrega.')))
+      )
     );
   }
 
