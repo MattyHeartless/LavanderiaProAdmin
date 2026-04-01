@@ -2,6 +2,8 @@ export interface CatalogService {
   id: string;
   name: string;
   description: string;
+  price?: number;
+  uoM?: ServicePricingOptionUom;
   isActive: boolean;
   icon: string;
   themeIcon: string;
@@ -24,6 +26,18 @@ export interface ServicePricingOptionPayload {
   price: number;
   uoM: ServicePricingOptionUom;
   isActive: boolean;
+}
+
+export interface ServiceUpdatePayload {
+  id: string;
+  name: string;
+  description: string;
+  price: number;
+  uoM: ServicePricingOptionUom;
+  isActive: boolean;
+  icon: string;
+  themeIcon: string;
+  pricingOptions: ServicePricingOption[];
 }
 
 export interface ServiceFormValue {

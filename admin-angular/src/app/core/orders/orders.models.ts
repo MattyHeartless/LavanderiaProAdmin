@@ -5,6 +5,8 @@ export interface OrderShippingAddress {
   city: string;
   state: string;
   zipCode: string;
+  latitude?: number;
+  longitude?: number;
 }
 
 export interface DeliveryMode {
@@ -20,6 +22,8 @@ export interface DeliveryMode {
 export interface OrderEntity {
   id: string;
   userId: string;
+  userName?: string;
+  userPhone?: string;
   userAddressId: number;
   shippingAddress: OrderShippingAddress;
   userPaymentMethodId: number;
@@ -51,7 +55,11 @@ export interface OrderDetail {
   quantity: number;
   servicePrice: number;
   uoM: string;
+  coloredClothQuantity?: number;
+  blackClothQuantity?: number;
   subTotal: number;
+  servicePricingOptionId?: string;
+  pricingOptionName?: string;
 }
 
 export interface OrderEvidence {

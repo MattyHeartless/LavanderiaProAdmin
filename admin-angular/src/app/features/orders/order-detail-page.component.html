@@ -88,9 +88,17 @@
               <code class="text-xs bg-slate-100 px-2 py-1 rounded text-primary">{{ record.order.userId }}</code>
             </div>
             <div>
+              <p class="text-xs text-slate-400 font-bold uppercase tracking-tight">Etiqueta de direccion</p>
+              <p class="text-slate-900 font-medium">{{ shippingAddressTitle() }}</p>
+            </div>
+            <div>
               <p class="text-xs text-slate-400 font-bold uppercase tracking-tight">Direccion de Envio</p>
               <p class="text-slate-900 font-medium">{{ shippingLineOne() }}</p>
               <p class="text-slate-600 text-sm">{{ shippingLineTwo() }}</p>
+            </div>
+            <div>
+              <p class="text-xs text-slate-400 font-bold uppercase tracking-tight">Coordenadas</p>
+              <p class="text-slate-600 text-sm">{{ shippingCoordinatesLabel() }}</p>
             </div>
           </div>
         </div>
@@ -125,6 +133,7 @@
               <p class="text-xs text-slate-400 font-bold uppercase tracking-tight">Modo de entrega</p>
               <p class="text-slate-900 font-medium">{{ deliveryModeLabel() }}</p>
               <p class="text-sm text-slate-500">Codigo: {{ deliveryModeCodeLabel() }}</p>
+              <p class="text-sm text-slate-500">Recargo: {{ deliverySurchargeLabel() }}</p>
             </div>
             <div>
               <p class="text-xs text-slate-400 font-bold uppercase tracking-tight">Programado para Recoleccion</p>
@@ -148,6 +157,7 @@
                 <th class="px-6 py-3 text-xs font-bold uppercase tracking-wider text-slate-400">Servicio</th>
                 <th class="px-6 py-3 text-xs font-bold uppercase tracking-wider text-slate-400 text-center">Cantidad</th>
                 <th class="px-6 py-3 text-xs font-bold uppercase tracking-wider text-slate-400 text-center">UoM</th>
+                <th class="px-6 py-3 text-xs font-bold uppercase tracking-wider text-slate-400 text-center">Detalle</th>
                 <th class="px-6 py-3 text-xs font-bold uppercase tracking-wider text-slate-400 text-right">Precio Unitario</th>
                 <th class="px-6 py-3 text-xs font-bold uppercase tracking-wider text-slate-400 text-right">Subtotal</th>
               </tr>
@@ -160,7 +170,12 @@
                       <div class="size-8 rounded bg-primary/10 flex items-center justify-center">
                         <span class="material-symbols-outlined text-primary text-lg">checkroom</span>
                       </div>
-                      <span class="font-semibold text-slate-900">{{ detail.serviceName }}</span>
+                      <div>
+                        <span class="font-semibold text-slate-900">{{ detail.serviceName }}</span>
+                        @if (detail.pricingOptionName) {
+                          <p class="text-xs text-slate-500">{{ detail.pricingOptionName }}</p>
+                        }
+                      </div>
                     </div>
                   </td>
                   <td class="px-6 py-4 text-center text-slate-600">{{ detail.quantity }}</td>
@@ -169,6 +184,30 @@
                       {{ detail.uoM }}
                     </span>
                   </td>
+                  <td class="px-6 py-4">
+                    <div class="flex flex-col items-center gap-2 text-center">
+                      @if (detail.pricingOptionName) {
+                        <span class="inline-flex items-center rounded-full bg-primary/10 px-3 py-1 text-[11px] font-bold text-primary">
+                          {{ detail.pricingOptionName }}
+                        </span>
+                      } @else {
+                        <span class="text-sm text-slate-400">Sin opcion</span>
+                      }
+
+                      @if ((detail.coloredClothQuantity ?? 0) > 0 || (detail.blackClothQuantity ?? 0) > 0) {
+                        <div class="flex flex-wrap items-center justify-center gap-2">
+                          <span class="inline-flex items-center gap-1 rounded-full bg-amber-50 px-2.5 py-1 text-[11px] font-semibold text-amber-700">
+                            <span class="size-2 rounded-full bg-amber-400"></span>
+                            Color {{ detail.coloredClothQuantity ?? 0 }}
+                          </span>
+                          <span class="inline-flex items-center gap-1 rounded-full bg-slate-100 px-2.5 py-1 text-[11px] font-semibold text-slate-700">
+                            <span class="size-2 rounded-full bg-slate-500"></span>
+                            Negro {{ detail.blackClothQuantity ?? 0 }}
+                          </span>
+                        </div>
+                      }
+                    </div>
+                  </td>
                   <td class="px-6 py-4 text-right text-slate-600">{{ formatCurrency(detail.servicePrice) }}</td>
                   <td class="px-6 py-4 text-right font-bold text-slate-900">{{ formatCurrency(detail.subTotal) }}</td>
                 </tr>
@@ -176,19 +215,29 @@
             </tbody>
             <tfoot>
               <tr class="bg-slate-50/50">
-                <td class="px-6 py-4 text-right font-bold text-slate-500" colspan="4">Subtotal de servicios</td>
+                <td class="px-6 py-4 text-right font-bold text-slate-500" colspan="5">Subtotal de servicios</td>
                 <td class="px-6 py-4 text-right font-bold text-slate-900">{{ formatCurrency(servicesSubtotal()) }}</td>
               </tr>
               <tr class="bg-slate-50/50">
-                <td class="px-6 py-4 text-right font-bold text-slate-500 border-t border-slate-200" colspan="4">
+                <td class="px-6 py-4 text-right font-bold text-slate-500 border-t border-slate-200" colspan="5">
                   Costo de envio
                 </td>
                 <td class="px-6 py-4 text-right font-bold text-slate-900 border-t border-slate-200">
                   {{ formatCurrency(record.order.deliveryFee) }}
                 </td>
               </tr>
+              @if ((record.order.deliveryModeSurcharge ?? 0) > 0) {
+                <tr class="bg-slate-50/50">
+                  <td class="px-6 py-4 text-right font-bold text-slate-500 border-t border-slate-200" colspan="5">
+                    Recargo por modo de entrega
+                  </td>
+                  <td class="px-6 py-4 text-right font-bold text-slate-900 border-t border-slate-200">
+                    {{ formatCurrency(record.order.deliveryModeSurcharge ?? 0) }}
+                  </td>
+                </tr>
+              }
               <tr class="bg-primary/5">
-                <td class="px-6 py-5 text-right font-black uppercase text-slate-900" colspan="4">Total Final</td>
+                <td class="px-6 py-5 text-right font-black uppercase text-slate-900" colspan="5">Total Final</td>
                 <td class="px-6 py-5 text-right font-black text-xl text-primary">
                   {{ formatCurrency(record.order.totalAmount) }}
                 </td>

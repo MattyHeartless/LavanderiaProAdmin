@@ -140,7 +140,11 @@ export class ServiceFormComponent implements OnChanges {
   }
 
   pricingOptionSummary(option: ServicePricingOption): string {
-    return `${option.optionName} · ${option.uoM} · $${option.price.toFixed(2)}`;
+    return `${this.displayOptionName(option.optionName)} · ${option.uoM} · $${option.price.toFixed(2)}`;
+  }
+
+  displayOptionName(optionName: ServicePricingOptionName): string {
+    return optionName.replace('Bulto', 'Carga');
   }
 
   hasPricingOptionsError(errorKey: string): boolean {
@@ -161,7 +165,9 @@ export class ServiceFormComponent implements OnChanges {
     this.pricingOptions.clear();
     const options = this.initialValue?.pricingOptions?.length
       ? this.initialValue.pricingOptions
-      : [{ optionName: 'Por kilo' as const, uoM: 'KG' as const, price: 0, isActive: true, id: '', serviceId: '' }];
+      : this.mode === 'create'
+        ? [{ optionName: 'Por kilo' as const, uoM: 'KG' as const, price: 0, isActive: true, id: '', serviceId: '' }]
+        : [];
 
     options.forEach((option) => {
       this.pricingOptions.push(this.createPricingOptionGroup(option));

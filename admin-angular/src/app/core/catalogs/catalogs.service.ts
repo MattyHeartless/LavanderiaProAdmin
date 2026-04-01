@@ -19,6 +19,7 @@ import {
   MutationMessageResponse,
   ServicePricingOption,
   ServicePricingOptionPayload,
+  ServiceUpdatePayload,
   UpdateCouponRequest
 } from './catalogs.models';
 
@@ -41,7 +42,7 @@ export class CatalogsService {
     return this.http.post<MutationMessageResponse>(this.servicesPath, payload);
   }
 
-  updateService(id: string, payload: Omit<CatalogService, 'pricingOptions'>): Observable<MutationMessageResponse> {
+  updateService(id: string, payload: ServiceUpdatePayload): Observable<MutationMessageResponse> {
     return this.http.put<MutationMessageResponse>(`${this.servicesPath}/${id}`, payload);
   }
 

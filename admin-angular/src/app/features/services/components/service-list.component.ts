@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, Output, signal } from '@angular/core';
 import { DecimalPipe } from '@angular/common';
 
-import { CatalogService } from '../../../core/catalogs/catalogs.models';
+import { CatalogService, ServicePricingOptionName } from '../../../core/catalogs/catalogs.models';
 
 @Component({
   selector: 'app-service-list',
@@ -60,5 +60,9 @@ export class ServiceListComponent {
 
   closePricingOptionsModal(): void {
     this.pricingOptionsModalService.set(null);
+  }
+
+  displayOptionName(optionName: ServicePricingOptionName): string {
+    return optionName.replace('Bulto', 'Carga');
   }
 }

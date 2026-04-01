@@ -269,6 +269,11 @@ export class OrderDetailPageComponent {
   }
 
   customerName(): string {
+    const record = this.orderRecord();
+    if (record?.order.userName?.trim()) {
+      return record.order.userName.trim();
+    }
+
     return this.customer()?.fullName ?? 'Cliente no encontrado';
   }
 
@@ -277,7 +282,17 @@ export class OrderDetailPageComponent {
   }
 
   customerPhone(): string {
+    const record = this.orderRecord();
+    if (record?.order.userPhone?.trim()) {
+      return record.order.userPhone.trim();
+    }
+
     return this.customer()?.phoneNumber ?? 'Sin telefono';
+  }
+
+  shippingAddressTitle(): string {
+    const title = this.orderRecord()?.order.shippingAddress.title?.trim();
+    return title && title.length > 0 ? title : 'Sin etiqueta';
   }
 
   shippingLineOne(): string {
@@ -297,6 +312,19 @@ export class OrderDetailPageComponent {
 
     const address = record.order.shippingAddress;
     return `${address.neighbourhood}, ${address.city}, ${address.state}, ${address.zipCode}`;
+  }
+
+  shippingCoordinatesLabel(): string {
+    const address = this.orderRecord()?.order.shippingAddress;
+    if (!address) {
+      return 'Sin coordenadas';
+    }
+
+    if (typeof address.latitude !== 'number' || typeof address.longitude !== 'number') {
+      return 'Sin coordenadas';
+    }
+
+    return `${address.latitude}, ${address.longitude}`;
   }
 
   pickupScheduleLabel(): string {
@@ -361,6 +389,15 @@ export class OrderDetailPageComponent {
 
   deliveryModeCodeLabel(): string {
     return this.orderRecord()?.order.deliveryModeCode || 'Sin codigo';
+  }
+
+  deliverySurchargeLabel(): string {
+    const surcharge = this.orderRecord()?.order.deliveryModeSurcharge ?? 0;
+    if (surcharge <= 0) {
+      return 'Sin recargo';
+    }
+
+    return this.formatCurrency(surcharge);
   }
 
   formatCurrency(value: number): string {

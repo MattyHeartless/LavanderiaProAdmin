@@ -5,7 +5,8 @@ import {
   CatalogService,
   ServiceFormValue,
   ServicePricingOption,
-  ServicePricingOptionPayload
+  ServicePricingOptionPayload,
+  ServiceUpdatePayload
 } from '../../core/catalogs/catalogs.models';
 import { CatalogsService } from '../../core/catalogs/catalogs.service';
 import { NotificationService } from '../../core/notifications/notification.service';
@@ -52,9 +53,9 @@ export class ServicesPageComponent {
       ...service,
       pricingOptions: this.normalizePricingOptions(service.pricingOptions)
     });
-    this.selectedService.set(normalizedService);
 
     if (normalizedService.pricingOptions.length > 0) {
+      this.selectedService.set(normalizedService);
       if (scrollToForm) {
         setTimeout(() => {
           this.serviceFormComponent?.focusNameInput();
@@ -211,16 +212,10 @@ export class ServicesPageComponent {
   }
 
   private updateService(payload: ServiceFormValue): void {
-    const currentService = this.selectedService();
-    if (!currentService) {
-      return;
-    }
-
     this.submitting.set(true);
     this.catalogsService
-      .updateService(payload.id, this.toServiceMutationPayload(payload))
+      .updateService(payload.id, this.toServiceUpdatePayload(payload))
       .pipe(
-        switchMap(() => this.syncPricingOptions(payload.id, currentService.pricingOptions, payload.pricingOptions)),
         finalize(() => {
           this.submitting.set(false);
         })
@@ -286,6 +281,23 @@ export class ServicesPageComponent {
       isActive: payload.isActive,
       icon: payload.icon,
       themeIcon: payload.themeIcon
+    };
+  }
+
+  private toServiceUpdatePayload(payload: ServiceFormValue): ServiceUpdatePayload {
+    const normalizedPricingOptions = this.normalizePricingOptions(payload.pricingOptions);
+    const primaryOption = normalizedPricingOptions.find((option) => option.isActive) ?? normalizedPricingOptions[0];
+
+    return {
+      id: payload.id,
+      name: payload.name,
+      description: payload.description,
+      price: primaryOption?.price ?? 0,
+      uoM: primaryOption?.uoM ?? 'KG',
+      isActive: payload.isActive,
+      icon: payload.icon,
+      themeIcon: payload.themeIcon,
+      pricingOptions: normalizedPricingOptions
     };
   }
 

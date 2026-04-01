@@ -93,7 +93,7 @@
             <span></span>
           </div>
 
-          @for (optionGroup of pricingOptions.controls; track $index) {
+          @for (optionGroup of pricingOptions.controls; track optionGroup) {
             <div
               class="border-t border-slate-200 px-5 py-5 first:border-t-0 lg:px-6"
               [formGroupName]="$index"
@@ -107,7 +107,7 @@
                     (change)="syncOptionUom($index)"
                   >
                     @for (catalogItem of allowedCatalogItems($index); track catalogItem.optionName) {
-                      <option [value]="catalogItem.optionName">{{ catalogItem.optionName }}</option>
+                      <option [value]="catalogItem.optionName">{{ displayOptionName(catalogItem.optionName) }}</option>
                     }
                   </select>
                 </div>
