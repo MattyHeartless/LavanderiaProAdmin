@@ -274,10 +274,15 @@ export class ServicesPageComponent {
   }
 
   private toServiceMutationPayload(payload: ServiceFormValue): Omit<CatalogService, 'pricingOptions'> {
+    const normalizedPricingOptions = this.normalizePricingOptions(payload.pricingOptions);
+    const primaryOption = normalizedPricingOptions.find((option) => option.isActive) ?? normalizedPricingOptions[0];
+
     return {
       id: payload.id,
       name: payload.name,
       description: payload.description,
+      price: primaryOption?.price ?? 0,
+      uoM: primaryOption?.uoM ?? 'KG',
       isActive: payload.isActive,
       icon: payload.icon,
       themeIcon: payload.themeIcon
